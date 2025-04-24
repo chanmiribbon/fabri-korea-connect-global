@@ -10,6 +10,7 @@ interface Product {
   nameKr: string;
   image: string;
   price: string;
+  subcategory: string;
 }
 
 const CategoryProducts = () => {
@@ -17,31 +18,50 @@ const CategoryProducts = () => {
   
   const getCategoryProducts = (slug: string): Product[] => {
     switch (slug) {
-      case 'accessories':
+      case 'dongdaemun-accessories':
         return [
           {
             id: 1,
-            name: "Flower Hair Pin (White)",
-            nameKr: "꽃 머리핀 (화이트)",
+            name: "Hair Accessories",
+            nameKr: "헤어 액세서리",
             image: "/lovable-uploads/beb7f058-46f6-4d16-9441-38837503b0b5.png",
-            price: "12,000원"
+            price: "12,000원",
+            subcategory: "hair"
           },
           {
             id: 2,
-            name: "Flower Hair Pin (Pink)",
-            nameKr: "꽃 머리핀 (핑크)",
+            name: "Jewelry",
+            nameKr: "주얼리",
             image: "/lovable-uploads/beb7f058-46f6-4d16-9441-38837503b0b5.png",
-            price: "12,000원"
+            price: "15,000원",
+            subcategory: "jewelry"
+          },
+          {
+            id: 3,
+            name: "Bags",
+            nameKr: "가방",
+            image: "/lovable-uploads/beb7f058-46f6-4d16-9441-38837503b0b5.png",
+            price: "25,000원",
+            subcategory: "bags"
           }
         ];
-      case 'parts':
+      case 'namdaemun-accessories':
         return [
           {
             id: 1,
-            name: "Gold Clip Set",
-            nameKr: "골드 클립 세트",
-            image: "/lovable-uploads/5df0021b-e8b9-4d7c-80d8-362fd0717043.png",
-            price: "15,000원"
+            name: "Hair Accessories",
+            nameKr: "헤어 액세서리",
+            image: "/lovable-uploads/beb7f058-46f6-4d16-9441-38837503b0b5.png",
+            price: "10,000원",
+            subcategory: "hair"
+          },
+          {
+            id: 2,
+            name: "Fashion Accessories",
+            nameKr: "패션 액세서리",
+            image: "/lovable-uploads/beb7f058-46f6-4d16-9441-38837503b0b5.png",
+            price: "18,000원",
+            subcategory: "fashion"
           }
         ];
       default:
@@ -50,16 +70,15 @@ const CategoryProducts = () => {
   };
 
   const products = getCategoryProducts(category || '');
+  const marketName = category?.includes('dongdaemun') ? '동대문 시장' : '남대문 시장';
 
   return (
     <div className="pt-20 px-4 min-h-screen bg-gradient-to-b from-white to-pink-50">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-4xl font-bold text-fabri-purple mb-8">
-          {category === 'fabrics' && '원단'}
-          {category === 'accessories' && '부자재'}
-          {category === 'parts' && '파츠/단추'}
-          {category === 'custom' && '주문제작'}
+        <h1 className="text-4xl font-bold text-fabri-purple mb-2">
+          {marketName}
         </h1>
+        <h2 className="text-2xl text-gray-600 mb-8">액세서리 카테고리</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {products.map((product) => (
             <Card key={product.id} className="overflow-hidden hover:shadow-xl transition-all duration-300">
@@ -72,6 +91,7 @@ const CategoryProducts = () => {
               </AspectRatio>
               <CardContent className="p-4">
                 <h3 className="font-semibold text-lg mb-1">{product.nameKr}</h3>
+                <p className="text-gray-600 text-sm mb-2">카테고리: {product.subcategory}</p>
                 <p className="text-fabri-purple font-medium">{product.price}</p>
               </CardContent>
             </Card>

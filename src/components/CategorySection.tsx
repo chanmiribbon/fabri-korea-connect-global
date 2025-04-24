@@ -10,6 +10,7 @@ interface Category {
   nameKr: string;
   image: string;
   slug: string;
+  market: string;
 }
 
 interface CategorySectionProps {
@@ -22,31 +23,19 @@ const CategorySection: React.FC<CategorySectionProps> = ({ language }) => {
   const categories: Category[] = [
     {
       id: 1,
-      name: "Fabrics",
-      nameKr: "원단",
-      image: "/lovable-uploads/44558176-9e68-4d94-9670-9fd2eb4808fe.png",
-      slug: "fabrics"
+      name: "Dongdaemun Accessories",
+      nameKr: "동대문 액세서리",
+      image: "/lovable-uploads/beb7f058-46f6-4d16-9441-38837503b0b5.png",
+      slug: "dongdaemun-accessories",
+      market: "dongdaemun"
     },
     {
       id: 2,
-      name: "Accessories",
-      nameKr: "부자재",
+      name: "Namdaemun Accessories",
+      nameKr: "남대문 액세서리",
       image: "/lovable-uploads/beb7f058-46f6-4d16-9441-38837503b0b5.png",
-      slug: "accessories"
-    },
-    {
-      id: 3,
-      name: "Parts & Buttons",
-      nameKr: "파츠/단추",
-      image: "/lovable-uploads/5df0021b-e8b9-4d7c-80d8-362fd0717043.png",
-      slug: "parts"
-    },
-    {
-      id: 4,
-      name: "Custom Made",
-      nameKr: "주문제작",
-      image: "https://images.unsplash.com/photo-1545912193-41b5212f30ee",
-      slug: "custom"
+      slug: "namdaemun-accessories",
+      market: "namdaemun"
     }
   ];
 
@@ -59,16 +48,16 @@ const CategorySection: React.FC<CategorySectionProps> = ({ language }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
           <h2 className="text-3xl font-extrabold tracking-tight text-fabri-purple sm:text-4xl">
-            {language === "KR" ? "제품 카테고리" : "Product Categories"}
+            {language === "KR" ? "시장별 상품 카테고리" : "Market Categories"}
           </h2>
           <p className="mt-4 max-w-2xl text-xl text-gray-500 mx-auto">
             {language === "KR"
-              ? "동대문과 남대문 시장의 최고 품질 제품을 만나보세요"
-              : "Explore top quality products from Dongdaemun and Namdaemun markets"}
+              ? "동대문과 남대문 시장의 다양한 액세서리 제품을 만나보세요"
+              : "Explore various accessories from Dongdaemun and Namdaemun markets"}
           </p>
         </div>
 
-        <div className="mt-12 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-12 grid gap-6 grid-cols-1 sm:grid-cols-2">
           {categories.map((category) => (
             <Card
               key={category.id}
@@ -90,8 +79,8 @@ const CategorySection: React.FC<CategorySectionProps> = ({ language }) => {
               <CardContent className="p-4">
                 <p className="text-gray-600">
                   {language === "KR"
-                    ? "최고 품질의 제품을 살펴보세요"
-                    : "Browse our high-quality selection"}
+                    ? "액세서리 제품들을 살펴보세요"
+                    : "Browse our accessories collection"}
                 </p>
               </CardContent>
             </Card>
