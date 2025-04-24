@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Translate } from "lucide-react";
+import { Languages } from "lucide-react";
 
 interface TranslationDemoProps {
   language: string;
@@ -32,7 +32,7 @@ const TranslationDemo: React.FC<TranslationDemoProps> = ({ language }) => {
     <section className="py-16 bg-gradient-to-r from-fabri-purple/10 to-fabri-lightPurple/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <Translate className="h-12 w-12 text-fabri-purple mx-auto mb-4" />
+          <Languages className="h-12 w-12 text-fabri-purple mx-auto mb-4" />
           <h2 className="text-3xl font-extrabold text-fabri-darkPurple sm:text-4xl">
             {language === "KR" ? "AI 자동 번역" : "AI Translation"}
           </h2>
@@ -61,7 +61,7 @@ const TranslationDemo: React.FC<TranslationDemoProps> = ({ language }) => {
                   onClick={() => setTranslated(!translated)}
                   className="mt-4 bg-fabri-purple hover:bg-fabri-purple/90 text-white"
                 >
-                  <Translate className="mr-2 h-4 w-4" />
+                  <Languages className="mr-2 h-4 w-4" />
                   {translated
                     ? translations.buttonText.translated
                     : translations.buttonText.original}

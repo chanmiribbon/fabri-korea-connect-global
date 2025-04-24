@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Globe, Package, Truck, Translate } from "lucide-react";
+import { Globe, Package, Truck, Languages } from "lucide-react";
 
 interface FeaturesProps {
   language: string;
@@ -18,7 +18,7 @@ const FeaturesSection: React.FC<FeaturesProps> = ({ language }) => {
           : "Providing Korean fabrics and materials to customers worldwide"
     },
     {
-      icon: <Translate className="h-10 w-10 text-fabri-purple" />,
+      icon: <Languages className="h-10 w-10 text-fabri-purple" />,
       title: language === "KR" ? "AI 자동 번역" : "AI Translation",
       description:
         language === "KR"
