@@ -31,21 +31,21 @@ const CategorySection: React.FC<CategorySectionProps> = ({ language }) => {
       id: 2,
       name: "Accessories",
       nameKr: "부자재",
-      image: "https://images.unsplash.com/photo-1631214524020-7e18db9a8f92",
+      image: "/lovable-uploads/beb7f058-46f6-4d16-9441-38837503b0b5.png",
       slug: "accessories"
     },
     {
       id: 3,
       name: "Parts & Buttons",
       nameKr: "파츠/단추",
-      image: "https://images.unsplash.com/photo-1619873889949-c06f0a800635",
+      image: "/lovable-uploads/5df0021b-e8b9-4d7c-80d8-362fd0717043.png",
       slug: "parts"
     },
     {
       id: 4,
       name: "Custom Made",
       nameKr: "주문제작",
-      image: "https://images.unsplash.com/photo-1507496937813-e9d1c5c25c55",
+      image: "https://images.unsplash.com/photo-1545912193-41b5212f30ee",
       slug: "custom"
     }
   ];
