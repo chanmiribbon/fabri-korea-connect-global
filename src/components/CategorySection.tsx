@@ -24,28 +24,28 @@ const CategorySection: React.FC<CategorySectionProps> = ({ language }) => {
       id: 1,
       name: "Fabrics",
       nameKr: "원단",
-      image: "https://images.unsplash.com/photo-1582562124811-c09040d0a901",
+      image: "/lovable-uploads/44558176-9e68-4d94-9670-9fd2eb4808fe.png",
       slug: "fabrics"
     },
     {
       id: 2,
       name: "Accessories",
       nameKr: "부자재",
-      image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9",
+      image: "https://images.unsplash.com/photo-1631214524020-7e18db9a8f92",
       slug: "accessories"
     },
     {
       id: 3,
       name: "Parts & Buttons",
       nameKr: "파츠/단추",
-      image: "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07",
+      image: "https://images.unsplash.com/photo-1619873889949-c06f0a800635",
       slug: "parts"
     },
     {
       id: 4,
-      name: "Custom Order",
-      nameKr: "맞춤 주문",
-      image: "https://images.unsplash.com/photo-1500673922987-e212871fec22",
+      name: "Custom Made",
+      nameKr: "주문제작",
+      image: "https://images.unsplash.com/photo-1507496937813-e9d1c5c25c55",
       slug: "custom"
     }
   ];
