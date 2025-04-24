@@ -1,6 +1,7 @@
 
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 interface Category {
   id: number;
@@ -19,25 +20,25 @@ const CategorySection: React.FC<CategorySectionProps> = ({ language }) => {
       id: 1,
       name: "Fabrics",
       nameKr: "원단",
-      image: "bg-gradient-to-r from-purple-500 to-pink-500"
+      image: "https://images.unsplash.com/photo-1482938289607-e9573fc25ebb"
     },
     {
       id: 2,
       name: "Accessories",
       nameKr: "부자재",
-      image: "bg-gradient-to-r from-blue-500 to-teal-500"
+      image: "https://images.unsplash.com/photo-1434494878577-86c23bcb06b9"
     },
     {
       id: 3,
       name: "Materials",
       nameKr: "자재",
-      image: "bg-gradient-to-r from-green-500 to-yellow-500"
+      image: "https://images.unsplash.com/photo-1518770660439-4636190af475"
     },
     {
       id: 4,
       name: "Custom Order",
       nameKr: "맞춤 주문",
-      image: "bg-gradient-to-r from-orange-500 to-red-500"
+      image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6"
     }
   ];
 
@@ -61,13 +62,18 @@ const CategorySection: React.FC<CategorySectionProps> = ({ language }) => {
               key={category.id}
               className="overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer transform hover:-translate-y-1 transition-transform duration-300"
             >
-              <div
-                className={`h-40 ${category.image} flex items-center justify-center`}
-              >
-                <h3 className="text-2xl font-bold text-white">
-                  {language === "KR" ? category.nameKr : category.name}
-                </h3>
-              </div>
+              <AspectRatio ratio={16 / 9} className="bg-muted">
+                <img
+                  src={category.image}
+                  alt={language === "KR" ? category.nameKr : category.name}
+                  className="object-cover w-full h-full brightness-75"
+                />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <h3 className="text-2xl font-bold text-white drop-shadow-lg">
+                    {language === "KR" ? category.nameKr : category.name}
+                  </h3>
+                </div>
+              </AspectRatio>
               <CardContent className="p-4">
                 <p className="text-gray-600">
                   {language === "KR"
@@ -84,3 +90,4 @@ const CategorySection: React.FC<CategorySectionProps> = ({ language }) => {
 };
 
 export default CategorySection;
+
