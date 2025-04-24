@@ -10,22 +10,31 @@ interface TranslationDemoProps {
 
 const TranslationDemo: React.FC<TranslationDemoProps> = ({ language }) => {
   const [translated, setTranslated] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const translations = {
     title: {
-      original: "AI 자동 번역 서비스",
-      translated: "AI Automatic Translation Service"
+      original: "실시간 AI 자동 번역 서비스",
+      translated: "Real-time AI Translation Service"
     },
     description: {
       original:
-        "당사의 AI 번역 기술은 귀하의 비즈니스에 언어 장벽 없는 글로벌 커뮤니케이션을 제공합니다. 전 세계 어디서나 원활한 의사소통으로 비즈니스를 확장하세요.",
+        "찬미리본의 AI 번역 기술은 귀하의 비즈니스에 언어 장벽 없는 글로벌 커뮤니케이션을 제공합니다. 한국어, 영어, 일본어, 중국어 등 다양한 언어로 실시간 번역이 가능합니다.",
       translated:
-        "Our AI translation technology provides your business with barrier-free global communication. Expand your business with seamless communication anywhere in the world."
+        "Chanmi Ribbon's AI translation technology provides barrier-free global communication for your business. Real-time translation is available in various languages including Korean, English, Japanese, and Chinese."
     },
     buttonText: {
-      original: "번역 데모",
-      translated: "Translation Demo"
+      original: "번역 데모 보기",
+      translated: "View Translation Demo"
     }
+  };
+
+  const handleTranslation = async () => {
+    setIsLoading(true);
+    // Simulate translation delay for better UX
+    await new Promise(resolve => setTimeout(resolve, 500));
+    setTranslated(!translated);
+    setIsLoading(false);
   };
 
   return (
@@ -38,8 +47,8 @@ const TranslationDemo: React.FC<TranslationDemoProps> = ({ language }) => {
           </h2>
           <p className="mt-4 max-w-2xl text-xl text-gray-500 mx-auto">
             {language === "KR"
-              ? "언어 장벽 없는 글로벌 비즈니스를 경험하세요"
-              : "Experience global business without language barriers"}
+              ? "실시간 다국어 번역으로 글로벌 비즈니스를 시작하세요"
+              : "Start your global business with real-time multilingual translation"}
           </p>
         </div>
 
@@ -58,13 +67,18 @@ const TranslationDemo: React.FC<TranslationDemoProps> = ({ language }) => {
                     : translations.description.original}
                 </p>
                 <Button
-                  onClick={() => setTranslated(!translated)}
+                  onClick={handleTranslation}
+                  disabled={isLoading}
                   className="mt-4 bg-fabri-purple hover:bg-fabri-purple/90 text-white"
                 >
                   <Languages className="mr-2 h-4 w-4" />
-                  {translated
-                    ? translations.buttonText.translated
-                    : translations.buttonText.original}
+                  {isLoading ? (
+                    language === "KR" ? "번역 중..." : "Translating..."
+                  ) : (
+                    translated
+                      ? translations.buttonText.translated
+                      : translations.buttonText.original
+                  )}
                 </Button>
               </div>
 
@@ -72,7 +86,7 @@ const TranslationDemo: React.FC<TranslationDemoProps> = ({ language }) => {
                 <h4 className="text-lg font-medium text-fabri-darkPurple mb-4">
                   {language === "KR" ? "지원 언어" : "Supported Languages"}:
                 </h4>
-                <ul className="grid grid-cols-2 gap-2">
+                <ul className="grid grid-cols-2 gap-4">
                   <li className="flex items-center">
                     <span className="w-8 h-8 flex items-center justify-center rounded-full bg-fabri-purple text-white font-bold mr-2">
                       KR
@@ -96,18 +110,6 @@ const TranslationDemo: React.FC<TranslationDemoProps> = ({ language }) => {
                       CN
                     </span>
                     {language === "KR" ? "중국어" : "Chinese"}
-                  </li>
-                  <li className="flex items-center">
-                    <span className="w-8 h-8 flex items-center justify-center rounded-full bg-fabri-purple text-white font-bold mr-2">
-                      ES
-                    </span>
-                    {language === "KR" ? "스페인어" : "Spanish"}
-                  </li>
-                  <li className="flex items-center">
-                    <span className="w-8 h-8 flex items-center justify-center rounded-full bg-fabri-purple text-white font-bold mr-2">
-                      FR
-                    </span>
-                    {language === "KR" ? "프랑스어" : "French"}
                   </li>
                 </ul>
               </div>

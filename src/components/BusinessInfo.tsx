@@ -26,25 +26,25 @@ const BusinessInfo: React.FC<BusinessInfoProps> = ({ language }) => {
                   <span className="font-medium w-32">
                     {language === "KR" ? "회사명" : "Company Name"}:
                   </span>
-                  <span>FabriKorea Co., Ltd.</span>
+                  <span>찬미리본</span>
                 </li>
                 <li className="flex">
                   <span className="font-medium w-32">
                     {language === "KR" ? "사업자번호" : "Business Number"}:
                   </span>
-                  <span>123-45-67890</span>
+                  <span>565-03-02700</span>
                 </li>
                 <li className="flex">
                   <span className="font-medium w-32">
                     {language === "KR" ? "대표자" : "CEO"}:
                   </span>
-                  <span>Kim Min-su</span>
+                  <span>Jeon Chan-ung</span>
                 </li>
                 <li className="flex">
                   <span className="font-medium w-32">
                     {language === "KR" ? "설립일" : "Established"}:
                   </span>
-                  <span>2015.08.15</span>
+                  <span>2023.01.01</span>
                 </li>
               </ul>
             </div>
@@ -60,15 +60,15 @@ const BusinessInfo: React.FC<BusinessInfoProps> = ({ language }) => {
                   </span>
                   <span>
                     {language === "KR"
-                      ? "서울특별시 중구 남대문시장 12길 34"
-                      : "34, Namdaemun Market 12-gil, Jung-gu, Seoul, Korea"}
+                      ? "경기도 구리시 갈매순환로 166번길 45 갈매 아너시티 H932호"
+                      : "H932, Galmae Honor City, 45, Galmaesunhwan-ro 166beon-gil, Guri-si, Gyeonggi-do, Korea"}
                   </span>
                 </li>
                 <li className="flex">
                   <span className="font-medium w-32">
                     {language === "KR" ? "전화번호" : "Phone"}:
                   </span>
-                  <span>+82-2-123-4567</span>
+                  <span>+82 01-6835-1009</span>
                 </li>
                 <li className="flex">
                   <span className="font-medium w-32">
@@ -80,7 +80,7 @@ const BusinessInfo: React.FC<BusinessInfoProps> = ({ language }) => {
                   <span className="font-medium w-32">
                     {language === "KR" ? "영업시간" : "Business Hours"}:
                   </span>
-                  <span>9:00 - 18:00 (Mon-Fri)</span>
+                  <span>10:00 - 16:00 (Mon-Fri)</span>
                 </li>
               </ul>
             </div>
