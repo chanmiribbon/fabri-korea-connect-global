@@ -5,7 +5,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { FileText, ShoppingCart, Download, CreditCard } from "lucide-react";
 import { useLocation } from "react-router-dom";
-import type { Language } from "@/components/Navbar";
 
 interface Product {
   id: number;
@@ -92,44 +91,47 @@ const ProductList: React.FC<ProductListProps> = ({ category }) => {
   return (
     <>
       {isBuyerView && (
-        <div className="flex gap-4 mb-8">
+        <div className="flex flex-col sm:flex-row gap-4 mb-8 px-4">
           <Button
             onClick={() => handleDownloadCatalog('pdf')}
             variant="outline"
-            className="flex items-center gap-2"
+            className="flex items-center justify-center gap-2 w-full sm:w-auto py-6 sm:py-2"
           >
-            <Download className="w-4 h-4" />
+            <Download className="w-5 h-5" />
             Download PDF Catalog
           </Button>
           <Button
             onClick={() => handleDownloadCatalog('csv')}
             variant="outline"
-            className="flex items-center gap-2"
+            className="flex items-center justify-center gap-2 w-full sm:w-auto py-6 sm:py-2"
           >
-            <FileText className="w-4 h-4" />
+            <FileText className="w-5 h-5" />
             Download CSV Catalog
           </Button>
         </div>
       )}
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-4 pb-20">
         {products.map((product) => (
-          <Card key={product.id} className="overflow-hidden">
-            <AspectRatio ratio={4/3}>
-              <img
-                src={product.image}
-                alt={product.name.en}
-                className="object-cover w-full h-full"
-              />
-            </AspectRatio>
+          <Card key={product.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+            <div className="relative">
+              <AspectRatio ratio={4/3}>
+                <img
+                  src={product.image}
+                  alt={product.name.en}
+                  className="object-cover w-full h-full"
+                />
+              </AspectRatio>
+            </div>
             <CardContent className="p-4">
               <Tabs defaultValue="kr" className="w-full">
-                <TabsList className="grid w-full grid-cols-4">
-                  <TabsTrigger value="kr">한국어</TabsTrigger>
-                  <TabsTrigger value="en">English</TabsTrigger>
-                  <TabsTrigger value="cn">中文</TabsTrigger>
-                  <TabsTrigger value="jp">日本語</TabsTrigger>
+                <TabsList className="grid w-full grid-cols-4 mb-4">
+                  <TabsTrigger value="kr" className="text-sm py-3">한국어</TabsTrigger>
+                  <TabsTrigger value="en" className="text-sm py-3">ENG</TabsTrigger>
+                  <TabsTrigger value="cn" className="text-sm py-3">中文</TabsTrigger>
+                  <TabsTrigger value="jp" className="text-sm py-3">日本語</TabsTrigger>
                 </TabsList>
+                
                 <TabsContent value="kr" className="mt-4">
                   <h3 className="text-lg font-semibold mb-2">{product.name.kr}</h3>
                   <p className="text-sm text-gray-600 mb-2">최소 주문수량(MOQ): {product.moq}개</p>
@@ -156,16 +158,16 @@ const ProductList: React.FC<ProductListProps> = ({ category }) => {
                 </TabsContent>
               </Tabs>
               
-              <div className="flex flex-col gap-2 mt-4">
+              <div className="flex flex-col gap-3 mt-6">
                 {isBuyerView ? (
-                  <Button className="w-full flex items-center gap-2 bg-fabri-purple hover:bg-fabri-purple/90">
-                    <FileText className="w-4 h-4" />
+                  <Button className="w-full flex items-center justify-center gap-2 bg-fabri-purple hover:bg-fabri-purple/90 py-6 text-lg">
+                    <FileText className="w-5 h-5" />
                     {getButtonText("KR")}
                   </Button>
                 ) : (
-                  <div className="space-y-2">
-                    <Button className="w-full flex items-center gap-2">
-                      <ShoppingCart className="w-4 h-4" />
+                  <div className="space-y-3">
+                    <Button className="w-full flex items-center justify-center gap-2 py-6 text-lg">
+                      <ShoppingCart className="w-5 h-5" />
                       {getButtonText("KR")}
                     </Button>
                     <div className="flex items-center justify-center gap-2 text-sm text-gray-500">

@@ -9,6 +9,7 @@ import BusinessInfo from "@/components/BusinessInfo";
 import Footer from "@/components/Footer";
 import MarketStats from "@/components/MarketStats";
 import GlobalInfluenceGallery from "@/components/GlobalInfluenceGallery";
+import BottomNav from "@/components/BottomNav";
 
 const Index = () => {
   const [language, setLanguage] = useState("KR");
@@ -26,6 +27,7 @@ const Index = () => {
         <BusinessInfo language={language} />
         <Footer language={language} />
       </div>
+      <BottomNav />
     </div>
   );
 };
