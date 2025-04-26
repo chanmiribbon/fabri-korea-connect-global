@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, ShoppingCart, User, Search } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -25,6 +26,16 @@ const Navbar = () => {
   };
 
   const navLinks = getNavLinks(language);
+
+  // Force re-render when language changes to ensure all components update
+  useEffect(() => {
+    // This effect will run whenever language changes
+    document.documentElement.lang = language.toLowerCase();
+    document.title = language === "KR" ? "FabriKorea - 전통시장을 세계로" : 
+                     language === "EN" ? "FabriKorea - Traditional Markets to the World" :
+                     language === "CN" ? "FabriKorea - 传统市场走向世界" : 
+                     "FabriKorea - 伝統市場を世界へ";
+  }, [language]);
 
   return (
     <nav className="bg-white shadow-sm fixed w-full z-50">

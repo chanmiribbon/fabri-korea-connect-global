@@ -6,7 +6,7 @@ export type Language = "KR" | "EN" | "CN" | "JP";
 const getInitialLanguage = (): Language => {
   // Check localStorage first
   const storedLanguage = localStorage.getItem('preferredLanguage') as Language;
-  if (storedLanguage) {
+  if (storedLanguage && ["KR", "EN", "CN", "JP"].includes(storedLanguage)) {
     return storedLanguage;
   }
 
@@ -25,13 +25,18 @@ export const useLanguageStore = () => {
   const [language, setLanguage] = useState<Language>(getInitialLanguage);
 
   const changeLanguage = (newLanguage: Language) => {
+    if (!["KR", "EN", "CN", "JP"].includes(newLanguage)) {
+      console.error(`Invalid language code: ${newLanguage}, defaulting to KR`);
+      newLanguage = "KR";
+    }
     setLanguage(newLanguage);
     localStorage.setItem('preferredLanguage', newLanguage);
   };
 
+  // Initialize language from localStorage on component mount
   useEffect(() => {
     const storedLanguage = localStorage.getItem('preferredLanguage') as Language;
-    if (storedLanguage) {
+    if (storedLanguage && ["KR", "EN", "CN", "JP"].includes(storedLanguage)) {
       setLanguage(storedLanguage);
     }
   }, []);

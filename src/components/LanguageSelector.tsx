@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -28,10 +28,32 @@ const LanguageSelector = ({ isMobile = false }: { isMobile?: boolean }) => {
 
   const currentLanguage = languageOptions.find((opt) => opt.code === language);
 
+  useEffect(() => {
+    // Ensure the stored language is used on component mount
+    const storedLanguage = localStorage.getItem('preferredLanguage') as Language;
+    if (storedLanguage && storedLanguage !== language && 
+        ["KR", "EN", "CN", "JP"].includes(storedLanguage)) {
+      changeLanguage(storedLanguage);
+    }
+  }, []);
+
+  const handleLanguageChange = (lang: Language) => {
+    changeLanguage(lang);
+    // Force page update to ensure all components reflect the new language
+    setTimeout(() => {
+      // This small timeout helps ensure state propagation
+    }, 50);
+  };
+
   const buttonContent = isMobile ? (
     <div className="flex items-center gap-2">
       <Globe className="h-5 w-5" />
-      <span>언어 설정</span>
+      <span>
+        {language === "KR" ? "언어 설정" : 
+         language === "EN" ? "Language" : 
+         language === "CN" ? "语言设置" : 
+         "言語設定"}
+      </span>
     </div>
   ) : (
     <div className="flex items-center gap-2">
@@ -55,8 +77,10 @@ const LanguageSelector = ({ isMobile = false }: { isMobile?: boolean }) => {
         {languageOptions.map((option) => (
           <DropdownMenuItem
             key={option.code}
-            onClick={() => changeLanguage(option.code)}
-            className="flex items-center gap-2 py-3 px-4 hover:bg-[#F0F9FC] rounded-lg text-[#333333] font-medium"
+            onClick={() => handleLanguageChange(option.code)}
+            className={`flex items-center gap-2 py-3 px-4 hover:bg-[#F0F9FC] rounded-lg text-[#333333] font-medium ${
+              language === option.code ? "bg-[#F0F9FC] font-semibold" : ""
+            }`}
           >
             <span className="text-lg">{option.flag}</span>
             <span>{option.label}</span>

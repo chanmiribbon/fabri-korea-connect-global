@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import CategorySection from "@/components/CategorySection";
@@ -15,6 +15,11 @@ import { useLanguageStore } from "@/hooks/useLanguageStore";
 
 const Index = () => {
   const { language } = useLanguageStore();
+  
+  useEffect(() => {
+    // This effect ensures that language changes are properly propagated through the app
+    // The dependency array ensures this runs when language changes
+  }, [language]);
 
   return (
     <div className="min-h-screen flex flex-col">

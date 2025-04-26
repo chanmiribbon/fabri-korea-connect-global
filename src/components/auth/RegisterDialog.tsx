@@ -21,6 +21,7 @@ const translations = {
   KR: {
     title: "회원가입 유형 선택",
     subtitle: "원하시는 회원가입 유형을 선택해주세요",
+    registerButton: "지금 회원가입하고 혜택 받기",
     b2c: {
       title: "개인 회원가입",
       desc: "소량 구매를 원하는 일반 소비자용 가입"
@@ -33,6 +34,7 @@ const translations = {
   EN: {
     title: "Select Registration Type",
     subtitle: "Please select your preferred registration type",
+    registerButton: "Register Now for Benefits",
     b2c: {
       title: "Individual Registration",
       desc: "For general consumers interested in retail purchases"
@@ -45,6 +47,7 @@ const translations = {
   CN: {
     title: "选择注册类型",
     subtitle: "请选择您想要的注册类型",
+    registerButton: "立即注册并获取优惠",
     b2c: {
       title: "个人注册",
       desc: "适用于想要零售购买的普通消费者"
@@ -57,6 +60,7 @@ const translations = {
   JP: {
     title: "会員登録タイプの選択",
     subtitle: "希望する会員登録タイプを選択してください",
+    registerButton: "今すぐ登録して特典を受け取る",
     b2c: {
       title: "個人会員登録",
       desc: "小売購入を希望する一般消費者向け"
@@ -77,7 +81,7 @@ const RegisterDialog = ({ language, trigger }: RegisterDialogProps) => {
       <DialogTrigger asChild>
         {trigger || (
           <Button className="bg-[#6EC1E4] hover:bg-[#5DB1D4] text-white rounded-xl px-6 py-2 text-lg font-medium">
-            {language === "KR" ? "지금 회원가입하고 혜택 받기" : "Register Now"}
+            {text.registerButton}
           </Button>
         )}
       </DialogTrigger>
@@ -86,6 +90,7 @@ const RegisterDialog = ({ language, trigger }: RegisterDialogProps) => {
           <DialogTitle className="text-2xl font-bold text-center mb-4">
             {text.title}
           </DialogTitle>
+          <p className="text-center text-muted-foreground">{text.subtitle}</p>
         </DialogHeader>
         <div className="grid gap-6 sm:grid-cols-2">
           <Button

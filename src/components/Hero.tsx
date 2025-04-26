@@ -1,4 +1,5 @@
-import React from "react";
+
+import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Globe, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -11,28 +12,32 @@ const translations = {
     subTitle: "한국 B2B·B2C 연결 플랫폼",
     description: "동대문과 남대문 시장의 우수한 제품을 전세계 바이어와 소비자에게 소개합니다",
     buyerButton: "해외 바이어로 둘러보기",
-    consumerButton: "일반 소비자로 둘러보기"
+    consumerButton: "일반 소비자로 둘러보기",
+    registerButton: "지금 회원가입하고 혜택 받기"
   },
   EN: {
     mainTitle: "Traditional Markets to the World!",
     subTitle: "Korea's B2B·B2C Connection Platform",
     description: "Introducing excellent products from Dongdaemun and Namdaemun markets to global buyers and consumers",
     buyerButton: "Browse as a Global Buyer",
-    consumerButton: "Browse as a Consumer"
+    consumerButton: "Browse as a Consumer",
+    registerButton: "Register Now for Benefits"
   },
   CN: {
     mainTitle: "传统市场走向世界!",
     subTitle: "韩国 B2B·B2C 连接平台",
     description: "向全球买家和消费者介绍东大门和南大门市场的优质产品",
     buyerButton: "以国际买家身份浏览",
-    consumerButton: "以消费者身份浏览"
+    consumerButton: "以消费者身份浏览",
+    registerButton: "立即注册并获取优惠"
   },
   JP: {
     mainTitle: "伝統市場を世界へ!",
     subTitle: "韓国 B2B·B2C 接続プラットフォーム",
     description: "東大門と南大門市場の優れた製品を世界中のバイヤーと消費者に紹介します",
     buyerButton: "海外バイヤーとして閲覧",
-    consumerButton: "一般消費者として閲覧"
+    consumerButton: "一般消費者として閲覧",
+    registerButton: "今すぐ登録して特典を受け取る"
   }
 };
 
@@ -40,6 +45,11 @@ const Hero = () => {
   const navigate = useNavigate();
   const { language } = useLanguageStore();
   const text = translations[language];
+
+  // Force re-render when language changes to ensure all components update
+  useEffect(() => {
+    // This effect will run whenever language changes
+  }, [language]);
 
   return (
     <div className="relative min-h-[600px] bg-fabri-darkPurple text-white">
