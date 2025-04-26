@@ -105,10 +105,10 @@ const ProductList: React.FC<ProductListProps> = ({ category }) => {
                 <TabsTrigger value="jp">日本語</TabsTrigger>
               </TabsList>
               <TabsContent value="kr" className="mt-4">
-                <h3 className="text-lg font-semibold mb-2">{product.name}</h3>
+                <h3 className="text-lg font-semibold mb-2">{product.name.kr}</h3>
                 <p className="text-sm text-gray-600 mb-2">최소 주문수량(MOQ): {product.moq}개</p>
-                <p className="text-lg font-medium text-fabri-purple mb-2">{product.price}</p>
-                <p className="text-sm text-gray-600 mb-4">{product.description}</p>
+                <p className="text-lg font-medium text-fabri-purple mb-2">{product.price.kr}</p>
+                <p className="text-sm text-gray-600 mb-4">{product.description.kr}</p>
               </TabsContent>
               <TabsContent value="en" className="mt-4">
                 <h3 className="text-lg font-semibold mb-2">{product.name.en}</h3>
