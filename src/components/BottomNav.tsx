@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
-import { Category, Bookmark, ShoppingCart, User } from "lucide-react";
+import { Grid, Bookmark, ShoppingCart, User } from "lucide-react";
 
 const BottomNav = () => {
   return (
@@ -11,7 +11,7 @@ const BottomNav = () => {
           to="/categories" 
           className="flex flex-col items-center justify-center p-2 text-gray-600 hover:text-fabri-purple"
         >
-          <Category className="w-6 h-6" />
+          <Grid className="w-6 h-6" />
           <span className="text-xs mt-1">카테고리</span>
         </Link>
         <Link 

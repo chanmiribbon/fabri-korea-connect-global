@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
@@ -29,6 +30,8 @@ interface Product {
     jp: string;
   };
 }
+
+type Language = "KR" | "EN" | "CN" | "JP";
 
 interface ProductListProps {
   category: "clothing" | "materials" | "accessories" | "hanbok";
