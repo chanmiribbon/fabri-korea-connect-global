@@ -8,8 +8,17 @@ import {
   ShoppingCart,
   ChartBar,
   Settings,
-  MessageCircle,
 } from "lucide-react";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+  SidebarGroup,
+  SidebarGroupContent,
+} from "@/components/ui/sidebar";
 
 interface SellerSidebarProps {
   currentPage: string;
@@ -85,44 +94,41 @@ const SellerSidebar = ({ currentPage }: SellerSidebarProps) => {
         CN: "个人资料设置",
         JP: "プロフィール設定",
       },
-    },
-    {
-      id: "messages",
-      path: "/seller/messages",
-      icon: MessageCircle,
-      translations: {
-        KR: "고객 문의",
-        EN: "Customer Messages",
-        CN: "客户留言",
-        JP: "お客様からのメッセージ",
-      },
-    },
+    }
   ];
 
   return (
-    <div className="bg-white rounded-lg shadow p-4">
-      <div className="space-y-1">
-        {navItems.map((item) => (
-          <Link
-            key={item.id}
-            to={item.path}
-            className={`flex items-center px-3 py-2 rounded-md text-sm ${
-              currentPage === item.id
-                ? "bg-fabri-blue text-white"
-                : "text-gray-600 hover:bg-gray-100"
-            }`}
-          >
-            <item.icon className="mr-2 h-5 w-5" />
-            <span>{item.translations[language]}</span>
-            {item.id === "messages" && (
-              <span className="ml-auto bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full">
-                3
-              </span>
-            )}
-          </Link>
-        ))}
-      </div>
-    </div>
+    <Sidebar>
+      <SidebarHeader className="p-4">
+        <Link to="/" className="flex-shrink-0 flex items-center">
+          <span className="text-2xl font-bold text-[#6EC1E4]">
+            Fabri<span className="text-[#333333]">Korea</span>
+          </span>
+        </Link>
+      </SidebarHeader>
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {navItems.map((item) => (
+                <SidebarMenuItem key={item.id}>
+                  <SidebarMenuButton
+                    tooltip={item.translations[language]}
+                    isActive={currentPage === item.id}
+                    asChild
+                  >
+                    <Link to={item.path} className="flex items-center gap-2">
+                      <item.icon className="h-4 w-4" />
+                      <span>{item.translations[language]}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
+    </Sidebar>
   );
 };
 

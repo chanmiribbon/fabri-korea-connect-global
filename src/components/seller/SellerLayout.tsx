@@ -1,9 +1,10 @@
 
 import React from "react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import SellerSidebar from "@/components/seller/SellerSidebar";
+import { LogOut } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { useLanguageStore } from "@/hooks/useLanguageStore";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import SellerSidebar from "@/components/seller/SellerSidebar";
 
 interface SellerLayoutProps {
   children: React.ReactNode;
@@ -23,23 +24,28 @@ const SellerLayout = ({ children, currentPage }: SellerLayoutProps) => {
   };
   
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
-      <div className="flex-1 pt-16">
-        <div className="container mx-auto px-4">
-          <h1 className="text-2xl font-bold my-6">{getSellerCenterTitle()}</h1>
-          <div className="flex flex-col md:flex-row gap-6">
-            <div className="w-full md:w-64 shrink-0">
-              <SellerSidebar currentPage={currentPage} />
-            </div>
-            <div className="flex-1">
-              {children}
-            </div>
-          </div>
+    <SidebarProvider>
+      <div className="min-h-screen flex w-full">
+        <SellerSidebar currentPage={currentPage} />
+        <div className="flex-1">
+          <header className="bg-white border-b border-gray-200 px-4 h-16 flex items-center justify-between">
+            <h1 className="text-xl font-semibold text-gray-800">
+              {getSellerCenterTitle()}
+            </h1>
+            <Button variant="ghost" size="sm" className="text-gray-600 flex items-center gap-2">
+              <LogOut className="h-4 w-4" />
+              {language === "KR" ? "로그아웃" : 
+               language === "CN" ? "登出" : 
+               language === "JP" ? "ログアウト" : 
+               "Log Out"}
+            </Button>
+          </header>
+          <main className="p-6">
+            {children}
+          </main>
         </div>
       </div>
-      <Footer language={language} />
-    </div>
+    </SidebarProvider>
   );
 };
 
