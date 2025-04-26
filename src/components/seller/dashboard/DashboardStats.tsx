@@ -1,6 +1,7 @@
+
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ShoppingBag, Package, Award } from "lucide-react";
+import { ShoppingBag, Package, Award, PlusCircle, Eye, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Language } from "@/hooks/useLanguageStore";
