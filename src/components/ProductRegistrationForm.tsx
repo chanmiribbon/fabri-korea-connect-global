@@ -17,7 +17,8 @@ interface ProductFormData {
     jp: string;
   };
   category: string;
-  images: FileList | null;
+  // Change this type from FileList to any so we can handle the file input separately
+  images: any;
   price: {
     kr: string;
     en: string;
@@ -37,6 +38,8 @@ interface ProductFormData {
 
 const ProductRegistrationForm = () => {
   const [step, setStep] = useState(1);
+  // Create a separate state for storing the selected files
+  const [selectedFiles, setSelectedFiles] = useState<FileList | null>(null);
   const form = useForm<ProductFormData>();
 
   const handleNextStep = () => {
@@ -48,8 +51,20 @@ const ProductRegistrationForm = () => {
   };
 
   const onSubmit = (data: ProductFormData) => {
-    console.log('Form submitted:', data);
+    // Combine the form data with the selected files
+    const formData = {
+      ...data,
+      images: selectedFiles
+    };
+    console.log('Form submitted:', formData);
     // Here you would typically send the data to your backend
+  };
+
+  // Handle file selection separately from form
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setSelectedFiles(e.target.files);
+    }
   };
 
   return (
@@ -138,25 +153,20 @@ const ProductRegistrationForm = () => {
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="images"
-              render={({ field: { onChange, ...field } }) => (
-                <FormItem>
-                  <FormLabel>상품 이미지</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="file"
-                      accept="image/*"
-                      multiple
-                      onChange={(e) => onChange(e.target.files)}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {/* Modified file input to not use value prop */}
+            <FormItem>
+              <FormLabel>상품 이미지</FormLabel>
+              <FormControl>
+                <Input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleFileChange}
+                  // Don't set a value prop for file inputs
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
           </div>
         )}
 
