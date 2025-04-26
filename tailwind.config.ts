@@ -73,6 +73,7 @@ export default {
 					lightPink: '#FFF0F3',
 					lightMint: '#F0FCFC',
 					cream: '#FFF9F3',
+					darkPurple: '#4A2B5F'
 				}
 			},
 			borderRadius: {
@@ -106,12 +107,23 @@ export default {
 						opacity: '1',
 						transform: 'translateY(0)'
 					}
+				},
+				'slide-in': {
+					'0%': {
+						transform: 'translateX(-20px)',
+						opacity: '0'
+					},
+					'100%': {
+						transform: 'translateX(0)',
+						opacity: '1'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
-				'fade-in': 'fade-in 0.5s ease-out forwards'
+				'fade-in': 'fade-in 0.5s ease-out forwards',
+				'slide-in': 'slide-in 0.5s ease-out forwards'
 			},
 			fontFamily: {
 				sans: ['Noto Sans KR', 'Roboto', 'sans-serif'],

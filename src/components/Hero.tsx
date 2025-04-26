@@ -35,16 +35,16 @@ const Hero = () => {
 
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
               <Button
-                onClick={() => navigate('/buyer')}
-                className="group bg-fabri-purple hover:bg-fabri-purple/90 text-white px-8 py-3 text-lg flex items-center gap-2"
+                onClick={() => navigate('/buyer-products')}
+                className="group bg-fabri-blue hover:bg-fabri-blue/90 text-white px-8 py-3 text-lg flex items-center gap-2 transition-all duration-300"
               >
                 <Globe className="w-5 h-5" />
                 해외 바이어로 둘러보기
               </Button>
               <Button
-                onClick={() => navigate('/consumer')}
+                onClick={() => navigate('/consumer-products')}
                 variant="outline"
-                className="group bg-white/10 hover:bg-white/20 text-white border-white/30 px-8 py-3 text-lg flex items-center gap-2"
+                className="group bg-white/10 hover:bg-white/20 text-white border-white/30 px-8 py-3 text-lg flex items-center gap-2 transition-all duration-300"
               >
                 <Users className="w-5 h-5" />
                 일반 소비자로 둘러보기

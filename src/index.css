@@ -138,4 +138,37 @@
   .gradient-bg-mint {
     background: linear-gradient(to bottom, #FFFFFF, #F0FCFC);
   }
+
+  /* Add page transition animations */
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+
+  .animate-slide-in {
+    animation: slideIn 0.5s ease-out forwards;
+  }
 }
+
+/* Ensure text has proper contrast on all backgrounds */
+.text-on-light {
+  @apply text-[#333333];
+}
+
+.text-on-dark {
+  @apply text-white;
+}
+
+/* Ensure buttons have proper text contrast */
+.btn-light {
+  @apply bg-white text-[#333333] border border-gray-200;
+}
+
+.btn-dark {
+  @apply bg-fabri-blue text-white;
+}
+
+/* Focus states for better accessibility */
+.focus-visible:focus {
+  @apply outline-none ring-2 ring-fabri-blue;
+}
+

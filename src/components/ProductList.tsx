@@ -98,7 +98,7 @@ const ProductList: React.FC<ProductListProps> = ({ category }) => {
           <Button
             onClick={() => handleDownloadCatalog('pdf')}
             variant="outline"
-            className="flex items-center justify-center gap-2 w-full sm:w-auto py-6 sm:py-2"
+            className="flex items-center justify-center gap-2 w-full sm:w-auto py-6 sm:py-2 text-[#333333]"
           >
             <Download className="w-5 h-5" />
             Download PDF Catalog
@@ -106,7 +106,7 @@ const ProductList: React.FC<ProductListProps> = ({ category }) => {
           <Button
             onClick={() => handleDownloadCatalog('csv')}
             variant="outline"
-            className="flex items-center justify-center gap-2 w-full sm:w-auto py-6 sm:py-2"
+            className="flex items-center justify-center gap-2 w-full sm:w-auto py-6 sm:py-2 text-[#333333]"
           >
             <FileText className="w-5 h-5" />
             Download CSV Catalog
@@ -136,44 +136,44 @@ const ProductList: React.FC<ProductListProps> = ({ category }) => {
                 </TabsList>
                 
                 <TabsContent value="kr" className="mt-4">
-                  <h3 className="text-lg font-semibold mb-2">{product.name.kr}</h3>
-                  <p className="text-sm text-gray-600 mb-2">최소 주문수량(MOQ): {product.moq}개</p>
-                  <p className="text-lg font-medium text-fabri-purple mb-2">{product.price.kr}</p>
-                  <p className="text-sm text-gray-600 mb-4">{product.description.kr}</p>
+                  <h3 className="text-lg font-semibold mb-2 text-[#333333]">{product.name.kr}</h3>
+                  <p className="text-sm text-[#4A4A4A] mb-2">최소 주문수량(MOQ): {product.moq}개</p>
+                  <p className="text-lg font-medium text-fabri-blue mb-2">{product.price.kr}</p>
+                  <p className="text-sm text-[#4A4A4A] mb-4">{product.description.kr}</p>
                 </TabsContent>
                 <TabsContent value="en" className="mt-4">
-                  <h3 className="text-lg font-semibold mb-2">{product.name.en}</h3>
-                  <p className="text-sm text-gray-600 mb-2">MOQ: {product.moq} units</p>
-                  <p className="text-lg font-medium text-fabri-purple mb-2">{product.price.en}</p>
-                  <p className="text-sm text-gray-600 mb-4">{product.description.en}</p>
+                  <h3 className="text-lg font-semibold mb-2 text-[#333333]">{product.name.en}</h3>
+                  <p className="text-sm text-[#4A4A4A] mb-2">MOQ: {product.moq} units</p>
+                  <p className="text-lg font-medium text-fabri-blue mb-2">{product.price.en}</p>
+                  <p className="text-sm text-[#4A4A4A] mb-4">{product.description.en}</p>
                 </TabsContent>
                 <TabsContent value="cn" className="mt-4">
-                  <h3 className="text-lg font-semibold mb-2">{product.name.cn}</h3>
-                  <p className="text-sm text-gray-600 mb-2">最小订购量: {product.moq}件</p>
-                  <p className="text-lg font-medium text-fabri-purple mb-2">{product.price.cn}</p>
-                  <p className="text-sm text-gray-600 mb-4">{product.description.cn}</p>
+                  <h3 className="text-lg font-semibold mb-2 text-[#333333]">{product.name.cn}</h3>
+                  <p className="text-sm text-[#4A4A4A] mb-2">最小订购量: {product.moq}件</p>
+                  <p className="text-lg font-medium text-fabri-blue mb-2">{product.price.cn}</p>
+                  <p className="text-sm text-[#4A4A4A] mb-4">{product.description.cn}</p>
                 </TabsContent>
                 <TabsContent value="jp" className="mt-4">
-                  <h3 className="text-lg font-semibold mb-2">{product.name.jp}</h3>
-                  <p className="text-sm text-gray-600 mb-2">最小注文数量: {product.moq}個</p>
-                  <p className="text-lg font-medium text-fabri-purple mb-2">{product.price.jp}</p>
-                  <p className="text-sm text-gray-600 mb-4">{product.description.jp}</p>
+                  <h3 className="text-lg font-semibold mb-2 text-[#333333]">{product.name.jp}</h3>
+                  <p className="text-sm text-[#4A4A4A] mb-2">最小注文数量: {product.moq}個</p>
+                  <p className="text-lg font-medium text-fabri-blue mb-2">{product.price.jp}</p>
+                  <p className="text-sm text-[#4A4A4A] mb-4">{product.description.jp}</p>
                 </TabsContent>
               </Tabs>
               
               <div className="flex flex-col gap-3 mt-6">
                 {isBuyerView ? (
-                  <Button className="w-full flex items-center justify-center gap-2 bg-fabri-purple hover:bg-fabri-purple/90 py-6 text-lg">
+                  <Button className="w-full flex items-center justify-center gap-2 bg-fabri-blue hover:bg-fabri-blue/90 py-6 text-lg text-white">
                     <FileText className="w-5 h-5" />
                     {getButtonText("KR")}
                   </Button>
                 ) : (
                   <div className="space-y-3">
-                    <Button className="w-full flex items-center justify-center gap-2 py-6 text-lg">
+                    <Button className="w-full flex items-center justify-center gap-2 py-6 text-lg bg-fabri-pink hover:bg-fabri-pink/90 text-white">
                       <ShoppingCart className="w-5 h-5" />
                       {getButtonText("KR")}
                     </Button>
-                    <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
+                    <div className="flex items-center justify-center gap-2 text-sm text-[#4A4A4A]">
                       <CreditCard className="w-4 h-4" />
                       PayPal / Credit Card Available
                     </div>
