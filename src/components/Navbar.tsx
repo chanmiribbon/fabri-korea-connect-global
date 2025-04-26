@@ -1,30 +1,14 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Globe, Menu, ShoppingCart, User, X, Search } from "lucide-react";
+import { Menu, ShoppingCart, User, Search } from "lucide-react";
 import { Link } from "react-router-dom";
 import SearchBar from "./SearchBar";
-import { useLanguageStore } from "@/hooks/useLanguageStore";
-
-export type Language = "KR" | "EN" | "CN" | "JP";
+import { useLanguageStore, Language } from "@/hooks/useLanguageStore";
+import LanguageSelector from "./LanguageSelector";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { language, changeLanguage } = useLanguageStore();
-
-  const getMenuLabel = (lang: Language) => {
-    switch (lang) {
-      case "KR": return "한국어";
-      case "EN": return "English";
-      case "CN": return "中文";
-      case "JP": return "日本語";
-    }
-  };
+  const { language } = useLanguageStore();
 
   const getNavLinks = (lang: Language) => {
     switch (lang) {
@@ -71,33 +55,12 @@ const Navbar = () => {
             <SearchBar />
           </div>
 
-          <div className="hidden sm:flex items-center">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="mr-2">
-                  <Globe className="h-5 w-5" />
-                  <span className="ml-1">{language}</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => changeLanguage("KR")}>
-                  한국어 (KR)
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => changeLanguage("EN")}>
-                  English (EN)
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => changeLanguage("CN")}>
-                  中文 (CN)
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => changeLanguage("JP")}>
-                  日本語 (JP)
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <Button variant="ghost" size="icon" className="mr-2">
+          <div className="hidden sm:flex items-center space-x-2">
+            <LanguageSelector />
+            <Button variant="ghost" size="icon">
               <Search className="h-5 w-5" />
             </Button>
-            <Button variant="ghost" size="icon" className="mr-2">
+            <Button variant="ghost" size="icon">
               <User className="h-5 w-5" />
             </Button>
             <Button variant="ghost" size="icon">
@@ -111,11 +74,7 @@ const Navbar = () => {
               size="icon"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
-              {mobileMenuOpen ? (
-                <X className="block h-6 w-6" />
-              ) : (
-                <Menu className="block h-6 w-6" />
-              )}
+              <Menu className="block h-6 w-6" />
             </Button>
           </div>
         </div>
@@ -158,31 +117,12 @@ const Navbar = () => {
           >
             {navLinks.contact}
           </Link>
+          <div className="px-3">
+            <LanguageSelector isMobile={true} />
+          </div>
         </div>
         <div className="border-t border-gray-200 pt-4 pb-3">
           <div className="flex items-center justify-around px-4">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="flex items-center">
-                  <Globe className="h-5 w-5 mr-1" />
-                  <span>{language}</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuItem onClick={() => changeLanguage("KR")}>
-                  한국어 (KR)
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => changeLanguage("EN")}>
-                  English (EN)
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => changeLanguage("CN")}>
-                  中文 (CN)
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => changeLanguage("JP")}>
-                  日本語 (JP)
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
             <Button variant="ghost" size="icon">
               <Search className="h-5 w-5" />
             </Button>
