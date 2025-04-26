@@ -2,22 +2,18 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, ShoppingCart, User, Search, LogIn, Store } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import { useLanguageStore, Language } from "@/hooks/useLanguageStore";
 import LanguageSelector from "./LanguageSelector";
 import RegisterDialog from "./auth/RegisterDialog";
+import { useSellerAuth } from "@/hooks/useSellerAuth";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { language } = useLanguageStore();
-  const [isSeller, setIsSeller] = useState(false);
-
-  useEffect(() => {
-    // Check if user is a business seller
-    const userType = localStorage.getItem("userType");
-    setIsSeller(userType === "business");
-  }, []);
+  const location = useLocation();
+  const { isSeller, isLoading } = useSellerAuth();
 
   const getNavLinks = (lang: Language) => {
     switch (lang) {
@@ -28,7 +24,9 @@ const Navbar = () => {
           about: "회사 소개", 
           contact: "연락처", 
           login: "로그인",
-          sellerCenter: "판매자 센터" 
+          sellerCenter: "판매자 센터",
+          retailMall: "소매 쇼핑몰",
+          wholesaleMall: "도매 쇼핑몰" 
         };
       case "CN":
         return { 
@@ -37,7 +35,9 @@ const Navbar = () => {
           about: "公司简介", 
           contact: "联系我们", 
           login: "登录",
-          sellerCenter: "卖家中心" 
+          sellerCenter: "卖家中心",
+          retailMall: "零售商城",
+          wholesaleMall: "批发商城"
         };
       case "JP":
         return { 
@@ -46,7 +46,9 @@ const Navbar = () => {
           about: "会社紹介", 
           contact: "お問い合わせ", 
           login: "ログイン",
-          sellerCenter: "販売者センター" 
+          sellerCenter: "販売者センター",
+          retailMall: "小売モール",
+          wholesaleMall: "卸売モール"
         };
       default:
         return { 
@@ -55,7 +57,9 @@ const Navbar = () => {
           about: "About Us", 
           contact: "Contact", 
           login: "Login",
-          sellerCenter: "Seller Center" 
+          sellerCenter: "Seller Center",
+          retailMall: "Retail Mall",
+          wholesaleMall: "Wholesale Mall"
         };
     }
   };
@@ -70,6 +74,8 @@ const Navbar = () => {
                      language === "CN" ? "FabriKorea - 传统市场走向世界" : 
                      "FabriKorea - 伝統市場を世界へ";
   }, [language]);
+
+  const isSellerCenterActive = location.pathname.includes("/seller");
 
   return (
     <nav className="bg-white shadow-sm fixed w-full z-50">
@@ -88,17 +94,18 @@ const Navbar = () => {
               <Link to="/products" className="border-transparent text-[#4A4A4A] hover:text-[#6EC1E4] px-1 pt-1 border-b-2 text-sm font-medium">
                 {navLinks.products}
               </Link>
+              <Link to="/consumer-products" className="border-transparent text-[#4A4A4A] hover:text-[#6EC1E4] px-1 pt-1 border-b-2 text-sm font-medium">
+                {navLinks.retailMall}
+              </Link>
+              <Link to="/buyer-products" className="border-transparent text-[#4A4A4A] hover:text-[#6EC1E4] px-1 pt-1 border-b-2 text-sm font-medium">
+                {navLinks.wholesaleMall}
+              </Link>
               <Link to="/about" className="border-transparent text-[#4A4A4A] hover:text-[#6EC1E4] px-1 pt-1 border-b-2 text-sm font-medium">
                 {navLinks.about}
               </Link>
               <Link to="/contact" className="border-transparent text-[#4A4A4A] hover:text-[#6EC1E4] px-1 pt-1 border-b-2 text-sm font-medium">
                 {navLinks.contact}
               </Link>
-              {isSeller && (
-                <Link to="/seller/dashboard" className="border-transparent text-[#4A4A4A] hover:text-[#6EC1E4] px-1 pt-1 border-b-2 text-sm font-medium">
-                  {navLinks.sellerCenter}
-                </Link>
-              )}
             </div>
           </div>
 
@@ -116,7 +123,11 @@ const Navbar = () => {
             </Link>
             {isSeller && (
               <Link to="/seller/dashboard">
-                <Button variant="outline" size="sm" className="flex items-center gap-2 border-fabri-blue text-fabri-blue">
+                <Button 
+                  variant={isSellerCenterActive ? "fabri-blue" : "outline"} 
+                  size="sm" 
+                  className={`flex items-center gap-2 ${isSellerCenterActive ? 'text-white' : 'border-fabri-blue text-fabri-blue'}`}
+                >
                   <Store className="w-4 h-4" />
                   {navLinks.sellerCenter}
                 </Button>
@@ -166,6 +177,20 @@ const Navbar = () => {
             onClick={() => setMobileMenuOpen(false)}
           >
             {navLinks.products}
+          </Link>
+          <Link
+            to="/consumer-products"
+            className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-[#4A4A4A] hover:bg-[#F0F9FC] hover:border-[#6EC1E4] hover:text-[#6EC1E4]"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            {navLinks.retailMall}
+          </Link>
+          <Link
+            to="/buyer-products"
+            className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-[#4A4A4A] hover:bg-[#F0F9FC] hover:border-[#6EC1E4] hover:text-[#6EC1E4]"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            {navLinks.wholesaleMall}
           </Link>
           <Link
             to="/about"
