@@ -6,8 +6,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Globe, Menu, ShoppingCart, Search, User, X } from "lucide-react";
+import { Globe, Menu, ShoppingCart, User, X } from "lucide-react";
 import { Link } from "react-router-dom";
+import SearchBar from "./SearchBar";
 
 export type Language = "KR" | "EN" | "CN" | "JP";
 
@@ -64,6 +65,11 @@ const Navbar = () => {
               </Link>
             </div>
           </div>
+
+          <div className="flex-1 max-w-sm mx-4 hidden sm:flex items-center justify-center">
+            <SearchBar />
+          </div>
+
           <div className="hidden sm:flex items-center">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -114,12 +120,14 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile menu */}
       <div
         className={`${
           mobileMenuOpen ? "block" : "hidden"
         } sm:hidden bg-white shadow-lg`}
       >
+        <div className="p-4">
+          <SearchBar />
+        </div>
         <div className="pt-2 pb-3 space-y-1">
           <Link
             to="/"
