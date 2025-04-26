@@ -7,6 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Building, User } from "lucide-react";
@@ -85,24 +86,26 @@ const RegisterDialog = ({ language, trigger }: RegisterDialogProps) => {
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px]">
-        <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-center mb-4">
+      <DialogContent className="sm:max-w-[600px] p-6 overflow-hidden">
+        <DialogHeader className="pb-4">
+          <DialogTitle className="text-2xl font-bold text-center">
             {text.title}
           </DialogTitle>
-          <p className="text-center text-muted-foreground">{text.subtitle}</p>
+          <DialogDescription className="text-center">
+            {text.subtitle}
+          </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-6 sm:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2">
           <Button
             variant="outline"
             size="lg"
-            className="h-auto p-6 flex flex-col items-center gap-4 hover:bg-slate-50"
+            className="h-auto px-4 py-6 flex flex-col items-center gap-3 hover:bg-slate-50"
             onClick={() => navigate('/register/b2c')}
           >
-            <User className="w-12 h-12 text-[#6EC1E4]" />
-            <div className="space-y-2 text-center">
-              <h3 className="font-semibold text-xl">{text.b2c.title}</h3>
-              <p className="text-sm text-muted-foreground">
+            <User className="w-10 h-10 text-[#6EC1E4]" />
+            <div className="space-y-1 text-center">
+              <h3 className="font-semibold text-lg">{text.b2c.title}</h3>
+              <p className="text-sm text-muted-foreground px-2 break-words hyphens-auto">
                 {text.b2c.desc}
               </p>
             </div>
@@ -110,13 +113,13 @@ const RegisterDialog = ({ language, trigger }: RegisterDialogProps) => {
           <Button
             variant="outline"
             size="lg"
-            className="h-auto p-6 flex flex-col items-center gap-4 hover:bg-slate-50"
+            className="h-auto px-4 py-6 flex flex-col items-center gap-3 hover:bg-slate-50"
             onClick={() => navigate('/register/b2b')}
           >
-            <Building className="w-12 h-12 text-[#6EC1E4]" />
-            <div className="space-y-2 text-center">
-              <h3 className="font-semibold text-xl">{text.b2b.title}</h3>
-              <p className="text-sm text-muted-foreground">
+            <Building className="w-10 h-10 text-[#6EC1E4]" />
+            <div className="space-y-1 text-center">
+              <h3 className="font-semibold text-lg">{text.b2b.title}</h3>
+              <p className="text-sm text-muted-foreground px-2 break-words hyphens-auto">
                 {text.b2b.desc}
               </p>
             </div>
