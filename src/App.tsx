@@ -1,4 +1,3 @@
-
 import React, { Suspense, lazy } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -13,6 +12,10 @@ import NotFound from "./pages/NotFound";
 
 // Use lazy with proper import syntax
 const CategoryProducts = lazy(() => import('./pages/Products/[category]'));
+
+// Add new imports
+const ProductRegistration = lazy(() => import('./pages/ProductRegistration'));
+const SupplierDashboard = lazy(() => import('./pages/SupplierDashboard'));
 
 const queryClient = new QueryClient();
 
@@ -36,6 +39,22 @@ const App = () => (
           />
           <Route path="/contact" element={<Contact />} />
           <Route path="*" element={<NotFound />} />
+          <Route 
+            path="/supplier/register-product" 
+            element={
+              <Suspense fallback={<div className="p-20 text-center">Loading...</div>}>
+                <ProductRegistration />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/supplier/dashboard" 
+            element={
+              <Suspense fallback={<div className="p-20 text-center">Loading...</div>}>
+                <SupplierDashboard />
+              </Suspense>
+            } 
+          />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
