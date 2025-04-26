@@ -1,5 +1,5 @@
 
-import React, { useEffect } from "react";
+import React from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import B2CRegistrationForm from "@/components/auth/B2CRegistrationForm";
@@ -25,7 +25,7 @@ const B2CRegister = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <div className="container mx-auto px-4 py-8 flex-1">
+      <div className="container mx-auto px-4 py-8 flex-1 pt-24">
         <div className="max-w-5xl mx-auto">
           <h1 className="text-3xl font-bold text-center mb-2">{pageTitle[language]}</h1>
           <p className="text-center text-muted-foreground mb-8">

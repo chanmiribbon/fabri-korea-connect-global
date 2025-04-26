@@ -16,6 +16,7 @@ import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import B2BRegister from "./pages/register/B2BRegister";
 import B2CRegister from "./pages/register/B2CRegister";
+import ChatSupport from "./components/chat/ChatSupport";
 
 // Use lazy with proper import syntax
 const CategoryProducts = lazy(() => import('./pages/Products/[category]'));
@@ -69,6 +70,7 @@ const App = () => (
             } 
           />
         </Routes>
+        <ChatSupport />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

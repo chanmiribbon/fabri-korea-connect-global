@@ -12,6 +12,7 @@ import GlobalInfluenceGallery from "@/components/GlobalInfluenceGallery";
 import BottomNav from "@/components/BottomNav";
 import ComingSoonFeatures from "@/components/ComingSoonFeatures";
 import { useLanguageStore } from "@/hooks/useLanguageStore";
+import ChatSupport from "@/components/chat/ChatSupport";
 
 const Index = () => {
   const { language } = useLanguageStore();
@@ -31,6 +32,7 @@ const Index = () => {
         <Footer language={language} />
       </div>
       <BottomNav />
+      <ChatSupport />
     </div>
   );
 };

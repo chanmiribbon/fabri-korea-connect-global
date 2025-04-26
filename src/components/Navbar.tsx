@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, ShoppingCart, User, Search } from "lucide-react";
+import { Menu, ShoppingCart, User, Search, LogIn } from "lucide-react";
 import { Link } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import { useLanguageStore, Language } from "@/hooks/useLanguageStore";
@@ -15,13 +15,13 @@ const Navbar = () => {
   const getNavLinks = (lang: Language) => {
     switch (lang) {
       case "KR":
-        return { home: "홈", products: "제품", about: "회사 소개", contact: "연락처" };
+        return { home: "홈", products: "제품", about: "회사 소개", contact: "연락처", login: "로그인" };
       case "CN":
-        return { home: "首页", products: "产品", about: "公司简介", contact: "联系我们" };
+        return { home: "首页", products: "产品", about: "公司简介", contact: "联系我们", login: "登录" };
       case "JP":
-        return { home: "ホーム", products: "製品", about: "会社紹介", contact: "お問い合わせ" };
+        return { home: "ホーム", products: "製品", about: "会社紹介", contact: "お問い合わせ", login: "ログイン" };
       default:
-        return { home: "Home", products: "Products", about: "About Us", contact: "Contact" };
+        return { home: "Home", products: "Products", about: "About Us", contact: "Contact", login: "Login" };
     }
   };
 
@@ -68,15 +68,16 @@ const Navbar = () => {
 
           <div className="hidden sm:flex items-center space-x-4">
             <RegisterDialog language={language} />
+            <Link to="/login">
+              <Button variant="fabri-blue" size="sm" className="text-white flex items-center gap-2">
+                <LogIn className="w-4 h-4" />
+                {navLinks.login}
+              </Button>
+            </Link>
             <LanguageSelector />
             <Button variant="ghost" size="icon" className="hover:bg-[#F0F9FC] text-[#6EC1E4]">
               <Search className="h-5 w-5" />
             </Button>
-            <Link to="/login">
-              <Button variant="ghost" size="icon" className="hover:bg-[#F0F9FC] text-[#6EC1E4]">
-                <User className="h-5 w-5" />
-              </Button>
-            </Link>
             <Button variant="ghost" size="icon" className="hover:bg-[#F0F9FC] text-[#6EC1E4]">
               <ShoppingCart className="h-5 w-5" />
             </Button>
@@ -132,6 +133,13 @@ const Navbar = () => {
           >
             {navLinks.contact}
           </Link>
+          <Link
+            to="/login"
+            className="block pl-3 pr-4 py-2 border-l-4 border-[#6EC1E4] bg-[#F0F9FC] text-base font-medium text-[#6EC1E4]"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            {navLinks.login}
+          </Link>
           <div className="px-3">
             <LanguageSelector isMobile={true} />
           </div>
@@ -141,11 +149,6 @@ const Navbar = () => {
             <Button variant="ghost" size="icon" className="text-[#6EC1E4]">
               <Search className="h-5 w-5" />
             </Button>
-            <Link to="/login">
-              <Button variant="ghost" size="icon" className="text-[#6EC1E4]">
-                <User className="h-5 w-5" />
-              </Button>
-            </Link>
             <Button variant="ghost" size="icon" className="text-[#6EC1E4]">
               <ShoppingCart className="h-5 w-5" />
             </Button>
