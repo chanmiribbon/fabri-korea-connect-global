@@ -4,7 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ProductList from "@/components/ProductList";
-import { Shirt, Scissors, GemStone, DraftingCompass } from "lucide-react";
+import { Shirt, Scissors, Gem, DraftingCompass } from "lucide-react";
 
 const Products = () => {
   return (
@@ -25,7 +25,7 @@ const Products = () => {
                 부자재
               </TabsTrigger>
               <TabsTrigger value="accessories" className="flex items-center gap-2">
-                <GemStone className="w-4 h-4" />
+                <Gem className="w-4 h-4" />
                 악세서리
               </TabsTrigger>
               <TabsTrigger value="hanbok" className="flex items-center gap-2">
