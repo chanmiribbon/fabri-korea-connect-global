@@ -1,11 +1,19 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { X, Send, User, ArrowRight } from 'lucide-react';
+import { X, Send, User, ArrowRight, Globe, Loader2, Mail, Languages } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { useLanguageStore, Language } from '@/hooks/useLanguageStore';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useToast } from '@/hooks/use-toast';
 
 type Message = {
   id: string;
@@ -18,85 +26,143 @@ type Message = {
 type QuickReply = {
   id: string;
   text: Record<Language, string>;
+  icon?: React.ReactNode;
 };
 
 const ChatWidget = ({ onClose }: { onClose: () => void }) => {
-  const { language } = useLanguageStore();
+  const { language, changeLanguage } = useLanguageStore();
+  const [detectedLanguage, setDetectedLanguage] = useState<Language | null>(null);
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
   const [isTyping, setIsTyping] = useState(false);
+  const [isTranslating, setIsTranslating] = useState(false);
+  const [email, setEmail] = useState('');
+  const [showEmailInput, setShowEmailInput] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const { toast } = useToast();
   
   const translations = {
     KR: {
-      title: "고객 상담",
+      title: "Fabri Global Assistant",
       subtitle: "문의사항을 입력해주세요",
       placeholder: "메시지 입력...",
       send: "전송",
       offlineMessage: "상담원이 현재 오프라인입니다. 메시지를 남겨주시면 영업시간에 답변드리겠습니다.",
       agentTyping: "상담원이 입력중...",
-      welcomeMessage: "안녕하세요! Fabri Korea Connect Global에 오신 것을 환영합니다. 무엇을 도와드릴까요?",
-      emailChat: "대화 내용 이메일로 받기"
+      translating: "메시지 번역중...",
+      welcomeMessage: "안녕하세요! Fabri Global Assistant입니다. 무엇을 도와드릴까요?",
+      emailChat: "대화 내용 이메일로 받기",
+      emailPlaceholder: "이메일 주소를 입력하세요",
+      sendEmail: "보내기",
+      cancelEmail: "취소",
+      humanAgent: "상담원 연결하기",
+      changeLanguage: "언어 변경",
+      languageSwitched: "언어가 변경되었습니다",
+      emailSent: "이메일이 성공적으로 전송되었습니다",
+      invalidEmail: "유효한 이메일 주소를 입력해주세요"
     },
     EN: {
-      title: "Customer Support",
+      title: "Fabri Global Assistant",
       subtitle: "How can we help you today?",
       placeholder: "Type a message...",
       send: "Send",
       offlineMessage: "Our agents are currently offline. Leave a message and we'll get back to you during business hours.",
       agentTyping: "Agent is typing...",
-      welcomeMessage: "Hello! Welcome to Fabri Korea Connect Global. How can I help you today?",
-      emailChat: "Email chat history"
+      translating: "Translating message...",
+      welcomeMessage: "Hello! I'm Fabri Global Assistant. How can I help you today?",
+      emailChat: "Email chat history",
+      emailPlaceholder: "Enter your email address",
+      sendEmail: "Send",
+      cancelEmail: "Cancel",
+      humanAgent: "Connect to human agent",
+      changeLanguage: "Change language",
+      languageSwitched: "Language has been changed",
+      emailSent: "Email sent successfully",
+      invalidEmail: "Please enter a valid email address"
     },
     CN: {
-      title: "客户支持",
+      title: "Fabri Global Assistant",
       subtitle: "我们如何帮助您？",
       placeholder: "输入消息...",
       send: "发送",
       offlineMessage: "我们的客服人员当前不在线。请留言，我们会在工作时间回复您。",
       agentTyping: "客服正在输入...",
-      welcomeMessage: "您好！欢迎访问 Fabri Korea Connect Global。我今天能为您做些什么？",
-      emailChat: "通过电子邮件接收聊天记录"
+      translating: "正在翻译消息...",
+      welcomeMessage: "您好！我是Fabri Global Assistant。今天我能为您做些什么？",
+      emailChat: "通过电子邮件接收聊天记录",
+      emailPlaceholder: "输入您的电子邮件地址",
+      sendEmail: "发送",
+      cancelEmail: "取消",
+      humanAgent: "连接到人工客服",
+      changeLanguage: "更改语言",
+      languageSwitched: "语言已更改",
+      emailSent: "电子邮件发送成功",
+      invalidEmail: "请输入有效的电子邮件地址"
     },
     JP: {
-      title: "カスタマーサポート",
+      title: "Fabri Global Assistant",
       subtitle: "どのようにお手伝いできますか？",
       placeholder: "メッセージを入力...",
       send: "送信",
       offlineMessage: "現在、担当者はオフラインです。メッセージを残していただければ、営業時間内にご返信いたします。",
       agentTyping: "担当者が入力中...",
-      welcomeMessage: "こんにちは！Fabri Korea Connect Globalへようこそ。本日はどのようにお手伝いできますか？",
-      emailChat: "チャット履歴をメールで受け取る"
+      translating: "メッセージを翻訳中...",
+      welcomeMessage: "こんにちは！Fabri Global Assistantです。本日はどのようにお手伝いできますか？",
+      emailChat: "チャット履歴をメールで受け取る",
+      emailPlaceholder: "メールアドレスを入力してください",
+      sendEmail: "送信",
+      cancelEmail: "キャンセル",
+      humanAgent: "人間のエージェントに接続",
+      changeLanguage: "言語を変更",
+      languageSwitched: "言語が変更されました",
+      emailSent: "メールが正常に送信されました",
+      invalidEmail: "有効なメールアドレスを入力してください"
     }
   };
+
+  const languageOptions = [
+    { code: "KR", name: "한국어", flag: "🇰🇷" },
+    { code: "EN", name: "English", flag: "🇺🇸" },
+    { code: "CN", name: "中文", flag: "🇨🇳" },
+    { code: "JP", name: "日本語", flag: "🇯🇵" },
+  ];
 
   const quickReplies: QuickReply[] = [
     {
       id: '1',
       text: {
-        KR: "제품 문의",
-        EN: "Product Inquiry",
-        CN: "产品咨询",
-        JP: "製品に関するお問い合わせ"
+        KR: "📦 배송 문의",
+        EN: "📦 Shipping Inquiry",
+        CN: "📦 配送查询",
+        JP: "📦 配送に関するお問い合わせ"
       }
     },
     {
       id: '2',
       text: {
-        KR: "배송 문의",
-        EN: "Shipping Question",
-        CN: "配送问题",
-        JP: "配送に関するご質問"
+        KR: "🎁 제품 재고 문의",
+        EN: "🎁 Product Stock Inquiry",
+        CN: "🎁 产品库存查询",
+        JP: "🎁 製品在庫に関するお問い合わせ"
       }
     },
     {
       id: '3',
       text: {
-        KR: "계정 지원",
-        EN: "Account Support",
-        CN: "账户支持",
-        JP: "アカウントサポート"
+        KR: "🛒 주문/결제 문의",
+        EN: "🛒 Order/Payment Inquiry",
+        CN: "🛒 订单/付款查询",
+        JP: "🛒 注文/支払いに関するお問い合わせ"
+      }
+    },
+    {
+      id: '4',
+      text: {
+        KR: "🛠 맞춤 견적 요청",
+        EN: "🛠 Custom Quote Request",
+        CN: "🛠 定制报价请求",
+        JP: "🛠 カスタム見積もりリクエスト"
       }
     }
   ];
@@ -121,9 +187,12 @@ const ChatWidget = ({ onClose }: { onClose: () => void }) => {
   useEffect(() => {
     // Scroll to bottom when new messages are added
     if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+      scrollRef.current.scrollTo({
+        top: scrollRef.current.scrollHeight,
+        behavior: 'smooth'
+      });
     }
-  }, [messages]);
+  }, [messages, isTyping, isTranslating]);
 
   const handleSendMessage = () => {
     if (!message.trim()) return;
@@ -139,29 +208,43 @@ const ChatWidget = ({ onClose }: { onClose: () => void }) => {
     setMessages(prevMessages => [...prevMessages, userMessage]);
     setMessage('');
     
-    // Simulate agent typing
-    setIsTyping(true);
+    // Detect language on first message if not already detected
+    if (!detectedLanguage && messages.length <= 1) {
+      // In a real implementation, you would call a language detection API here
+      // For demo purposes, we'll just use the current UI language
+      setDetectedLanguage(language);
+    }
     
-    // Simulate agent response (would be replaced with actual API call)
+    // Simulate translation loading
+    setIsTranslating(true);
+    
     setTimeout(() => {
-      setIsTyping(false);
+      setIsTranslating(false);
       
-      // Simulate translation (would be replaced with actual translation API)
-      const translatedResponse = mockTranslateToUserLanguage(
-        "감사합니다. 문의하신 내용에 대해 확인해보겠습니다.", 
-        language
-      );
+      // Simulate agent typing after translation
+      setIsTyping(true);
       
-      const agentMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        text: translatedResponse,
-        sender: 'agent',
-        timestamp: new Date(),
-        originalText: "감사합니다. 문의하신 내용에 대해 확인해보겠습니다."
-      };
-      
-      setMessages(prevMessages => [...prevMessages, agentMessage]);
-    }, 1500);
+      // Simulate agent response (would be replaced with actual API call)
+      setTimeout(() => {
+        setIsTyping(false);
+        
+        // Simulate translation (would be replaced with actual translation API)
+        const translatedResponse = mockTranslateToUserLanguage(
+          "감사합니다. 문의하신 내용에 대해 확인해보겠습니다. 잠시만 기다려주세요.", 
+          language
+        );
+        
+        const agentMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          text: translatedResponse,
+          sender: 'agent',
+          timestamp: new Date(),
+          originalText: "감사합니다. 문의하신 내용에 대해 확인해보겠습니다. 잠시만 기다려주세요."
+        };
+        
+        setMessages(prevMessages => [...prevMessages, agentMessage]);
+      }, 1500);
+    }, 1000);
   };
 
   const handleQuickReply = (replyText: string) => {
@@ -174,29 +257,81 @@ const ChatWidget = ({ onClose }: { onClose: () => void }) => {
     
     setMessages(prevMessages => [...prevMessages, userMessage]);
     
-    // Simulate agent typing
-    setIsTyping(true);
+    // Simulate translation loading
+    setIsTranslating(true);
     
-    // Simulate agent response
     setTimeout(() => {
-      setIsTyping(false);
+      setIsTranslating(false);
       
-      // Simulate translation (would be replaced with actual translation API)
-      const translatedResponse = mockTranslateToUserLanguage(
-        "해당 문의에 대해 도와드리겠습니다. 더 자세한 내용을 알려주시겠어요?", 
+      // Simulate agent typing
+      setIsTyping(true);
+      
+      // Simulate agent response
+      setTimeout(() => {
+        setIsTyping(false);
+        
+        // Simulate translation (would be replaced with actual translation API)
+        const translatedResponse = mockTranslateToUserLanguage(
+          "해당 문의에 대해 도와드리겠습니다. 더 자세한 내용을 알려주시겠어요?", 
+          language
+        );
+        
+        const agentMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          text: translatedResponse,
+          sender: 'agent',
+          timestamp: new Date(),
+          originalText: "해당 문의에 대해 도와드리겠습니다. 더 자세한 내용을 알려주시겠어요?"
+        };
+        
+        setMessages(prevMessages => [...prevMessages, agentMessage]);
+      }, 1500);
+    }, 1000);
+  };
+
+  const handleLanguageChange = (newLanguage: Language) => {
+    changeLanguage(newLanguage);
+    toast({
+      title: translations[newLanguage].languageSwitched,
+      duration: 3000,
+    });
+  };
+
+  const handleSendEmail = () => {
+    // Simple email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      toast({
+        title: translations[language].invalidEmail,
+        variant: "destructive",
+        duration: 3000,
+      });
+      return;
+    }
+    
+    // Mock email sending (would be replaced with actual API call)
+    toast({
+      title: translations[language].emailSent,
+      duration: 3000,
+    });
+    
+    // Reset email input
+    setEmail('');
+    setShowEmailInput(false);
+  };
+
+  const handleHumanAgent = () => {
+    const systemMessage: Message = {
+      id: Date.now().toString(),
+      text: mockTranslateToUserLanguage(
+        "상담원 연결 요청이 접수되었습니다. 잠시만 기다려주세요.", 
         language
-      );
-      
-      const agentMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        text: translatedResponse,
-        sender: 'agent',
-        timestamp: new Date(),
-        originalText: "해당 문의에 대해 도와드리겠습니다. 더 자세한 내용을 알려주시겠어요?"
-      };
-      
-      setMessages(prevMessages => [...prevMessages, agentMessage]);
-    }, 1500);
+      ),
+      sender: 'agent',
+      timestamp: new Date()
+    };
+    
+    setMessages(prevMessages => [...prevMessages, systemMessage]);
   };
 
   // Mock translation function (would be replaced with actual API)
@@ -205,17 +340,23 @@ const ChatWidget = ({ onClose }: { onClose: () => void }) => {
     if (targetLang === "KR") return text;
     
     const mockTranslations: Record<string, Record<Language, string>> = {
-      "감사합니다. 문의하신 내용에 대해 확인해보겠습니다.": {
-        KR: "감사합니다. 문의하신 내용에 대해 확인해보겠습니다.",
-        EN: "Thank you. I'll check the details of your inquiry.",
-        CN: "谢谢。我将查看您询问的详细信息。",
-        JP: "ありがとうございます。お問い合わせの詳細を確認いたします。"
+      "감사합니다. 문의하신 내용에 대해 확인해보겠습니다. 잠시만 기다려주세요.": {
+        KR: "감사합니다. 문의하신 내용에 대해 확인해보겠습니다. 잠시만 기다려주세요.",
+        EN: "Thank you. I'll check the details of your inquiry. Please wait a moment.",
+        CN: "谢谢。我将检查您询问的详细信息。请稍等。",
+        JP: "ありがとうございます。お問い合わせの詳細を確認いたします。少々お待ちください。"
       },
       "해당 문의에 대해 도와드리겠습니다. 더 자세한 내용을 알려주시겠어요?": {
         KR: "해당 문의에 대해 도와드리겠습니다. 더 자세한 내용을 알려주시겠어요?",
         EN: "I'll help you with this inquiry. Could you provide more details?",
         CN: "我将帮助您解决这个问题。您能提供更多详细信息吗？",
         JP: "このお問い合わせについてお手伝いいたします。もう少し詳しく教えていただけますか？"
+      },
+      "상담원 연결 요청이 접수되었습니다. 잠시만 기다려주세요.": {
+        KR: "상담원 연결 요청이 접수되었습니다. 잠시만 기다려주세요.",
+        EN: "Your request to connect with a human agent has been received. Please wait a moment.",
+        CN: "您与人工客服连接的请求已收到。请稍等。",
+        JP: "人間のエージェントとの接続リクエストを受け付けました。少々お待ちください。"
       }
     };
     
@@ -229,14 +370,34 @@ const ChatWidget = ({ onClose }: { onClose: () => void }) => {
   return (
     <div className="fixed bottom-24 right-6 w-80 sm:w-96 bg-white rounded-xl shadow-xl z-50 flex flex-col overflow-hidden border border-gray-200">
       {/* Chat Header */}
-      <div className="bg-fabri-blue text-white p-4 flex justify-between items-center">
-        <div>
-          <h3 className="font-semibold">{translations[language].title}</h3>
-          <p className="text-xs opacity-80">{translations[language].subtitle}</p>
+      <div className="bg-fabri-blue text-white p-4 flex flex-col">
+        <div className="flex justify-between items-center">
+          <div>
+            <h3 className="font-semibold">{translations[language].title}</h3>
+            <p className="text-xs opacity-80">{translations[language].subtitle}</p>
+          </div>
+          <Button variant="ghost" size="icon" onClick={onClose} className="text-white hover:bg-fabri-blue/90">
+            <X className="h-5 w-5" />
+          </Button>
         </div>
-        <Button variant="ghost" size="icon" onClick={onClose} className="text-white hover:bg-fabri-blue/90">
-          <X className="h-5 w-5" />
-        </Button>
+        
+        {/* Language Selector */}
+        <div className="mt-2 flex items-center">
+          <Globe className="h-4 w-4 mr-1 text-white/80" />
+          <Select defaultValue={language} onValueChange={(value: Language) => handleLanguageChange(value)}>
+            <SelectTrigger className="h-7 w-40 bg-white/10 border-white/20 text-white text-xs">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {languageOptions.map((option) => (
+                <SelectItem key={option.code} value={option.code} className="text-sm">
+                  <span className="mr-2">{option.flag}</span>
+                  {option.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       </div>
       
       {/* Chat Messages */}
@@ -268,6 +429,15 @@ const ChatWidget = ({ onClose }: { onClose: () => void }) => {
             </div>
           ))}
           
+          {isTranslating && (
+            <div className="flex justify-start">
+              <div className="bg-gray-100 text-gray-500 rounded-lg p-3 text-sm flex items-center gap-2">
+                <Loader2 className="h-3 w-3 animate-spin" />
+                {translations[language].translating}
+              </div>
+            </div>
+          )}
+          
           {isTyping && (
             <div className="flex justify-start">
               <div className="bg-gray-100 text-gray-500 rounded-lg p-3 text-sm italic">
@@ -281,13 +451,13 @@ const ChatWidget = ({ onClose }: { onClose: () => void }) => {
       {/* Quick Replies */}
       {messages.length <= 2 && (
         <div className="p-2 bg-gray-50">
-          <div className="flex flex-wrap gap-2">
+          <div className="grid grid-cols-2 gap-2">
             {quickReplies.map((reply) => (
               <Button 
                 key={reply.id}
                 variant="outline" 
                 size="sm" 
-                className="text-xs hover:bg-gray-100"
+                className="text-xs hover:bg-gray-100 whitespace-normal h-auto py-2 text-left flex justify-start"
                 onClick={() => handleQuickReply(reply.text[language])}
               >
                 {reply.text[language]}
@@ -297,35 +467,85 @@ const ChatWidget = ({ onClose }: { onClose: () => void }) => {
         </div>
       )}
       
+      {/* Human Agent Button */}
+      {messages.length > 2 && (
+        <div className="p-2 bg-gray-50 flex justify-center">
+          <Button
+            variant="secondary"
+            size="sm"
+            className="text-xs flex items-center gap-1"
+            onClick={handleHumanAgent}
+          >
+            <User className="h-3 w-3" />
+            <span>{translations[language].humanAgent}</span>
+          </Button>
+        </div>
+      )}
+      
       <Separator />
       
-      {/* Chat Input */}
-      <div className="p-3 flex items-center gap-2">
-        <Input
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          placeholder={translations[language].placeholder}
-          className="flex-1"
-          onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-          ref={inputRef}
-        />
-        <Button 
-          onClick={handleSendMessage} 
-          disabled={!message.trim()} 
-          size="icon"
-          className="bg-fabri-blue hover:bg-fabri-blue/90"
-        >
-          <Send className="h-4 w-4" />
-        </Button>
-      </div>
-      
-      {/* Email Chat History Option */}
-      <div className="bg-gray-50 p-2 flex justify-end">
-        <Button variant="ghost" size="sm" className="text-xs flex items-center gap-1 text-gray-500">
-          <span>{translations[language].emailChat}</span>
-          <ArrowRight className="h-3 w-3" />
-        </Button>
-      </div>
+      {/* Email Input for Chat History */}
+      {showEmailInput ? (
+        <div className="p-3 flex items-center gap-2">
+          <Input
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder={translations[language].emailPlaceholder}
+            type="email"
+            className="flex-1"
+          />
+          <Button
+            onClick={handleSendEmail}
+            size="sm"
+            className="bg-fabri-blue hover:bg-fabri-blue/90"
+          >
+            <Send className="h-4 w-4" />
+          </Button>
+          <Button
+            onClick={() => setShowEmailInput(false)}
+            size="sm"
+            variant="ghost"
+          >
+            <X className="h-4 w-4" />
+          </Button>
+        </div>
+      ) : (
+        <>
+          {/* Chat Input */}
+          <div className="p-3 flex items-center gap-2">
+            <Input
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder={translations[language].placeholder}
+              className="flex-1"
+              onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+              ref={inputRef}
+            />
+            <Button 
+              onClick={handleSendMessage} 
+              disabled={!message.trim()} 
+              size="icon"
+              className="bg-fabri-blue hover:bg-fabri-blue/90"
+            >
+              <Send className="h-4 w-4" />
+            </Button>
+          </div>
+          
+          {/* Email Chat History Option */}
+          <div className="bg-gray-50 p-2 flex justify-end">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="text-xs flex items-center gap-1 text-gray-500"
+              onClick={() => setShowEmailInput(true)}
+            >
+              <Mail className="h-3 w-3" />
+              <span>{translations[language].emailChat}</span>
+              <ArrowRight className="h-3 w-3" />
+            </Button>
+          </div>
+        </>
+      )}
     </div>
   );
 };

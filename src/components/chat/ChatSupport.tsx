@@ -3,29 +3,48 @@ import React, { useState, useEffect } from 'react';
 import ChatButton from './ChatButton';
 import ChatWidget from './ChatWidget';
 import { useLanguageStore } from '@/hooks/useLanguageStore';
+import { Sheet, SheetTrigger, SheetContent } from '@/components/ui/sheet';
 
 const ChatSupport = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { language } = useLanguageStore();
   
-  // Close chat widget on route change
+  // Preserve chat state when navigating between pages
   useEffect(() => {
-    const handleRouteChange = () => {
-      // Don't close the chat when navigating between pages
-      // so the conversation can continue
+    // Get chat state from localStorage on first render
+    const savedChatState = localStorage.getItem('fabriChatOpen');
+    if (savedChatState === 'true') {
+      setIsOpen(true);
+    }
+    
+    // Save chat state to localStorage when it changes
+    localStorage.setItem('fabriChatOpen', isOpen.toString());
+    
+    // Close chat on beforeunload (browser/tab close)
+    const handleBeforeUnload = () => {
+      localStorage.setItem('fabriChatOpen', 'false');
     };
     
-    window.addEventListener('popstate', handleRouteChange);
+    window.addEventListener('beforeunload', handleBeforeUnload);
     
     return () => {
-      window.removeEventListener('popstate', handleRouteChange);
+      window.removeEventListener('beforeunload', handleBeforeUnload);
     };
-  }, []);
+  }, [isOpen]);
+
+  // Handle opening and closing the chat widget
+  const handleOpenChat = () => {
+    setIsOpen(true);
+  };
+
+  const handleCloseChat = () => {
+    setIsOpen(false);
+  };
 
   return (
     <>
-      {!isOpen && <ChatButton onClick={() => setIsOpen(true)} />}
-      {isOpen && <ChatWidget onClose={() => setIsOpen(false)} />}
+      {!isOpen && <ChatButton onClick={handleOpenChat} />}
+      {isOpen && <ChatWidget onClose={handleCloseChat} />}
     </>
   );
 };
