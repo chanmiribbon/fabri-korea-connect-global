@@ -10,6 +10,7 @@ import Footer from "@/components/Footer";
 import MarketStats from "@/components/MarketStats";
 import GlobalInfluenceGallery from "@/components/GlobalInfluenceGallery";
 import BottomNav from "@/components/BottomNav";
+import ComingSoonFeatures from "@/components/ComingSoonFeatures";
 
 const Index = () => {
   const [language, setLanguage] = useState("KR");
@@ -24,6 +25,7 @@ const Index = () => {
         <CategorySection language={language} />
         <FeaturesSection language={language} />
         <TranslationDemo language={language} />
+        <ComingSoonFeatures />
         <BusinessInfo language={language} />
         <Footer language={language} />
       </div>
