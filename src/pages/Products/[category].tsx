@@ -1,11 +1,24 @@
-
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Card, CardContent } from "@/components/ui/card";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { ShoppingBag, Heart, Gem, CircleDot, CircleDashed, CircleEllipsis, Shirt, ScissorsLinear, Gift, Package, Ribbon, Tag, PackageOpen } from "lucide-react";
+import { 
+  ShoppingBag, 
+  Heart, 
+  Gem, 
+  CircleDot, 
+  CircleDashed, 
+  CircleEllipsis, 
+  Shirt, 
+  Scissors, 
+  Gift, 
+  Package, 
+  Ribbon, 
+  Tag, 
+  PackageOpen 
+} from "lucide-react";
 import { useLanguageStore } from "@/hooks/useLanguageStore";
 
 // Product type expanded with more detailed information
@@ -67,14 +80,14 @@ const CategoryProducts = () => {
       case 'diy-parts':
         return [
           { id: 'buttons', name: 'Buttons', nameKr: '단추', nameCn: '按钮', nameJp: 'ボタン', icon: <CircleDot className="w-4 h-4" /> },
-          { id: 'zippers', name: 'Zippers', nameKr: '지퍼', nameCn: '拉链', nameJp: 'ジッパー', icon: <ScissorsLinear className="w-4 h-4" /> },
+          { id: 'zippers', name: 'Zippers', nameKr: '지퍼', nameCn: '拉链', nameJp: 'ジッパー', icon: <Scissors className="w-4 h-4" /> },
           { id: 'buckles', name: 'Buckles', nameKr: '버클', nameCn: '扣环', nameJp: 'バックル', icon: <Package className="w-4 h-4" /> },
           { id: 'craft-parts', name: 'Craft Parts', nameKr: '공예 파츠', nameCn: '工艺零件', nameJp: 'クラフトパーツ', icon: <CircleEllipsis className="w-4 h-4" /> },
         ];
       case 'hanbok':
         return [
           { id: 'hanbok-accessories', name: 'Hanbok Accessories', nameKr: '한복 악세서리', nameCn: '韩服配饰', nameJp: '韓服アクセサリー', icon: <Shirt className="w-4 h-4" /> },
-          { id: 'hanbok-parts', name: 'Hanbok Parts', nameKr: '한복 부자재', nameCn: '韩服部件', nameJp: '韓服の部品', icon: <ScissorsLinear className="w-4 h-4" /> },
+          { id: 'hanbok-parts', name: 'Hanbok Parts', nameKr: '한복 부자재', nameCn: '韩服部件', nameJp: '韓服の部品', icon: <Scissors className="w-4 h-4" /> },
         ];
       case 'fabric-materials':
         return [
@@ -321,7 +334,7 @@ const CategoryProducts = () => {
           priceUsd: "$10.50",
           subcategory: "hair",
           description: "Elegant hair clip with pearl and crystal embellishments",
-          descriptionKr: "진주와 크리스탈 장식이 있는 우아한 헤어 클립",
+          descriptionKr: "진주와 크리스탈 장식이 있는 우아한 헤어 클��",
           descriptionCn: "优雅的发夹，珍珠和水晶装饰",
           descriptionJp: "パールとクリスタル装飾付きのエレガントなヘアクリップ",
           stock: 120,
