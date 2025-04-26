@@ -77,6 +77,31 @@ const translations = {
     CN: "标记完成",
     JP: "完了",
   },
+  // Add specific status translations
+  new: {
+    KR: "신규",
+    EN: "New",
+    CN: "新订单",
+    JP: "新規",
+  },
+  shipped: {
+    KR: "배송중",
+    EN: "Shipped",
+    CN: "已发货",
+    JP: "発送済み",
+  },
+  completed: {
+    KR: "완료",
+    EN: "Completed",
+    CN: "已完成",
+    JP: "完了",
+  },
+  cancelled: {
+    KR: "취소",
+    EN: "Cancelled",
+    CN: "已取消",
+    JP: "キャンセル",
+  },
 };
 
 const getStatusBadge = (status: string) => {
