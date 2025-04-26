@@ -19,6 +19,9 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        // Add new variants for our custom colors
+        "fabri-blue": "bg-fabri-blue text-white hover:bg-fabri-blue/90",
+        "fabri-pink": "bg-fabri-pink text-white hover:bg-fabri-pink/90",
       },
       size: {
         default: "h-10 px-4 py-2",

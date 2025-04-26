@@ -1,3 +1,4 @@
+
 import React, { Suspense, lazy } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -9,6 +10,9 @@ import About from "./pages/About";
 import Products from "./pages/Products";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+import Login from "./pages/Login";
+import B2BRegister from "./pages/register/B2BRegister";
+import B2CRegister from "./pages/register/B2CRegister";
 
 // Use lazy with proper import syntax
 const CategoryProducts = lazy(() => import('./pages/Products/[category]'));
@@ -38,6 +42,9 @@ const App = () => (
             } 
           />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register/b2b" element={<B2BRegister />} />
+          <Route path="/register/b2c" element={<B2CRegister />} />
           <Route path="*" element={<NotFound />} />
           <Route 
             path="/supplier/register-product" 

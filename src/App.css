@@ -69,3 +69,55 @@
   opacity: 0;
   transition: opacity 300ms;
 }
+
+/* Form styles */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+/* Custom colors for Fabri Korea */
+:root {
+  --fabri-blue: #6EC1E4;
+  --fabri-pink: #FF7F7F;
+  --fabri-mint: #A6E3E9;
+}
+
+.bg-fabri-blue {
+  background-color: var(--fabri-blue);
+}
+
+.bg-fabri-pink {
+  background-color: var(--fabri-pink);
+}
+
+.bg-fabri-mint {
+  background-color: var(--fabri-mint);
+}
+
+.text-fabri-blue {
+  color: var(--fabri-blue);
+}
+
+.text-fabri-pink {
+  color: var(--fabri-pink);
+}
+
+.text-fabri-mint {
+  color: var(--fabri-mint);
+}
+
+/* Form animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-field-animate {
+  animation: fadeIn 0.3s ease-out forwards;
+}
