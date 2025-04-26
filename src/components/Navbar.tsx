@@ -6,7 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Globe, Menu, ShoppingCart, User, X } from "lucide-react";
+import { Globe, Menu, ShoppingCart, User, X, Search } from "lucide-react";
 import { Link } from "react-router-dom";
 import SearchBar from "./SearchBar";
 
