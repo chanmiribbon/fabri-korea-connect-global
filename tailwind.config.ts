@@ -64,11 +64,15 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				fabri: {
-					purple: '#8B5CF6',
-					darkPurple: '#1A1F2C',
-					lightPurple: '#D6BCFA',
-					gray: '#8E9196',
-					orange: '#F97316',
+					blue: '#6EC1E4',
+					pink: '#FF7F7F',
+					mint: '#A6E3E9',
+					navy: '#333333',
+					gray: '#4A4A4A',
+					lightBlue: '#F0F9FC',
+					lightPink: '#FFF0F3',
+					lightMint: '#F0FCFC',
+					cream: '#FFF9F3',
 				}
 			},
 			borderRadius: {
@@ -110,8 +114,12 @@ export default {
 				'fade-in': 'fade-in 0.5s ease-out forwards'
 			},
 			fontFamily: {
-				sans: ['Noto Sans KR', 'sans-serif'],
-			}
+				sans: ['Noto Sans KR', 'Roboto', 'sans-serif'],
+			},
+			boxShadow: {
+				'soft': '0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.05)',
+				'card': '0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.03)',
+			},
 		}
 	},
 	plugins: [require("tailwindcss-animate")],

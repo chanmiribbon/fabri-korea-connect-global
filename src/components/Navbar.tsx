@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, ShoppingCart, User, Search } from "lucide-react";
@@ -31,21 +32,21 @@ const Navbar = () => {
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link to="/" className="flex-shrink-0 flex items-center">
-              <span className="text-2xl font-bold text-fabri-purple">
-                Fabri<span className="text-fabri-darkPurple">Korea</span>
+              <span className="text-2xl font-bold text-[#6EC1E4]">
+                Fabri<span className="text-[#333333]">Korea</span>
               </span>
             </Link>
             <div className="hidden sm:ml-10 sm:flex sm:space-x-8">
-              <Link to="/" className="border-transparent text-gray-700 hover:text-fabri-purple px-1 pt-1 border-b-2 text-sm font-medium">
+              <Link to="/" className="border-transparent text-[#4A4A4A] hover:text-[#6EC1E4] px-1 pt-1 border-b-2 text-sm font-medium">
                 {navLinks.home}
               </Link>
-              <Link to="/products" className="border-transparent text-gray-700 hover:text-fabri-purple px-1 pt-1 border-b-2 text-sm font-medium">
+              <Link to="/products" className="border-transparent text-[#4A4A4A] hover:text-[#6EC1E4] px-1 pt-1 border-b-2 text-sm font-medium">
                 {navLinks.products}
               </Link>
-              <Link to="/about" className="border-transparent text-gray-700 hover:text-fabri-purple px-1 pt-1 border-b-2 text-sm font-medium">
+              <Link to="/about" className="border-transparent text-[#4A4A4A] hover:text-[#6EC1E4] px-1 pt-1 border-b-2 text-sm font-medium">
                 {navLinks.about}
               </Link>
-              <Link to="/contact" className="border-transparent text-gray-700 hover:text-fabri-purple px-1 pt-1 border-b-2 text-sm font-medium">
+              <Link to="/contact" className="border-transparent text-[#4A4A4A] hover:text-[#6EC1E4] px-1 pt-1 border-b-2 text-sm font-medium">
                 {navLinks.contact}
               </Link>
             </div>
@@ -57,13 +58,13 @@ const Navbar = () => {
 
           <div className="hidden sm:flex items-center space-x-2">
             <LanguageSelector />
-            <Button variant="ghost" size="icon">
+            <Button variant="ghost" size="icon" className="hover:bg-[#F0F9FC] text-[#6EC1E4]">
               <Search className="h-5 w-5" />
             </Button>
-            <Button variant="ghost" size="icon">
+            <Button variant="ghost" size="icon" className="hover:bg-[#F0F9FC] text-[#6EC1E4]">
               <User className="h-5 w-5" />
             </Button>
-            <Button variant="ghost" size="icon">
+            <Button variant="ghost" size="icon" className="hover:bg-[#F0F9FC] text-[#6EC1E4]">
               <ShoppingCart className="h-5 w-5" />
             </Button>
           </div>
@@ -73,6 +74,7 @@ const Navbar = () => {
               variant="ghost"
               size="icon"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="text-[#6EC1E4]"
             >
               <Menu className="block h-6 w-6" />
             </Button>
@@ -91,28 +93,28 @@ const Navbar = () => {
         <div className="pt-2 pb-3 space-y-1">
           <Link
             to="/"
-            className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-700 hover:bg-gray-50 hover:border-fabri-purple hover:text-fabri-purple"
+            className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-[#4A4A4A] hover:bg-[#F0F9FC] hover:border-[#6EC1E4] hover:text-[#6EC1E4]"
             onClick={() => setMobileMenuOpen(false)}
           >
             {navLinks.home}
           </Link>
           <Link
             to="/products"
-            className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-700 hover:bg-gray-50 hover:border-fabri-purple hover:text-fabri-purple"
+            className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-[#4A4A4A] hover:bg-[#F0F9FC] hover:border-[#6EC1E4] hover:text-[#6EC1E4]"
             onClick={() => setMobileMenuOpen(false)}
           >
             {navLinks.products}
           </Link>
           <Link
             to="/about"
-            className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-700 hover:bg-gray-50 hover:border-fabri-purple hover:text-fabri-purple"
+            className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-[#4A4A4A] hover:bg-[#F0F9FC] hover:border-[#6EC1E4] hover:text-[#6EC1E4]"
             onClick={() => setMobileMenuOpen(false)}
           >
             {navLinks.about}
           </Link>
           <Link
             to="/contact"
-            className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-700 hover:bg-gray-50 hover:border-fabri-purple hover:text-fabri-purple"
+            className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-[#4A4A4A] hover:bg-[#F0F9FC] hover:border-[#6EC1E4] hover:text-[#6EC1E4]"
             onClick={() => setMobileMenuOpen(false)}
           >
             {navLinks.contact}
@@ -123,13 +125,13 @@ const Navbar = () => {
         </div>
         <div className="border-t border-gray-200 pt-4 pb-3">
           <div className="flex items-center justify-around px-4">
-            <Button variant="ghost" size="icon">
+            <Button variant="ghost" size="icon" className="text-[#6EC1E4]">
               <Search className="h-5 w-5" />
             </Button>
-            <Button variant="ghost" size="icon">
+            <Button variant="ghost" size="icon" className="text-[#6EC1E4]">
               <User className="h-5 w-5" />
             </Button>
-            <Button variant="ghost" size="icon">
+            <Button variant="ghost" size="icon" className="text-[#6EC1E4]">
               <ShoppingCart className="h-5 w-5" />
             </Button>
           </div>

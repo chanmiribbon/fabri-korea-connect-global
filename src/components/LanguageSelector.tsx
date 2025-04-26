@@ -46,17 +46,17 @@ const LanguageSelector = ({ isMobile = false }: { isMobile?: boolean }) => {
         <Button
           variant="ghost"
           size={isMobile ? "default" : "icon"}
-          className={isMobile ? "w-full justify-start" : ""}
+          className={`${isMobile ? "w-full justify-start" : ""} text-[#6EC1E4] hover:bg-[#F0F9FC]`}
         >
           {buttonContent}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-[200px]">
+      <DropdownMenuContent align="end" className="w-[200px] bg-white border border-[#E5E7EB] rounded-xl shadow-lg">
         {languageOptions.map((option) => (
           <DropdownMenuItem
             key={option.code}
             onClick={() => changeLanguage(option.code)}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 py-3 px-4 hover:bg-[#F0F9FC] rounded-lg text-[#333333] font-medium"
           >
             <span className="text-lg">{option.flag}</span>
             <span>{option.label}</span>

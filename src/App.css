@@ -1,42 +1,71 @@
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0;
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.card-hover {
+  transition: all 0.3s ease;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.card-hover:hover {
+  transform: translateY(-5px);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.product-card {
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
-.card {
-  padding: 2em;
+.product-card:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
-.read-the-docs {
-  color: #888;
+.badge {
+  display: inline-block;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+}
+
+.badge-new {
+  background-color: #6EC1E4;
+  color: white;
+}
+
+.badge-best {
+  background-color: #FF7F7F;
+  color: white;
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, #6EC1E4, #FF7F7F);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Page transition animations */
+.page-enter {
+  opacity: 0;
+}
+
+.page-enter-active {
+  opacity: 1;
+  transition: opacity 300ms;
+}
+
+.page-exit {
+  opacity: 1;
+}
+
+.page-exit-active {
+  opacity: 0;
+  transition: opacity 300ms;
 }
