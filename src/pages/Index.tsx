@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React from "react";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import CategorySection from "@/components/CategorySection";
@@ -11,9 +11,10 @@ import MarketStats from "@/components/MarketStats";
 import GlobalInfluenceGallery from "@/components/GlobalInfluenceGallery";
 import BottomNav from "@/components/BottomNav";
 import ComingSoonFeatures from "@/components/ComingSoonFeatures";
+import { useLanguageStore } from "@/hooks/useLanguageStore";
 
 const Index = () => {
-  const [language, setLanguage] = useState("KR");
+  const { language } = useLanguageStore();
 
   return (
     <div className="min-h-screen flex flex-col">

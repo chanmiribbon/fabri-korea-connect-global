@@ -9,12 +9,13 @@ import {
 import { Globe, Menu, ShoppingCart, User, X, Search } from "lucide-react";
 import { Link } from "react-router-dom";
 import SearchBar from "./SearchBar";
+import { useLanguageStore } from "@/hooks/useLanguageStore";
 
 export type Language = "KR" | "EN" | "CN" | "JP";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [currentLanguage, setCurrentLanguage] = useState<Language>("KR");
+  const { language, changeLanguage } = useLanguageStore();
 
   const getMenuLabel = (lang: Language) => {
     switch (lang) {
@@ -38,7 +39,7 @@ const Navbar = () => {
     }
   };
 
-  const navLinks = getNavLinks(currentLanguage);
+  const navLinks = getNavLinks(language);
 
   return (
     <nav className="bg-white shadow-sm fixed w-full z-50">
@@ -75,20 +76,20 @@ const Navbar = () => {
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon" className="mr-2">
                   <Globe className="h-5 w-5" />
-                  <span className="ml-1">{currentLanguage}</span>
+                  <span className="ml-1">{language}</span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => setCurrentLanguage("KR")}>
+                <DropdownMenuItem onClick={() => changeLanguage("KR")}>
                   한국어 (KR)
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setCurrentLanguage("EN")}>
+                <DropdownMenuItem onClick={() => changeLanguage("EN")}>
                   English (EN)
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setCurrentLanguage("CN")}>
+                <DropdownMenuItem onClick={() => changeLanguage("CN")}>
                   中文 (CN)
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setCurrentLanguage("JP")}>
+                <DropdownMenuItem onClick={() => changeLanguage("JP")}>
                   日本語 (JP)
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -164,20 +165,20 @@ const Navbar = () => {
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon" className="flex items-center">
                   <Globe className="h-5 w-5 mr-1" />
-                  <span>{currentLanguage}</span>
+                  <span>{language}</span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuItem onClick={() => setCurrentLanguage("KR")}>
+                <DropdownMenuItem onClick={() => changeLanguage("KR")}>
                   한국어 (KR)
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setCurrentLanguage("EN")}>
+                <DropdownMenuItem onClick={() => changeLanguage("EN")}>
                   English (EN)
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setCurrentLanguage("CN")}>
+                <DropdownMenuItem onClick={() => changeLanguage("CN")}>
                   中文 (CN)
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setCurrentLanguage("JP")}>
+                <DropdownMenuItem onClick={() => changeLanguage("JP")}>
                   日本語 (JP)
                 </DropdownMenuItem>
               </DropdownMenuContent>
