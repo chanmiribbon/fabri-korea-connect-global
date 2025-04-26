@@ -1,4 +1,3 @@
-
 import React, { Suspense, lazy } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -28,6 +27,9 @@ const SupplierDashboard = lazy(() => import('./pages/SupplierDashboard'));
 const SellerDashboard = lazy(() => import('./pages/seller/Dashboard'));
 const SellerProducts = lazy(() => import('./pages/seller/Products'));
 const SellerOrders = lazy(() => import('./pages/seller/Orders'));
+
+// Add the new import
+const BusinessProfileSettings = lazy(() => import('./components/seller/settings/BusinessProfileSettings'));
 
 const queryClient = new QueryClient();
 
@@ -97,6 +99,16 @@ const App = () => (
             element={
               <Suspense fallback={<div className="p-20 text-center">Loading...</div>}>
                 <SellerOrders />
+              </Suspense>
+            } 
+          />
+          
+          {/* Add the new route */}
+          <Route 
+            path="/seller/profile" 
+            element={
+              <Suspense fallback={<div className="p-20 text-center">Loading...</div>}>
+                <BusinessProfileSettings />
               </Suspense>
             } 
           />
