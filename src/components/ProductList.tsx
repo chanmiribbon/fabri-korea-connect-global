@@ -6,17 +6,30 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { FileText, ShoppingCart } from "lucide-react";
 import { useLocation } from "react-router-dom";
+import type { Language } from "@/components/Navbar";
 
 interface Product {
   id: number;
-  name: string;
-  nameEn: string;
+  name: {
+    kr: string;
+    en: string;
+    cn: string;
+    jp: string;
+  };
   image: string;
   moq: number;
-  price: string;
-  priceUSD: string;
-  description: string;
-  descriptionEn: string;
+  price: {
+    kr: string;
+    en: string;
+    cn: string;
+    jp: string;
+  };
+  description: {
+    kr: string;
+    en: string;
+    cn: string;
+    jp: string;
+  };
 }
 
 interface ProductListProps {
@@ -30,17 +43,47 @@ const ProductList: React.FC<ProductListProps> = ({ category }) => {
   const products: Product[] = [
     {
       id: 1,
-      name: "샘플 제품",
-      nameEn: "Sample Product",
+      name: {
+        kr: "샘플 제품",
+        en: "Sample Product",
+        cn: "样品产品",
+        jp: "サンプル製品"
+      },
       image: "/lovable-uploads/beb7f058-46f6-4d16-9441-38837503b0b5.png",
       moq: 100,
-      price: "10,000원",
-      priceUSD: "$8.50",
-      description: "제품 상세 설명입니다.",
-      descriptionEn: "This is the product description."
+      price: {
+        kr: "10,000원",
+        en: "$8.50",
+        cn: "¥58.50",
+        jp: "¥950"
+      },
+      description: {
+        kr: "제품 상세 설명입니다.",
+        en: "This is the product description.",
+        cn: "这是产品描述。",
+        jp: "製品の詳細説明です。"
+      }
     },
     // More products can be added here
   ];
+
+  const getButtonText = (lang: Language) => {
+    if (isBuyerView) {
+      switch (lang) {
+        case "KR": return "도매 견적 요청";
+        case "CN": return "批发询价";
+        case "JP": return "卸売見積依頼";
+        default: return "Request Wholesale Quote";
+      }
+    } else {
+      switch (lang) {
+        case "KR": return "지금 구매하기";
+        case "CN": return "立即购买";
+        case "JP": return "今すぐ購入";
+        default: return "Buy Now";
+      }
+    }
+  };
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -49,15 +92,17 @@ const ProductList: React.FC<ProductListProps> = ({ category }) => {
           <AspectRatio ratio={4/3}>
             <img
               src={product.image}
-              alt={product.name}
+              alt={product.name.en}
               className="object-cover w-full h-full"
             />
           </AspectRatio>
           <CardContent className="p-4">
             <Tabs defaultValue="kr" className="w-full">
-              <TabsList className="grid w-full grid-cols-2">
+              <TabsList className="grid w-full grid-cols-4">
                 <TabsTrigger value="kr">한국어</TabsTrigger>
                 <TabsTrigger value="en">English</TabsTrigger>
+                <TabsTrigger value="cn">中文</TabsTrigger>
+                <TabsTrigger value="jp">日本語</TabsTrigger>
               </TabsList>
               <TabsContent value="kr" className="mt-4">
                 <h3 className="text-lg font-semibold mb-2">{product.name}</h3>
@@ -66,22 +111,34 @@ const ProductList: React.FC<ProductListProps> = ({ category }) => {
                 <p className="text-sm text-gray-600 mb-4">{product.description}</p>
               </TabsContent>
               <TabsContent value="en" className="mt-4">
-                <h3 className="text-lg font-semibold mb-2">{product.nameEn}</h3>
+                <h3 className="text-lg font-semibold mb-2">{product.name.en}</h3>
                 <p className="text-sm text-gray-600 mb-2">MOQ: {product.moq} units</p>
-                <p className="text-lg font-medium text-fabri-purple mb-2">{product.priceUSD}</p>
-                <p className="text-sm text-gray-600 mb-4">{product.descriptionEn}</p>
+                <p className="text-lg font-medium text-fabri-purple mb-2">{product.price.en}</p>
+                <p className="text-sm text-gray-600 mb-4">{product.description.en}</p>
+              </TabsContent>
+              <TabsContent value="cn" className="mt-4">
+                <h3 className="text-lg font-semibold mb-2">{product.name.cn}</h3>
+                <p className="text-sm text-gray-600 mb-2">最小订购量: {product.moq}件</p>
+                <p className="text-lg font-medium text-fabri-purple mb-2">{product.price.cn}</p>
+                <p className="text-sm text-gray-600 mb-4">{product.description.cn}</p>
+              </TabsContent>
+              <TabsContent value="jp" className="mt-4">
+                <h3 className="text-lg font-semibold mb-2">{product.name.jp}</h3>
+                <p className="text-sm text-gray-600 mb-2">最小注文数量: {product.moq}個</p>
+                <p className="text-lg font-medium text-fabri-purple mb-2">{product.price.jp}</p>
+                <p className="text-sm text-gray-600 mb-4">{product.description.jp}</p>
               </TabsContent>
             </Tabs>
             
             {isBuyerView ? (
               <Button className="w-full flex items-center gap-2 bg-fabri-purple hover:bg-fabri-purple/90">
                 <FileText className="w-4 h-4" />
-                도매 견적 요청
+                {getButtonText("KR")}
               </Button>
             ) : (
               <Button className="w-full flex items-center gap-2">
                 <ShoppingCart className="w-4 h-4" />
-                지금 구매하기
+                {getButtonText("KR")}
               </Button>
             )}
           </CardContent>
