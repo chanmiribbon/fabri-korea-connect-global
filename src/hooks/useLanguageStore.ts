@@ -31,6 +31,9 @@ export const useLanguageStore = () => {
     }
     setLanguage(newLanguage);
     localStorage.setItem('preferredLanguage', newLanguage);
+    
+    // Update HTML lang attribute for accessibility
+    document.documentElement.lang = newLanguage.toLowerCase();
   };
 
   // Initialize language from localStorage on component mount
@@ -38,6 +41,12 @@ export const useLanguageStore = () => {
     const storedLanguage = localStorage.getItem('preferredLanguage') as Language;
     if (storedLanguage && ["KR", "EN", "CN", "JP"].includes(storedLanguage)) {
       setLanguage(storedLanguage);
+      document.documentElement.lang = storedLanguage.toLowerCase();
+    } else {
+      // If no stored language, use browser detection and save it
+      const initialLang = getInitialLanguage();
+      localStorage.setItem('preferredLanguage', initialLang);
+      document.documentElement.lang = initialLang.toLowerCase();
     }
   }, []);
 

@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, ShoppingCart, User, Search } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -27,9 +27,8 @@ const Navbar = () => {
 
   const navLinks = getNavLinks(language);
 
-  // Force re-render when language changes to ensure all components update
-  useEffect(() => {
-    // This effect will run whenever language changes
+  // Set document title based on language
+  React.useEffect(() => {
     document.documentElement.lang = language.toLowerCase();
     document.title = language === "KR" ? "FabriKorea - 전통시장을 세계로" : 
                      language === "EN" ? "FabriKorea - Traditional Markets to the World" :
@@ -73,9 +72,11 @@ const Navbar = () => {
             <Button variant="ghost" size="icon" className="hover:bg-[#F0F9FC] text-[#6EC1E4]">
               <Search className="h-5 w-5" />
             </Button>
-            <Button variant="ghost" size="icon" className="hover:bg-[#F0F9FC] text-[#6EC1E4]">
-              <User className="h-5 w-5" />
-            </Button>
+            <Link to="/login">
+              <Button variant="ghost" size="icon" className="hover:bg-[#F0F9FC] text-[#6EC1E4]">
+                <User className="h-5 w-5" />
+              </Button>
+            </Link>
             <Button variant="ghost" size="icon" className="hover:bg-[#F0F9FC] text-[#6EC1E4]">
               <ShoppingCart className="h-5 w-5" />
             </Button>
@@ -140,9 +141,11 @@ const Navbar = () => {
             <Button variant="ghost" size="icon" className="text-[#6EC1E4]">
               <Search className="h-5 w-5" />
             </Button>
-            <Button variant="ghost" size="icon" className="text-[#6EC1E4]">
-              <User className="h-5 w-5" />
-            </Button>
+            <Link to="/login">
+              <Button variant="ghost" size="icon" className="text-[#6EC1E4]">
+                <User className="h-5 w-5" />
+              </Button>
+            </Link>
             <Button variant="ghost" size="icon" className="text-[#6EC1E4]">
               <ShoppingCart className="h-5 w-5" />
             </Button>

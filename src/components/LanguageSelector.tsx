@@ -1,5 +1,5 @@
 
-import React, { useEffect } from "react";
+import React from "react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -28,21 +28,8 @@ const LanguageSelector = ({ isMobile = false }: { isMobile?: boolean }) => {
 
   const currentLanguage = languageOptions.find((opt) => opt.code === language);
 
-  useEffect(() => {
-    // Ensure the stored language is used on component mount
-    const storedLanguage = localStorage.getItem('preferredLanguage') as Language;
-    if (storedLanguage && storedLanguage !== language && 
-        ["KR", "EN", "CN", "JP"].includes(storedLanguage)) {
-      changeLanguage(storedLanguage);
-    }
-  }, []);
-
   const handleLanguageChange = (lang: Language) => {
     changeLanguage(lang);
-    // Force page update to ensure all components reflect the new language
-    setTimeout(() => {
-      // This small timeout helps ensure state propagation
-    }, 50);
   };
 
   const buttonContent = isMobile ? (
