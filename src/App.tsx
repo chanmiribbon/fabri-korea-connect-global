@@ -17,13 +17,17 @@ import Login from "./pages/Login";
 import B2BRegister from "./pages/register/B2BRegister";
 import B2CRegister from "./pages/register/B2CRegister";
 import ChatSupport from "./components/chat/ChatSupport";
+import AccessDenied from "./pages/AccessDenied";
 
 // Use lazy with proper import syntax
 const CategoryProducts = lazy(() => import('./pages/Products/[category]'));
-
-// Add new imports
 const ProductRegistration = lazy(() => import('./pages/ProductRegistration'));
 const SupplierDashboard = lazy(() => import('./pages/SupplierDashboard'));
+
+// Seller Center pages
+const SellerDashboard = lazy(() => import('./pages/seller/Dashboard'));
+const SellerProducts = lazy(() => import('./pages/seller/Products'));
+const SellerOrders = lazy(() => import('./pages/seller/Orders'));
 
 const queryClient = new QueryClient();
 
@@ -52,6 +56,7 @@ const App = () => (
           <Route path="/login" element={<Login />} />
           <Route path="/register/b2b" element={<B2BRegister />} />
           <Route path="/register/b2c" element={<B2CRegister />} />
+          <Route path="/access-denied" element={<AccessDenied />} />
           <Route path="*" element={<NotFound />} />
           <Route 
             path="/supplier/register-product" 
@@ -66,6 +71,32 @@ const App = () => (
             element={
               <Suspense fallback={<div className="p-20 text-center">Loading...</div>}>
                 <SupplierDashboard />
+              </Suspense>
+            } 
+          />
+          
+          {/* Seller Center Routes */}
+          <Route 
+            path="/seller/dashboard" 
+            element={
+              <Suspense fallback={<div className="p-20 text-center">Loading...</div>}>
+                <SellerDashboard />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/seller/products" 
+            element={
+              <Suspense fallback={<div className="p-20 text-center">Loading...</div>}>
+                <SellerProducts />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/seller/orders" 
+            element={
+              <Suspense fallback={<div className="p-20 text-center">Loading...</div>}>
+                <SellerOrders />
               </Suspense>
             } 
           />

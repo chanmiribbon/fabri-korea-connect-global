@@ -61,6 +61,8 @@ const B2BRegistrationForm = () => {
     },
   });
 
+  const navigate = useNavigate();
+
   const onSubmit = async (data: B2BRegistrationFormData) => {
     console.log("B2B Form Data:", data);
     
@@ -73,9 +75,17 @@ const B2BRegistrationForm = () => {
     // Here you would typically make an API call to register the B2B user
     // For now, we'll just simulate a successful registration
     
-    toast.success("회원가입이 완료되었습니다. 관리자 승인 후 서비스 이용이 가능합니다.", {
-      duration: 5000,
+    // Set user type as business in localStorage (for demo purposes)
+    localStorage.setItem("userType", "business");
+    
+    toast.success("회원가입이 완료되었습니다. 판매자 센터로 이동합니다.", {
+      duration: 3000,
     });
+    
+    // Redirect to seller center dashboard after successful registration
+    setTimeout(() => {
+      navigate("/seller/dashboard");
+    }, 2000);
   };
 
   const { watch } = form;

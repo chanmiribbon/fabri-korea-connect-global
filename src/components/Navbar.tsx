@@ -1,7 +1,7 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, ShoppingCart, User, Search, LogIn } from "lucide-react";
+import { Menu, ShoppingCart, User, Search, LogIn, Store } from "lucide-react";
 import { Link } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import { useLanguageStore, Language } from "@/hooks/useLanguageStore";
@@ -11,17 +11,52 @@ import RegisterDialog from "./auth/RegisterDialog";
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { language } = useLanguageStore();
+  const [isSeller, setIsSeller] = useState(false);
+
+  useEffect(() => {
+    // Check if user is a business seller
+    const userType = localStorage.getItem("userType");
+    setIsSeller(userType === "business");
+  }, []);
 
   const getNavLinks = (lang: Language) => {
     switch (lang) {
       case "KR":
-        return { home: "홈", products: "제품", about: "회사 소개", contact: "연락처", login: "로그인" };
+        return { 
+          home: "홈", 
+          products: "제품", 
+          about: "회사 소개", 
+          contact: "연락처", 
+          login: "로그인",
+          sellerCenter: "판매자 센터" 
+        };
       case "CN":
-        return { home: "首页", products: "产品", about: "公司简介", contact: "联系我们", login: "登录" };
+        return { 
+          home: "首页", 
+          products: "产品", 
+          about: "公司简介", 
+          contact: "联系我们", 
+          login: "登录",
+          sellerCenter: "卖家中心" 
+        };
       case "JP":
-        return { home: "ホーム", products: "製品", about: "会社紹介", contact: "お問い合わせ", login: "ログイン" };
+        return { 
+          home: "ホーム", 
+          products: "製品", 
+          about: "会社紹介", 
+          contact: "お問い合わせ", 
+          login: "ログイン",
+          sellerCenter: "販売者センター" 
+        };
       default:
-        return { home: "Home", products: "Products", about: "About Us", contact: "Contact", login: "Login" };
+        return { 
+          home: "Home", 
+          products: "Products", 
+          about: "About Us", 
+          contact: "Contact", 
+          login: "Login",
+          sellerCenter: "Seller Center" 
+        };
     }
   };
 
@@ -59,6 +94,11 @@ const Navbar = () => {
               <Link to="/contact" className="border-transparent text-[#4A4A4A] hover:text-[#6EC1E4] px-1 pt-1 border-b-2 text-sm font-medium">
                 {navLinks.contact}
               </Link>
+              {isSeller && (
+                <Link to="/seller/dashboard" className="border-transparent text-[#4A4A4A] hover:text-[#6EC1E4] px-1 pt-1 border-b-2 text-sm font-medium">
+                  {navLinks.sellerCenter}
+                </Link>
+              )}
             </div>
           </div>
 
@@ -74,6 +114,14 @@ const Navbar = () => {
                 {navLinks.login}
               </Button>
             </Link>
+            {isSeller && (
+              <Link to="/seller/dashboard">
+                <Button variant="outline" size="sm" className="flex items-center gap-2 border-fabri-blue text-fabri-blue">
+                  <Store className="w-4 h-4" />
+                  {navLinks.sellerCenter}
+                </Button>
+              </Link>
+            )}
             <LanguageSelector />
             <Button variant="ghost" size="icon" className="hover:bg-[#F0F9FC] text-[#6EC1E4]">
               <Search className="h-5 w-5" />
@@ -133,6 +181,15 @@ const Navbar = () => {
           >
             {navLinks.contact}
           </Link>
+          {isSeller && (
+            <Link
+              to="/seller/dashboard"
+              className="block pl-3 pr-4 py-2 border-l-4 border-[#6EC1E4] bg-[#F0F9FC] text-base font-medium text-[#6EC1E4]"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              {navLinks.sellerCenter}
+            </Link>
+          )}
           <Link
             to="/login"
             className="block pl-3 pr-4 py-2 border-l-4 border-[#6EC1E4] bg-[#F0F9FC] text-base font-medium text-[#6EC1E4]"
