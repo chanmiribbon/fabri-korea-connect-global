@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, ShoppingCart, User, Search } from "lucide-react";
@@ -6,6 +5,7 @@ import { Link } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import { useLanguageStore, Language } from "@/hooks/useLanguageStore";
 import LanguageSelector from "./LanguageSelector";
+import RegisterDialog from "./auth/RegisterDialog";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -56,7 +56,8 @@ const Navbar = () => {
             <SearchBar />
           </div>
 
-          <div className="hidden sm:flex items-center space-x-2">
+          <div className="hidden sm:flex items-center space-x-4">
+            <RegisterDialog language={language} />
             <LanguageSelector />
             <Button variant="ghost" size="icon" className="hover:bg-[#F0F9FC] text-[#6EC1E4]">
               <Search className="h-5 w-5" />

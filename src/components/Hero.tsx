@@ -1,11 +1,10 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Globe, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useLanguageStore, Language } from "@/hooks/useLanguageStore";
+import RegisterDialog from "./auth/RegisterDialog";
 
-// Define translations for all text content
 const translations = {
   KR: {
     mainTitle: "전통시장을 세계로!",
@@ -40,13 +39,10 @@ const translations = {
 const Hero = () => {
   const navigate = useNavigate();
   const { language } = useLanguageStore();
-  
-  // Get the correct translations based on selected language
   const text = translations[language];
 
   return (
     <div className="relative min-h-[600px] bg-fabri-darkPurple text-white">
-      {/* Background image with overlay */}
       <div 
         className="absolute inset-0 z-0 bg-cover bg-center"
         style={{
@@ -86,6 +82,7 @@ const Hero = () => {
                 <Users className="w-5 h-5" />
                 {text.consumerButton}
               </Button>
+              <RegisterDialog language={language} />
             </div>
           </div>
         </div>
