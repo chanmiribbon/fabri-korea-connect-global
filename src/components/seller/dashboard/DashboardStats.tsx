@@ -1,10 +1,11 @@
-
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ShoppingBag, Package, MessageSquare, Eye, PlusCircle, Settings } from "lucide-react";
+import { ShoppingBag, Package, Award } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Language } from "@/hooks/useLanguageStore";
+import SalesChart from "./SalesChart";
+import ExportButton from "./ExportButton";
 
 interface StatsWidgetProps {
   icon: React.ReactNode;
@@ -79,18 +80,23 @@ const translations = {
     CN: "编辑资料",
     JP: "プロフィール編集",
   },
+  bestSeller: {
+    KR: "베스트셀러",
+    EN: "Best Seller",
+    CN: "最畅销",
+    JP: "ベストセラー",
+  },
 };
 
 const DashboardStats: React.FC<DashboardStatsProps> = ({ language }) => {
   return (
     <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-semibold">{translations.todaySales[language]}</h2>
+        <ExportButton language={language} />
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <StatsWidget
-          icon={<ShoppingBag className="h-4 w-4 text-muted-foreground" />}
-          title={translations.todaySales[language]}
-          value="₩3,250,000"
-          change="+15% from yesterday"
-        />
         <StatsWidget
           icon={<ShoppingBag className="h-4 w-4 text-muted-foreground" />}
           title={translations.monthSales[language]}
@@ -103,7 +109,15 @@ const DashboardStats: React.FC<DashboardStatsProps> = ({ language }) => {
           value="12"
           change="Needs attention"
         />
+        <StatsWidget
+          icon={<Award className="h-4 w-4 text-muted-foreground" />}
+          title={translations.bestSeller[language]}
+          value="Premium Fabric"
+          change="32 units this month"
+        />
       </div>
+
+      <SalesChart language={language} />
 
       <Card>
         <CardHeader>
