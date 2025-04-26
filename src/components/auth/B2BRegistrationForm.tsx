@@ -30,8 +30,8 @@ const B2BRegistrationSchema = z.object({
   companyAddress: z.string().min(1, { message: "회사 주소를 입력해주세요" }),
   shippingAddress: z.string().min(1, { message: "배송지 주소를 입력해주세요" }),
   businessLicense: z.any().optional(),
-  termsAgreed: z.literal(true, {
-    errorMap: () => ({ message: "이용약관에 동의해주세요" }),
+  termsAgreed: z.boolean().refine(val => val === true, {
+    message: "이용약관에 동의해주세요",
   }),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "비밀번호가 일치하지 않습니다",

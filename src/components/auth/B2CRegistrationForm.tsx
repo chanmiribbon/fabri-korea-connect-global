@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
-import { Google, User, Mail, Lock, Phone, MapPin } from "lucide-react";
+import { Globe, User, Mail, Lock, Phone, MapPin } from "lucide-react";
 
 const B2CRegistrationSchema = z.object({
   name: z.string().min(2, { message: "이름을 입력해주세요" }),
@@ -22,8 +22,8 @@ const B2CRegistrationSchema = z.object({
   confirmPassword: z.string(),
   phone: z.string().min(1, { message: "휴대폰 번호를 입력해주세요" }),
   address: z.string().min(1, { message: "배송지 주소를 입력해주세요" }),
-  termsAgreed: z.literal(true, {
-    errorMap: () => ({ message: "이용약관에 동의해주세요" }),
+  termsAgreed: z.boolean().refine(val => val === true, {
+    message: "이용약관에 동의해주세요",
   }),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "비밀번호가 일치하지 않습니다",
@@ -84,7 +84,7 @@ const B2CRegistrationForm = () => {
           className="w-full flex items-center justify-center gap-2 border-gray-300 hover:bg-gray-50"
           onClick={handleGoogleSignup}
         >
-          <Google className="h-5 w-5" />
+          <Globe className="h-5 w-5" />
           <span>구글로 간편 가입</span>
         </Button>
 

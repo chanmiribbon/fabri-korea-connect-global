@@ -3,8 +3,11 @@ import React from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import B2BRegistrationForm from "@/components/auth/B2BRegistrationForm";
+import { useLanguageStore } from "@/hooks/useLanguageStore";
 
 const B2BRegister = () => {
+  const { language } = useLanguageStore();
+  
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -17,7 +20,7 @@ const B2BRegister = () => {
           <B2BRegistrationForm />
         </div>
       </div>
-      <Footer />
+      <Footer language={language} />
     </div>
   );
 };

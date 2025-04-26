@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -9,10 +8,11 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AuthButtons } from "@/components/auth/AuthButtons";
-import { Google, Mail, Lock } from "lucide-react";
+import { Globe, Mail, Lock } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { toast } from "sonner";
+import { useLanguageStore } from "@/hooks/useLanguageStore";
 
 const LoginSchema = z.object({
   email: z.string().email({ message: "유효한 이메일을 입력해주세요" }),
@@ -22,6 +22,8 @@ const LoginSchema = z.object({
 type LoginFormData = z.infer<typeof LoginSchema>;
 
 const Login = () => {
+  const { language } = useLanguageStore();
+  
   const form = useForm<LoginFormData>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -77,7 +79,7 @@ const Login = () => {
                       className="w-full flex items-center justify-center gap-2 border-gray-300 hover:bg-gray-50"
                       onClick={handleGoogleLogin}
                     >
-                      <Google className="h-5 w-5" />
+                      <Globe className="h-5 w-5" />
                       <span>구글로 로그인</span>
                     </Button>
 
@@ -182,7 +184,7 @@ const Login = () => {
           </Card>
         </div>
       </div>
-      <Footer />
+      <Footer language={language} />
     </div>
   );
 };
