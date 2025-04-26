@@ -1,10 +1,9 @@
-
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { save } from "lucide-react";
+import { Save } from "lucide-react";
 import { useLanguageStore } from "@/hooks/useLanguageStore";
 import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
@@ -232,7 +231,7 @@ const BusinessProfileSettings = () => {
 
           <div className="fixed bottom-0 left-0 right-0 bg-background border-t p-4 flex justify-end">
             <Button type="submit" className="min-w-[200px]">
-              <save className="w-4 h-4 mr-2" />
+              <Save className="w-4 h-4 mr-2" />
               {translations.save[language]}
             </Button>
           </div>
