@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -47,24 +46,21 @@ const B2CRegistrationForm = () => {
   });
 
   const onSubmit = async (data: B2CRegistrationFormData) => {
-    console.log("B2C Form Data:", data);
+    console.log("Form Data:", data);
     
-    // Here you would typically make an API call to register the B2C user
-    // For now, we'll just simulate a successful registration
-    
-    toast.success("회원가입이 완료되었습니다.", {
+    // Simulate registration
+    toast.success("개인 회원가입이 완료되었습니다.", {
       duration: 3000,
     });
   };
 
   const handleGoogleSignup = () => {
-    // Here you would implement Google OAuth login
     console.log("Google signup clicked");
     
     toast.info("구글 계정으로 회원가입 진행 중...");
-    // Simulate a successful login after a delay
+    // Simulate a successful registration
     setTimeout(() => {
-      toast.success("구글 계정으로 회원가입이 완료되었습니다.");
+      toast.success("개인 회원가입이 완료되었습니다.");
     }, 2000);
   };
 
@@ -72,9 +68,9 @@ const B2CRegistrationForm = () => {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 max-w-md mx-auto">
         <div className="bg-pink-50 p-4 rounded-xl mb-6">
-          <h2 className="text-lg font-semibold text-fabri-pink mb-2">B2C 회원 안내</h2>
+          <h2 className="text-lg font-semibold text-fabri-pink mb-2">개인 회원 안내</h2>
           <p className="text-sm text-gray-700">
-            일반 소비자 회원으로 가입하시면 장바구니, 소량 구매, 리뷰 작성 등의 서비스를 이용하실 수 있습니다.
+            개인 회원으로 가입하시면 장바구니, 소량 구매, 리뷰 작성 등의 서비스를 이용하실 수 있습니다.
           </p>
         </div>
 

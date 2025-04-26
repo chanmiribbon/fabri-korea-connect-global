@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { AuthButtons } from "@/components/auth/AuthButtons";
 import { Globe, Mail, Lock } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -152,6 +151,16 @@ const Login = () => {
                     </div>
                     <div className="grid gap-4">
                       <div className="p-4 border rounded-xl">
+                        <h4 className="text-fabri-pink font-medium mb-2">개인 회원 (일반 소비자)</h4>
+                        <p className="text-sm text-muted-foreground mb-3">개인 구매, 장바구니, 리뷰 작성 가능</p>
+                        <Button 
+                          className="w-full bg-fabri-pink hover:bg-pink-600"
+                          onClick={() => window.location.href = "/register/b2c"}
+                        >
+                          개인 회원가입
+                        </Button>
+                      </div>
+                      <div className="p-4 border rounded-xl">
                         <h4 className="text-fabri-blue font-medium mb-2">B2B 회원 (기업/사업자)</h4>
                         <p className="text-sm text-muted-foreground mb-3">도매 가격, 견적 요청, 대량 주문 가능</p>
                         <Button 
@@ -159,16 +168,6 @@ const Login = () => {
                           onClick={() => window.location.href = "/register/b2b"}
                         >
                           B2B 회원가입
-                        </Button>
-                      </div>
-                      <div className="p-4 border rounded-xl">
-                        <h4 className="text-fabri-pink font-medium mb-2">B2C 회원 (일반 소비자)</h4>
-                        <p className="text-sm text-muted-foreground mb-3">개인 구매, 장바구니, 리뷰 작성 가능</p>
-                        <Button 
-                          className="w-full bg-fabri-pink hover:bg-pink-600"
-                          onClick={() => window.location.href = "/register/b2c"}
-                        >
-                          B2C 회원가입
                         </Button>
                       </div>
                     </div>
