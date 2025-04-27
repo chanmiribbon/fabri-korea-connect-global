@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, ShoppingCart, User, Search, LogIn, Store } from "lucide-react";
@@ -77,22 +78,22 @@ const Navbar = () => {
               </span>
             </Link>
             <div className="hidden sm:ml-10 sm:flex sm:items-center sm:space-x-8">
-              <Link to="/" className="text-[#4A4A4A] hover:text-[#6EC1E4] px-3 py-2 text-sm font-medium">
+              <Link to="/" className="text-[#4A4A4A] hover:text-[#6EC1E4] px-3 py-2 text-sm font-medium transition-colors hover:border-b-2 hover:border-[#6EC1E4]">
                 {navLinks.home}
               </Link>
-              <Link to="/products" className="text-[#4A4A4A] hover:text-[#6EC1E4] px-3 py-2 text-sm font-medium">
+              <Link to="/products" className="text-[#4A4A4A] hover:text-[#6EC1E4] px-3 py-2 text-sm font-medium transition-colors hover:border-b-2 hover:border-[#6EC1E4]">
                 {navLinks.products}
               </Link>
-              <Link to="/consumer-products" className="text-[#4A4A4A] hover:text-[#6EC1E4] px-3 py-2 text-sm font-medium">
+              <Link to="/consumer-products" className="text-[#4A4A4A] hover:text-[#6EC1E4] px-3 py-2 text-sm font-medium transition-colors hover:border-b-2 hover:border-[#6EC1E4]">
                 {navLinks.retailMall}
               </Link>
-              <Link to="/buyer-products" className="text-[#4A4A4A] hover:text-[#6EC1E4] px-3 py-2 text-sm font-medium">
+              <Link to="/buyer-products" className="text-[#4A4A4A] hover:text-[#6EC1E4] px-3 py-2 text-sm font-medium transition-colors hover:border-b-2 hover:border-[#6EC1E4]">
                 {navLinks.wholesaleMall}
               </Link>
-              <Link to="/about" className="text-[#4A4A4A] hover:text-[#6EC1E4] px-3 py-2 text-sm font-medium">
+              <Link to="/about" className="text-[#4A4A4A] hover:text-[#6EC1E4] px-3 py-2 text-sm font-medium transition-colors hover:border-b-2 hover:border-[#6EC1E4]">
                 {navLinks.about}
               </Link>
-              <Link to="/contact" className="text-[#4A4A4A] hover:text-[#6EC1E4] px-3 py-2 text-sm font-medium">
+              <Link to="/contact" className="text-[#4A4A4A] hover:text-[#6EC1E4] px-3 py-2 text-sm font-medium transition-colors hover:border-b-2 hover:border-[#6EC1E4]">
                 {navLinks.contact}
               </Link>
             </div>
@@ -134,6 +135,7 @@ const Navbar = () => {
               size="icon"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="text-[#6EC1E4]"
+              aria-label="Toggle menu"
             >
               <Menu className="h-6 w-6" />
             </Button>
@@ -141,7 +143,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu - Improved for horizontal text */}
       <div className={`${mobileMenuOpen ? "block" : "hidden"} sm:hidden bg-white border-t border-gray-200`}>
         <div className="px-4 py-3">
           <SearchBar />
