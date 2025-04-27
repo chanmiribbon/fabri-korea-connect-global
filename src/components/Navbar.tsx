@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, ShoppingCart, User, Search, LogIn, Store } from "lucide-react";
@@ -66,53 +65,45 @@ const Navbar = () => {
 
   const navLinks = getNavLinks(language);
 
-  // Set document title based on language
-  React.useEffect(() => {
-    document.documentElement.lang = language.toLowerCase();
-    document.title = language === "KR" ? "FabriKorea - 전통시장을 세계로" : 
-                     language === "EN" ? "FabriKorea - Traditional Markets to the World" :
-                     language === "CN" ? "FabriKorea - 传统市场走向世界" : 
-                     "FabriKorea - 伝統市場を世界へ";
-  }, [language]);
-
-  const isSellerCenterActive = location.pathname.includes("/seller");
-
   return (
     <nav className="bg-white shadow-sm fixed w-full z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
+          {/* Logo and Desktop Navigation */}
           <div className="flex items-center">
             <Link to="/" className="flex-shrink-0 flex items-center">
               <span className="text-2xl font-bold text-[#6EC1E4]">
                 Fabri<span className="text-[#333333]">Korea</span>
               </span>
             </Link>
-            <div className="hidden sm:ml-10 sm:flex sm:space-x-8">
-              <Link to="/" className="border-transparent text-[#4A4A4A] hover:text-[#6EC1E4] px-1 pt-1 border-b-2 text-sm font-medium">
+            <div className="hidden sm:ml-10 sm:flex sm:items-center sm:space-x-8">
+              <Link to="/" className="text-[#4A4A4A] hover:text-[#6EC1E4] px-3 py-2 text-sm font-medium">
                 {navLinks.home}
               </Link>
-              <Link to="/products" className="border-transparent text-[#4A4A4A] hover:text-[#6EC1E4] px-1 pt-1 border-b-2 text-sm font-medium">
+              <Link to="/products" className="text-[#4A4A4A] hover:text-[#6EC1E4] px-3 py-2 text-sm font-medium">
                 {navLinks.products}
               </Link>
-              <Link to="/consumer-products" className="border-transparent text-[#4A4A4A] hover:text-[#6EC1E4] px-1 pt-1 border-b-2 text-sm font-medium">
+              <Link to="/consumer-products" className="text-[#4A4A4A] hover:text-[#6EC1E4] px-3 py-2 text-sm font-medium">
                 {navLinks.retailMall}
               </Link>
-              <Link to="/buyer-products" className="border-transparent text-[#4A4A4A] hover:text-[#6EC1E4] px-1 pt-1 border-b-2 text-sm font-medium">
+              <Link to="/buyer-products" className="text-[#4A4A4A] hover:text-[#6EC1E4] px-3 py-2 text-sm font-medium">
                 {navLinks.wholesaleMall}
               </Link>
-              <Link to="/about" className="border-transparent text-[#4A4A4A] hover:text-[#6EC1E4] px-1 pt-1 border-b-2 text-sm font-medium">
+              <Link to="/about" className="text-[#4A4A4A] hover:text-[#6EC1E4] px-3 py-2 text-sm font-medium">
                 {navLinks.about}
               </Link>
-              <Link to="/contact" className="border-transparent text-[#4A4A4A] hover:text-[#6EC1E4] px-1 pt-1 border-b-2 text-sm font-medium">
+              <Link to="/contact" className="text-[#4A4A4A] hover:text-[#6EC1E4] px-3 py-2 text-sm font-medium">
                 {navLinks.contact}
               </Link>
             </div>
           </div>
 
+          {/* Search Bar and Actions */}
           <div className="flex-1 max-w-sm mx-4 hidden sm:flex items-center justify-center">
             <SearchBar />
           </div>
 
+          {/* Desktop Actions */}
           <div className="hidden sm:flex items-center space-x-4">
             <RegisterDialog language={language} />
             <Link to="/login">
@@ -124,9 +115,9 @@ const Navbar = () => {
             {isSeller && (
               <Link to="/seller/dashboard">
                 <Button 
-                  variant={isSellerCenterActive ? "fabri-blue" : "outline"} 
+                  variant={location.pathname.includes("/seller") ? "fabri-blue" : "outline"} 
                   size="sm" 
-                  className={`flex items-center gap-2 ${isSellerCenterActive ? 'text-white' : 'border-fabri-blue text-fabri-blue'}`}
+                  className={`flex items-center gap-2 ${location.pathname.includes("/seller") ? 'text-white' : 'border-fabri-blue text-fabri-blue'}`}
                 >
                   <Store className="w-4 h-4" />
                   {navLinks.sellerCenter}
@@ -134,14 +125,9 @@ const Navbar = () => {
               </Link>
             )}
             <LanguageSelector />
-            <Button variant="ghost" size="icon" className="hover:bg-[#F0F9FC] text-[#6EC1E4]">
-              <Search className="h-5 w-5" />
-            </Button>
-            <Button variant="ghost" size="icon" className="hover:bg-[#F0F9FC] text-[#6EC1E4]">
-              <ShoppingCart className="h-5 w-5" />
-            </Button>
           </div>
 
+          {/* Mobile Menu Button */}
           <div className="flex items-center sm:hidden">
             <Button
               variant="ghost"
@@ -149,59 +135,56 @@ const Navbar = () => {
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="text-[#6EC1E4]"
             >
-              <Menu className="block h-6 w-6" />
+              <Menu className="h-6 w-6" />
             </Button>
           </div>
         </div>
       </div>
 
-      <div
-        className={`${
-          mobileMenuOpen ? "block" : "hidden"
-        } sm:hidden bg-white shadow-lg`}
-      >
-        <div className="p-4">
+      {/* Mobile Menu */}
+      <div className={`${mobileMenuOpen ? "block" : "hidden"} sm:hidden bg-white border-t border-gray-200`}>
+        <div className="px-4 py-3">
           <SearchBar />
         </div>
-        <div className="pt-2 pb-3 space-y-1">
+        <div className="px-2 pt-2 pb-3 space-y-1">
           <Link
             to="/"
-            className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-[#4A4A4A] hover:bg-[#F0F9FC] hover:border-[#6EC1E4] hover:text-[#6EC1E4]"
+            className="block px-3 py-2 rounded-md text-base font-medium text-[#4A4A4A] hover:text-[#6EC1E4] hover:bg-gray-50"
             onClick={() => setMobileMenuOpen(false)}
           >
             {navLinks.home}
           </Link>
           <Link
             to="/products"
-            className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-[#4A4A4A] hover:bg-[#F0F9FC] hover:border-[#6EC1E4] hover:text-[#6EC1E4]"
+            className="block px-3 py-2 rounded-md text-base font-medium text-[#4A4A4A] hover:text-[#6EC1E4] hover:bg-gray-50"
             onClick={() => setMobileMenuOpen(false)}
           >
             {navLinks.products}
           </Link>
           <Link
             to="/consumer-products"
-            className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-[#4A4A4A] hover:bg-[#F0F9FC] hover:border-[#6EC1E4] hover:text-[#6EC1E4]"
+            className="block px-3 py-2 rounded-md text-base font-medium text-[#4A4A4A] hover:text-[#6EC1E4] hover:bg-gray-50"
             onClick={() => setMobileMenuOpen(false)}
           >
             {navLinks.retailMall}
           </Link>
           <Link
             to="/buyer-products"
-            className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-[#4A4A4A] hover:bg-[#F0F9FC] hover:border-[#6EC1E4] hover:text-[#6EC1E4]"
+            className="block px-3 py-2 rounded-md text-base font-medium text-[#4A4A4A] hover:text-[#6EC1E4] hover:bg-gray-50"
             onClick={() => setMobileMenuOpen(false)}
           >
             {navLinks.wholesaleMall}
           </Link>
           <Link
             to="/about"
-            className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-[#4A4A4A] hover:bg-[#F0F9FC] hover:border-[#6EC1E4] hover:text-[#6EC1E4]"
+            className="block px-3 py-2 rounded-md text-base font-medium text-[#4A4A4A] hover:text-[#6EC1E4] hover:bg-gray-50"
             onClick={() => setMobileMenuOpen(false)}
           >
             {navLinks.about}
           </Link>
           <Link
             to="/contact"
-            className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-[#4A4A4A] hover:bg-[#F0F9FC] hover:border-[#6EC1E4] hover:text-[#6EC1E4]"
+            className="block px-3 py-2 rounded-md text-base font-medium text-[#4A4A4A] hover:text-[#6EC1E4] hover:bg-gray-50"
             onClick={() => setMobileMenuOpen(false)}
           >
             {navLinks.contact}
@@ -209,31 +192,26 @@ const Navbar = () => {
           {isSeller && (
             <Link
               to="/seller/dashboard"
-              className="block pl-3 pr-4 py-2 border-l-4 border-[#6EC1E4] bg-[#F0F9FC] text-base font-medium text-[#6EC1E4]"
+              className="block px-3 py-2 rounded-md text-base font-medium text-[#6EC1E4] hover:bg-gray-50"
               onClick={() => setMobileMenuOpen(false)}
             >
               {navLinks.sellerCenter}
             </Link>
           )}
-          <Link
-            to="/login"
-            className="block pl-3 pr-4 py-2 border-l-4 border-[#6EC1E4] bg-[#F0F9FC] text-base font-medium text-[#6EC1E4]"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            {navLinks.login}
-          </Link>
-          <div className="px-3">
-            <LanguageSelector isMobile={true} />
-          </div>
         </div>
-        <div className="border-t border-gray-200 pt-4 pb-3">
-          <div className="flex items-center justify-around px-4">
-            <Button variant="ghost" size="icon" className="text-[#6EC1E4]">
-              <Search className="h-5 w-5" />
-            </Button>
-            <Button variant="ghost" size="icon" className="text-[#6EC1E4]">
-              <ShoppingCart className="h-5 w-5" />
-            </Button>
+        <div className="px-4 py-3 border-t border-gray-200">
+          <div className="flex items-center justify-between">
+            <RegisterDialog language={language} />
+            <Link
+              to="/login"
+              className="block px-3 py-2 rounded-md text-base font-medium text-[#6EC1E4]"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              {navLinks.login}
+            </Link>
+          </div>
+          <div className="mt-3">
+            <LanguageSelector isMobile={true} />
           </div>
         </div>
       </div>
