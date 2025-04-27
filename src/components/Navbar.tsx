@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, ShoppingCart, User, Search, LogIn, Store } from "lucide-react";
@@ -69,6 +68,22 @@ const Navbar = () => {
   return (
     <nav className="bg-white shadow-sm fixed w-full z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Top bar with Seller Center button */}
+        {isSeller && (
+          <div className="py-2 border-b border-gray-100 flex justify-end">
+            <Link to="/seller/dashboard">
+              <Button 
+                variant={location.pathname.includes("/seller") ? "fabri-blue" : "outline"} 
+                size="sm" 
+                className={`flex items-center gap-2 ${location.pathname.includes("/seller") ? 'text-white' : 'border-fabri-blue text-fabri-blue'}`}
+              >
+                <Store className="w-4 h-4" />
+                {navLinks.sellerCenter}
+              </Button>
+            </Link>
+          </div>
+        )}
+        
         <div className="flex justify-between h-16">
           {/* Logo and Desktop Navigation */}
           <div className="flex items-center">
