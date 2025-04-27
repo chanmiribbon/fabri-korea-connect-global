@@ -69,22 +69,16 @@ const Navbar = () => {
 
   return (
     <nav className="bg-white shadow-sm fixed w-full z-50">
+      {/* New Seller Center button at the very top */}
+      {isSeller && (
+        <div className="bg-fabri-blue text-white text-center py-2 text-sm">
+          <Link to="/seller/dashboard" className="hover:underline">
+            {navLinks.sellerCenter}
+          </Link>
+        </div>
+      )}
+      
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {isSeller && (
-          <div className="py-2 border-b border-gray-100 flex justify-end">
-            <Link to="/seller/dashboard">
-              <Button 
-                variant={location.pathname.includes("/seller") ? "fabri-blue" : "outline"} 
-                size="sm" 
-                className={`flex items-center gap-2 ${location.pathname.includes("/seller") ? 'text-white' : 'border-fabri-blue text-fabri-blue'}`}
-              >
-                <Store className="w-4 h-4" />
-                {navLinks.sellerCenter}
-              </Button>
-            </Link>
-          </div>
-        )}
-        
         <div className="flex justify-between items-center h-16">
           <div className="flex-1 flex items-center justify-between">
             <Link to="/" className="flex-shrink-0 flex items-center">
