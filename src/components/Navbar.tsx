@@ -65,6 +65,8 @@ const Navbar = () => {
 
   const navLinks = getNavLinks(language);
 
+  const isActive = (path: string) => location.pathname === path;
+
   return (
     <nav className="bg-white shadow-sm fixed w-full z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -83,48 +85,76 @@ const Navbar = () => {
           </div>
         )}
         
-        <div className="flex justify-between h-16">
-          <div className="flex items-center">
+        <div className="flex justify-between items-center h-16">
+          <div className="flex-1 flex items-center justify-between">
             <Link to="/" className="flex-shrink-0 flex items-center">
               <span className="text-2xl font-bold text-[#6EC1E4]">
                 Fabri<span className="text-[#333333]">Korea</span>
               </span>
             </Link>
-            <div className="hidden sm:ml-10 sm:flex sm:items-center sm:space-x-6">
-              <Link to="/" className="text-[#4A4A4A] hover:text-[#6EC1E4] px-3 py-2 text-sm font-medium transition-colors hover:border-b-2 hover:border-[#6EC1E4]">
+
+            <div className="hidden sm:flex items-center space-x-6 mx-4">
+              <Link 
+                to="/" 
+                className={`px-4 py-2 text-sm font-medium transition-colors hover:text-[#6EC1E4] ${
+                  isActive('/') ? 'text-[#6EC1E4] border-b-2 border-[#6EC1E4] font-semibold' : 'text-[#4A4A4A]'
+                }`}
+              >
                 {navLinks.home}
               </Link>
-              <Link to="/products" className="text-[#4A4A4A] hover:text-[#6EC1E4] px-3 py-2 text-sm font-medium transition-colors hover:border-b-2 hover:border-[#6EC1E4]">
+              <Link 
+                to="/products" 
+                className={`px-4 py-2 text-sm font-medium transition-colors hover:text-[#6EC1E4] ${
+                  isActive('/products') ? 'text-[#6EC1E4] border-b-2 border-[#6EC1E4] font-semibold' : 'text-[#4A4A4A]'
+                }`}
+              >
                 {navLinks.products}
               </Link>
-              <Link to="/consumer-products" className="text-[#4A4A4A] hover:text-[#6EC1E4] px-3 py-2 text-sm font-medium transition-colors hover:border-b-2 hover:border-[#6EC1E4]">
+              <Link 
+                to="/consumer-products" 
+                className={`px-4 py-2 text-sm font-medium transition-colors hover:text-[#6EC1E4] ${
+                  isActive('/consumer-products') ? 'text-[#6EC1E4] border-b-2 border-[#6EC1E4] font-semibold' : 'text-[#4A4A4A]'
+                }`}
+              >
                 {navLinks.retailMall}
               </Link>
-              <Link to="/buyer-products" className="text-[#4A4A4A] hover:text-[#6EC1E4] px-3 py-2 text-sm font-medium transition-colors hover:border-b-2 hover:border-[#6EC1E4]">
+              <Link 
+                to="/buyer-products" 
+                className={`px-4 py-2 text-sm font-medium transition-colors hover:text-[#6EC1E4] ${
+                  isActive('/buyer-products') ? 'text-[#6EC1E4] border-b-2 border-[#6EC1E4] font-semibold' : 'text-[#4A4A4A]'
+                }`}
+              >
                 {navLinks.wholesaleMall}
               </Link>
-              <Link to="/about" className="text-[#4A4A4A] hover:text-[#6EC1E4] px-3 py-2 text-sm font-medium transition-colors hover:border-b-2 hover:border-[#6EC1E4]">
+              <Link 
+                to="/about" 
+                className={`px-4 py-2 text-sm font-medium transition-colors hover:text-[#6EC1E4] ${
+                  isActive('/about') ? 'text-[#6EC1E4] border-b-2 border-[#6EC1E4] font-semibold' : 'text-[#4A4A4A]'
+                }`}
+              >
                 {navLinks.about}
               </Link>
-              <Link to="/contact" className="text-[#4A4A4A] hover:text-[#6EC1E4] px-3 py-2 text-sm font-medium transition-colors hover:border-b-2 hover:border-[#6EC1E4]">
+              <Link 
+                to="/contact" 
+                className={`px-4 py-2 text-sm font-medium transition-colors hover:text-[#6EC1E4] ${
+                  isActive('/contact') ? 'text-[#6EC1E4] border-b-2 border-[#6EC1E4] font-semibold' : 'text-[#4A4A4A]'
+                }`}
+              >
                 {navLinks.contact}
               </Link>
             </div>
-          </div>
 
-          <div className="flex-1 max-w-sm mx-4 hidden sm:flex items-center justify-center">
-            <SearchBar />
-          </div>
-
-          <div className="hidden sm:flex items-center space-x-4">
-            <RegisterDialog language={language} />
-            <Link to="/login">
-              <Button variant="fabri-blue" size="sm" className="text-white flex items-center gap-2">
-                <LogIn className="w-4 h-4" />
-                {navLinks.login}
-              </Button>
-            </Link>
-            <LanguageSelector />
+            <div className="hidden sm:flex items-center space-x-4">
+              <SearchBar />
+              <RegisterDialog language={language} />
+              <Link to="/login">
+                <Button variant="fabri-blue" size="sm" className="text-white flex items-center gap-2">
+                  <LogIn className="w-4 h-4" />
+                  {navLinks.login}
+                </Button>
+              </Link>
+              <LanguageSelector />
+            </div>
           </div>
 
           <div className="flex items-center sm:hidden">
@@ -142,68 +172,36 @@ const Navbar = () => {
       </div>
 
       <div className={`${mobileMenuOpen ? "block" : "hidden"} sm:hidden bg-white border-t border-gray-200`}>
-        <div className="px-4 py-3">
+        <div className="px-4 py-3 space-y-2">
           <SearchBar />
-        </div>
-        <div className="px-2 pt-2 pb-3 space-y-1">
-          <Link
-            to="/"
-            className="block px-3 py-2 rounded-md text-base font-medium text-[#4A4A4A] hover:text-[#6EC1E4] hover:bg-gray-50"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            {navLinks.home}
-          </Link>
-          <Link
-            to="/products"
-            className="block px-3 py-2 rounded-md text-base font-medium text-[#4A4A4A] hover:text-[#6EC1E4] hover:bg-gray-50"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            {navLinks.products}
-          </Link>
-          <Link
-            to="/consumer-products"
-            className="block px-3 py-2 rounded-md text-base font-medium text-[#4A4A4A] hover:text-[#6EC1E4] hover:bg-gray-50"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            {navLinks.retailMall}
-          </Link>
-          <Link
-            to="/buyer-products"
-            className="block px-3 py-2 rounded-md text-base font-medium text-[#4A4A4A] hover:text-[#6EC1E4] hover:bg-gray-50"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            {navLinks.wholesaleMall}
-          </Link>
-          <Link
-            to="/about"
-            className="block px-3 py-2 rounded-md text-base font-medium text-[#4A4A4A] hover:text-[#6EC1E4] hover:bg-gray-50"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            {navLinks.about}
-          </Link>
-          <Link
-            to="/contact"
-            className="block px-3 py-2 rounded-md text-base font-medium text-[#4A4A4A] hover:text-[#6EC1E4] hover:bg-gray-50"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            {navLinks.contact}
-          </Link>
-          {isSeller && (
+          {[
+            { to: "/", label: navLinks.home },
+            { to: "/products", label: navLinks.products },
+            { to: "/consumer-products", label: navLinks.retailMall },
+            { to: "/buyer-products", label: navLinks.wholesaleMall },
+            { to: "/about", label: navLinks.about },
+            { to: "/contact", label: navLinks.contact },
+          ].map((item) => (
             <Link
-              to="/seller/dashboard"
-              className="block px-3 py-2 rounded-md text-base font-medium text-[#6EC1E4] hover:bg-gray-50"
+              key={item.to}
+              to={item.to}
+              className={`block px-4 py-2 text-base font-medium rounded-lg transition-colors ${
+                isActive(item.to) 
+                  ? 'text-[#6EC1E4] bg-[#F0F9FC] font-semibold' 
+                  : 'text-[#4A4A4A] hover:text-[#6EC1E4] hover:bg-gray-50'
+              }`}
               onClick={() => setMobileMenuOpen(false)}
             >
-              {navLinks.sellerCenter}
+              {item.label}
             </Link>
-          )}
+          ))}
         </div>
-        <div className="px-4 py-3 border-t border-gray-200">
+        <div className="px-4 py-3 border-t border-gray-200 space-y-3">
           <div className="flex items-center justify-between">
             <RegisterDialog language={language} />
             <Link
               to="/login"
-              className="block px-3 py-2 rounded-md text-base font-medium text-[#6EC1E4]"
+              className="block px-4 py-2 text-base font-medium text-[#6EC1E4] hover:bg-[#F0F9FC] rounded-lg transition-colors"
               onClick={() => setMobileMenuOpen(false)}
             >
               {navLinks.login}
