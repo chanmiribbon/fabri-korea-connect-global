@@ -1,5 +1,4 @@
-
-import React, { useEffect } from "react";
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { Globe, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -49,11 +48,6 @@ const Hero = () => {
   const navigate = useNavigate();
   const { language } = useLanguageStore();
   const text = translations[language];
-
-  // Force re-render when language changes to ensure all components update
-  useEffect(() => {
-    // This effect will run whenever language changes
-  }, [language]);
 
   return (
     <div className="relative min-h-[600px] bg-fabri-darkPurple text-white">

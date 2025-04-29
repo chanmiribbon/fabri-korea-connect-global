@@ -1,3 +1,4 @@
+
 import React, { Suspense, lazy } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -32,6 +33,17 @@ const SellerOrders = lazy(() => import('./pages/seller/Orders'));
 const BusinessProfileSettings = lazy(() => import('./components/seller/settings/BusinessProfileSettings'));
 
 const queryClient = new QueryClient();
+
+// Initialize language (moved outside of component to ensure it runs immediately)
+// This will make sure the language is set correctly even before the first render
+const initializeLanguage = () => {
+  const storedLanguage = localStorage.getItem('preferredLanguage');
+  if (storedLanguage && ["KR", "EN", "CN", "JP"].includes(storedLanguage)) {
+    document.documentElement.lang = storedLanguage.toLowerCase();
+  }
+};
+
+initializeLanguage();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
