@@ -1,0 +1,50 @@
+
+/* Print styles */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  
+  .print-only {
+    visibility: visible;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  
+  .print-only * {
+    visibility: visible;
+  }
+  
+  .print-hide {
+    display: none !important;
+  }
+  
+  /* Dialog printing styles */
+  [role="dialog"],
+  [role="dialog"] * {
+    visibility: visible;
+  }
+  
+  [role="dialog"] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    background: white;
+  }
+  
+  /* Remove backgrounds, shadows, etc. for cleaner printing */
+  [role="dialog"] {
+    box-shadow: none !important;
+    background: white !important;
+    border: none !important;
+  }
+  
+  /* Add page breaks between orders */
+  .page-break-after {
+    page-break-after: always;
+  }
+}

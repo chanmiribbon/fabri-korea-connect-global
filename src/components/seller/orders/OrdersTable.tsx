@@ -1,10 +1,12 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Language } from "@/hooks/useLanguageStore";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Package, Truck } from "lucide-react";
+import { Calendar, Package, Printer, Truck } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
+import PrintOrdersDialog from "./PrintOrdersDialog";
 
 interface OrdersTableProps {
   language: Language;
@@ -102,6 +104,18 @@ const translations = {
     CN: "已取消",
     JP: "キャンセル",
   },
+  printOrders: {
+    KR: "주문서 출력",
+    EN: "Print Orders",
+    CN: "打印订单",
+    JP: "注文書の印刷",
+  },
+  selectAll: {
+    KR: "전체 선택",
+    EN: "Select All",
+    CN: "全选",
+    JP: "すべて選択",
+  },
 };
 
 const getStatusBadge = (status: string) => {
@@ -114,9 +128,24 @@ const getStatusBadge = (status: string) => {
   return statusColors[status as keyof typeof statusColors] || "";
 };
 
+interface Order {
+  id: string;
+  customer: string;
+  product: string;
+  quantity: number;
+  total: string;
+  status: string;
+  date: string;
+  // Additional fields for mock data
+  recipient?: string;
+  address?: string;
+  phone?: string;
+  notes?: string;
+}
+
 const OrdersTable: React.FC<OrdersTableProps> = ({ language }) => {
   // Sample data - would be replaced with real data from an API
-  const sampleOrders = [
+  const sampleOrders: Order[] = [
     {
       id: "ORD-001",
       customer: "John Doe",
@@ -125,6 +154,10 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ language }) => {
       total: "$199.98",
       status: "new",
       date: "2025-04-26",
+      recipient: "John Doe",
+      address: "123 Main St, Anytown, USA",
+      phone: "+1 555-123-4567",
+      notes: "Please leave package at the door",
     },
     {
       id: "ORD-002",
@@ -134,62 +167,133 @@ const OrdersTable: React.FC<OrdersTableProps> = ({ language }) => {
       total: "$299.99",
       status: "shipped",
       date: "2025-04-25",
+      recipient: "Jane Smith",
+      address: "456 Park Ave, Somewhere, USA",
+      phone: "+1 555-987-6543",
+      notes: "Call before delivery",
     },
   ];
+  
+  const [selectedOrders, setSelectedOrders] = useState<string[]>([]);
+  const [isPrintDialogOpen, setIsPrintDialogOpen] = useState(false);
+  const [selectAll, setSelectAll] = useState(false);
+  
+  const handleSelectOrder = (orderId: string, isChecked: boolean) => {
+    if (isChecked) {
+      setSelectedOrders([...selectedOrders, orderId]);
+    } else {
+      setSelectedOrders(selectedOrders.filter(id => id !== orderId));
+    }
+  };
+  
+  const handleSelectAll = (isChecked: boolean) => {
+    setSelectAll(isChecked);
+    if (isChecked) {
+      setSelectedOrders(sampleOrders.map(order => order.id));
+    } else {
+      setSelectedOrders([]);
+    }
+  };
+  
+  const handlePrintClick = () => {
+    if (selectedOrders.length > 0) {
+      setIsPrintDialogOpen(true);
+    }
+  };
+  
+  const selectedOrdersData = sampleOrders.filter(order => selectedOrders.includes(order.id));
 
   return (
-    <div className="rounded-md border">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>{translations.orderNumber[language]}</TableHead>
-            <TableHead>{translations.customer[language]}</TableHead>
-            <TableHead>{translations.product[language]}</TableHead>
-            <TableHead>{translations.quantity[language]}</TableHead>
-            <TableHead>{translations.total[language]}</TableHead>
-            <TableHead>{translations.status[language]}</TableHead>
-            <TableHead>{translations.date[language]}</TableHead>
-            <TableHead>{translations.actions[language]}</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {sampleOrders.map((order) => (
-            <TableRow key={order.id}>
-              <TableCell className="font-medium">{order.id}</TableCell>
-              <TableCell>{order.customer}</TableCell>
-              <TableCell>{order.product}</TableCell>
-              <TableCell>{order.quantity}</TableCell>
-              <TableCell>{order.total}</TableCell>
-              <TableCell>
-                <Badge className={getStatusBadge(order.status)}>
-                  {translations[order.status as keyof typeof translations][language]}
-                </Badge>
-              </TableCell>
-              <TableCell>{order.date}</TableCell>
-              <TableCell>
-                <div className="flex gap-2">
-                  <Button variant="outline" size="sm">
-                    {translations.view[language]}
-                  </Button>
-                  {order.status === "new" && (
-                    <Button variant="outline" size="sm">
-                      <Truck className="mr-1 h-4 w-4" />
-                      {translations.markShipped[language]}
-                    </Button>
-                  )}
-                  {order.status === "shipped" && (
-                    <Button variant="outline" size="sm">
-                      <Package className="mr-1 h-4 w-4" />
-                      {translations.markCompleted[language]}
-                    </Button>
-                  )}
-                </div>
-              </TableCell>
+    <>
+      <div className="flex justify-between items-center mb-4">
+        <div className="flex items-center gap-2">
+          <Checkbox 
+            id="select-all" 
+            checked={selectAll}
+            onCheckedChange={(isChecked) => handleSelectAll(!!isChecked)} 
+          />
+          <label htmlFor="select-all" className="text-sm">
+            {translations.selectAll[language]}
+          </label>
+        </div>
+        <Button 
+          onClick={handlePrintClick} 
+          disabled={selectedOrders.length === 0}
+          variant="outline"
+          size="sm"
+        >
+          <Printer className="mr-2 h-4 w-4" />
+          {translations.printOrders[language]}
+        </Button>
+      </div>
+      
+      <div className="rounded-md border">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[40px]"></TableHead>
+              <TableHead>{translations.orderNumber[language]}</TableHead>
+              <TableHead>{translations.customer[language]}</TableHead>
+              <TableHead>{translations.product[language]}</TableHead>
+              <TableHead>{translations.quantity[language]}</TableHead>
+              <TableHead>{translations.total[language]}</TableHead>
+              <TableHead>{translations.status[language]}</TableHead>
+              <TableHead>{translations.date[language]}</TableHead>
+              <TableHead>{translations.actions[language]}</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+          </TableHeader>
+          <TableBody>
+            {sampleOrders.map((order) => (
+              <TableRow key={order.id}>
+                <TableCell>
+                  <Checkbox 
+                    checked={selectedOrders.includes(order.id)}
+                    onCheckedChange={(isChecked) => handleSelectOrder(order.id, !!isChecked)}
+                  />
+                </TableCell>
+                <TableCell className="font-medium">{order.id}</TableCell>
+                <TableCell>{order.customer}</TableCell>
+                <TableCell>{order.product}</TableCell>
+                <TableCell>{order.quantity}</TableCell>
+                <TableCell>{order.total}</TableCell>
+                <TableCell>
+                  <Badge className={getStatusBadge(order.status)}>
+                    {translations[order.status as keyof typeof translations][language]}
+                  </Badge>
+                </TableCell>
+                <TableCell>{order.date}</TableCell>
+                <TableCell>
+                  <div className="flex gap-2">
+                    <Button variant="outline" size="sm">
+                      {translations.view[language]}
+                    </Button>
+                    {order.status === "new" && (
+                      <Button variant="outline" size="sm">
+                        <Truck className="mr-1 h-4 w-4" />
+                        {translations.markShipped[language]}
+                      </Button>
+                    )}
+                    {order.status === "shipped" && (
+                      <Button variant="outline" size="sm">
+                        <Package className="mr-1 h-4 w-4" />
+                        {translations.markCompleted[language]}
+                      </Button>
+                    )}
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+      
+      <PrintOrdersDialog 
+        open={isPrintDialogOpen}
+        onClose={() => setIsPrintDialogOpen(false)}
+        selectedOrders={selectedOrdersData}
+        language={language}
+      />
+    </>
   );
 };
 

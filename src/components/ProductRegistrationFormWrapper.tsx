@@ -29,7 +29,10 @@ export const ProductRegistrationFormWrapper: React.FC<ProductRegistrationFormWra
   
   return (
     <div className="space-y-8">
-      {/* Additional Images Upload Section */}
+      {/* Original Registration Form */}
+      <OriginalProductRegistrationForm onSubmitSuccess={handleFormSubmit} />
+      
+      {/* Additional Images Upload Section - moved below the main form */}
       <div className="p-6 bg-white rounded-lg shadow-sm border">
         <ProductImageUpload 
           onChange={setAdditionalImages}
@@ -38,9 +41,6 @@ export const ProductRegistrationFormWrapper: React.FC<ProductRegistrationFormWra
           maxImages={9}
         />
       </div>
-      
-      {/* Original Registration Form */}
-      <OriginalProductRegistrationForm onSubmitSuccess={handleFormSubmit} />
     </div>
   );
 };
