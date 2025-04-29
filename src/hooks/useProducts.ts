@@ -22,7 +22,10 @@ const sampleProducts = {
         material: "Crystal, Pearl, Alloy",
         colors: ["Silver", "Gold", "Rose Gold"]
       },
-      isNewArrival: true
+      isNewArrival: true,
+      isRetail: true,
+      isWholesale: true,
+      moq: 20
     },
     {
       id: 2,
@@ -198,7 +201,10 @@ const sampleProducts = {
         material: "Metal alloy, Pearls, Crystal",
         colors: ["Gold", "Silver", "Rose Gold"]
       },
-      isBestSeller: true
+      isBestSeller: true,
+      isRetail: true,
+      isWholesale: true,
+      moq: 50
     },
     {
       id: 102,
@@ -407,8 +413,27 @@ export const useProducts = (category: string | undefined, subcategory: string | 
     
     return products;
   };
+  
+  // New function to get products based on distribution channel
+  const getDistributionProducts = (isRetail: boolean = true): Product[] => {
+    // Combine all products
+    let allProducts: Product[] = [
+      ...sampleProducts.dongdaemun,
+      ...sampleProducts.namdaemun,
+      ...sampleProducts.accessories,
+      ...sampleProducts['diy-parts']
+    ];
+    
+    // Filter by distribution channel
+    if (isRetail) {
+      return allProducts.filter(product => product.isRetail !== false);
+    } else {
+      return allProducts.filter(product => product.isWholesale !== false);
+    }
+  };
 
   return {
-    products: getCategoryProducts(category, subcategory)
+    products: getCategoryProducts(category, subcategory),
+    getDistributionProducts
   };
 };

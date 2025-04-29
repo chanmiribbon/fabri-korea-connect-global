@@ -6,6 +6,7 @@ export interface Product {
   nameCn: string;
   nameJp: string;
   image: string;
+  detailImages?: string[];
   price: string;
   priceUsd: string;
   subcategory: string;
@@ -26,6 +27,9 @@ export interface Product {
   badges?: string[];
   isNewArrival?: boolean;
   isBestSeller?: boolean;
+  isRetail?: boolean;
+  isWholesale?: boolean;
+  moq?: number;
 }
 
 export interface Subcategory {

@@ -28,6 +28,7 @@ const SupplierDashboard = lazy(() => import('./pages/SupplierDashboard'));
 const SellerDashboard = lazy(() => import('./pages/seller/Dashboard'));
 const SellerProducts = lazy(() => import('./pages/seller/Products'));
 const SellerOrders = lazy(() => import('./pages/seller/Orders'));
+const SellerProductRegistration = lazy(() => import('./pages/seller/ProductRegistration'));
 
 // Add the new import
 const BusinessProfileSettings = lazy(() => import('./components/seller/settings/BusinessProfileSettings'));
@@ -103,6 +104,14 @@ const App = () => (
             element={
               <Suspense fallback={<div className="p-20 text-center">Loading...</div>}>
                 <SellerProducts />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/seller/products/new" 
+            element={
+              <Suspense fallback={<div className="p-20 text-center">Loading...</div>}>
+                <SellerProductRegistration />
               </Suspense>
             } 
           />
