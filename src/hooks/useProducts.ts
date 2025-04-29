@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Product, NewProduct } from "@/types/product";
 
@@ -739,4 +740,48 @@ const convertFormDataToProduct = (formData: any): NewProduct => {
       jp: formData.nameJp || "",
     },
     price: {
-      kr: formData.price || "
+      kr: formData.price || "",
+      en: formData.priceUsd || "",
+      cn: formData.price || "",
+      jp: formData.price || "",
+    },
+    retailPrice: {
+      kr: formData.retailPrice || formData.price || "",
+      en: formData.retailPriceUsd || formData.priceUsd || "",
+      cn: formData.retailPrice || formData.price || "",
+      jp: formData.retailPrice || formData.price || "",
+    },
+    wholesalePrice: {
+      kr: formData.wholesalePrice || formData.price || "",
+      en: formData.wholesalePriceUsd || formData.priceUsd || "",
+      cn: formData.wholesalePrice || formData.price || "",
+      jp: formData.wholesalePrice || formData.price || "",
+    },
+    description: {
+      kr: formData.descriptionKr || "",
+      en: formData.description || "",
+      cn: formData.descriptionCn || "",
+      jp: formData.descriptionJp || "",
+    },
+    category: formData.subcategory || "accessories",
+    specifications: {
+      size: formData.specifications?.size || "",
+      material: formData.specifications?.material || "",
+      colors: formData.specifications?.colors || [],
+      weight: formData.specifications?.weight || "",
+      width: formData.specifications?.width || "",
+    },
+    isRetail: formData.isRetail !== undefined ? formData.isRetail : true,
+    isWholesale: formData.isWholesale !== undefined ? formData.isWholesale : false,
+    moq: Number(formData.moq) || 1,
+    retailMOQ: Number(formData.retailMOQ) || Number(formData.moq) || 1,
+    wholesaleMOQ: Number(formData.wholesaleMOQ) || Number(formData.moq) || 10,
+    retailShippingMethod: formData.retailShippingMethod || "domestic",
+    wholesaleShippingMethod: formData.wholesaleShippingMethod || "both",
+    thumbnailImage: formData.thumbnailImage || null,
+    detailImages: formData.detailImages || null,
+    additionalImages: formData.additionalImages || [],
+  };
+};
+
+export { useProducts, convertFormDataToProduct };
