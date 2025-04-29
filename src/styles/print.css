@@ -38,7 +38,7 @@
   
   /* A4 paper format */
   @page {
-    size: A4;
+    size: A4 portrait;
     margin: 10mm; /* Add margins for better printing */
   }
   
@@ -118,5 +118,27 @@
   [role="dialog"] th:first-child,
   [role="dialog"] td:first-child {
     width: 20%;
+  }
+  
+  /* Fix text overflow issues */
+  [role="dialog"] td {
+    white-space: normal;
+    word-break: break-word;
+  }
+  
+  /* Remove unnecessary elements when printing */
+  [role="dialog"] button:not(.print-include),
+  [role="dialog"] .print-exclude {
+    display: none !important;
+  }
+  
+  /* Ensure proper page breaks */
+  [role="dialog"] .print-page {
+    page-break-after: always;
+  }
+  
+  /* Last page should not have a page break */
+  [role="dialog"] .print-page:last-child {
+    page-break-after: avoid;
   }
 }

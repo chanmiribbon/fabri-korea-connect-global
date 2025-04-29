@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useLanguageStore } from "@/hooks/useLanguageStore";
 import { Button } from "@/components/ui/button";
@@ -75,19 +76,29 @@ const ProductRegistrationForm: React.FC<ProductRegistrationFormProps> = ({
   };
 
   // Handle Korean text input and automatically translate
-  const handleKoreanTextChange = async (field: string, value: string) => {
+  const handleKoreanTextChange = async (field: 'name' | 'description', value: string) => {
     if (!value) {
       // If the Korean field is empty, clear all translations
-      form.setValue(`${field}`, "");
-      form.setValue(`${field}Kr`, "");
-      form.setValue(`${field}Cn`, "");
-      form.setValue(`${field}Jp`, "");
-      form.setValue(`${field}`, "");
+      if (field === 'name') {
+        form.setValue("name", "");
+        form.setValue("nameKr", "");
+        form.setValue("nameCn", "");
+        form.setValue("nameJp", "");
+      } else if (field === 'description') {
+        form.setValue("description", "");
+        form.setValue("descriptionKr", "");
+        form.setValue("descriptionCn", "");
+        form.setValue("descriptionJp", "");
+      }
       return;
     }
 
     // Set the Korean value
-    form.setValue(`${field}Kr`, value);
+    if (field === 'name') {
+      form.setValue("nameKr", value);
+    } else if (field === 'description') {
+      form.setValue("descriptionKr", value);
+    }
     
     // Show translating toast
     setIsTranslating(true);
@@ -102,9 +113,15 @@ const ProductRegistrationForm: React.FC<ProductRegistrationFormProps> = ({
       ]);
 
       // Set the translated values
-      form.setValue(`${field}`, enTranslation);
-      form.setValue(`${field}Cn`, cnTranslation);
-      form.setValue(`${field}Jp`, jpTranslation);
+      if (field === 'name') {
+        form.setValue("name", enTranslation);
+        form.setValue("nameCn", cnTranslation);
+        form.setValue("nameJp", jpTranslation);
+      } else if (field === 'description') {
+        form.setValue("description", enTranslation);
+        form.setValue("descriptionCn", cnTranslation);
+        form.setValue("descriptionJp", jpTranslation);
+      }
       
       // Show success toast
       toast.success("번역 완료");
@@ -262,7 +279,7 @@ const ProductRegistrationForm: React.FC<ProductRegistrationFormProps> = ({
                       {...field} 
                       onChange={(e) => {
                         field.onChange(e);
-                        handleKoreanTextChange("name", e.target.value);
+                        handleKoreanTextChange('name', e.target.value);
                       }}
                     />
                   </FormControl>
@@ -672,7 +689,7 @@ const ProductRegistrationForm: React.FC<ProductRegistrationFormProps> = ({
                       {...field} 
                       onChange={(e) => {
                         field.onChange(e);
-                        handleKoreanTextChange("description", e.target.value);
+                        handleKoreanTextChange('description', e.target.value);
                       }}
                     />
                   </FormControl>
