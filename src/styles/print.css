@@ -36,15 +36,55 @@
     background: white;
   }
   
+  /* A4 paper format */
+  @page {
+    size: A4;
+    margin: 0;
+  }
+  
   /* Remove backgrounds, shadows, etc. for cleaner printing */
   [role="dialog"] {
     box-shadow: none !important;
     background: white !important;
     border: none !important;
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto;
+    padding: 10mm;
+  }
+  
+  /* Content size limits for A4 */
+  [role="dialog"] .DialogContent {
+    max-width: 190mm !important;
+    margin: 0 auto;
   }
   
   /* Add page breaks between orders */
   .page-break-after {
     page-break-after: always;
+  }
+  
+  /* Typography for print */
+  [role="dialog"] h1, 
+  [role="dialog"] h2,
+  [role="dialog"] h3 {
+    margin-top: 0;
+  }
+  
+  /* Tables for print */
+  [role="dialog"] table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  [role="dialog"] th,
+  [role="dialog"] td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  /* Orders specific print layout */
+  [role="dialog"] .mb-8 {
+    margin-bottom: 20mm !important;
   }
 }

@@ -100,6 +100,18 @@ const translations = {
     CN: "关闭",
     JP: "閉じる",
   },
+  date: {
+    KR: "주문일자",
+    EN: "Order Date",
+    CN: "订单日期",
+    JP: "注文日",
+  },
+  status: {
+    KR: "주문상태",
+    EN: "Order Status",
+    CN: "订单状态",
+    JP: "注文状況",
+  },
 };
 
 const PrintOrdersDialog: React.FC<PrintOrdersDialogProps> = ({ open, onClose, selectedOrders, language }) => {
@@ -109,20 +121,28 @@ const PrintOrdersDialog: React.FC<PrintOrdersDialogProps> = ({ open, onClose, se
   
   return (
     <Dialog open={open} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-3xl print:shadow-none print:border-none">
-        <DialogHeader>
-          <DialogTitle className="print:text-center">
+      <DialogContent className="max-w-3xl print:shadow-none print:border-none print:p-0 DialogContent">
+        <DialogHeader className="print:mb-6">
+          <DialogTitle className="print:text-center print:text-2xl">
             {translations.printOrders[language]}
           </DialogTitle>
         </DialogHeader>
         
         <div className="print:p-0">
-          {selectedOrders.map((order) => (
-            <div key={order.id} className="mb-8 border-b pb-6 print:mb-4">
+          {selectedOrders.map((order, idx) => (
+            <div key={order.id} className={`mb-8 ${idx < selectedOrders.length - 1 ? "pb-6 border-b page-break-after" : ""}`}>
               <div className="grid grid-cols-2 gap-4 mb-4">
                 <div>
                   <h3 className="font-bold">{translations.orderNumber[language]}</h3>
                   <p>{order.id}</p>
+                </div>
+                <div>
+                  <h3 className="font-bold">{translations.date[language]}</h3>
+                  <p>{order.date}</p>
+                </div>
+                <div>
+                  <h3 className="font-bold">{translations.status[language]}</h3>
+                  <p>{order.status}</p>
                 </div>
                 <div>
                   <h3 className="font-bold">{translations.customer[language]}</h3>
@@ -135,7 +155,7 @@ const PrintOrdersDialog: React.FC<PrintOrdersDialogProps> = ({ open, onClose, se
                   </div>
                 )}
                 {order.address && (
-                  <div>
+                  <div className="col-span-2">
                     <h3 className="font-bold">{translations.address[language]}</h3>
                     <p>{order.address}</p>
                   </div>
@@ -148,7 +168,7 @@ const PrintOrdersDialog: React.FC<PrintOrdersDialogProps> = ({ open, onClose, se
                 )}
               </div>
               
-              <table className="w-full border-collapse">
+              <table className="w-full border-collapse print:mt-6">
                 <thead>
                   <tr className="bg-gray-50 border-y">
                     <th className="py-2 px-4 text-left">{translations.product[language]}</th>
