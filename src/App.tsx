@@ -18,6 +18,7 @@ import B2BRegister from "./pages/register/B2BRegister";
 import B2CRegister from "./pages/register/B2CRegister";
 import ChatSupport from "./components/chat/ChatSupport";
 import AccessDenied from "./pages/AccessDenied";
+import ProductDetail from "./pages/ProductDetail";
 
 // Use lazy with proper import syntax
 const CategoryProducts = lazy(() => import('./pages/Products/[category]'));
@@ -67,6 +68,11 @@ const App = () => (
               </Suspense>
             } 
           />
+          
+          {/* Add product detail routes */}
+          <Route path="/consumer-products/:productId" element={<ProductDetail />} />
+          <Route path="/buyer-products/:productId" element={<ProductDetail />} />
+          
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register/b2b" element={<B2BRegister />} />

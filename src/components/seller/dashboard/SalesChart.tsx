@@ -2,7 +2,6 @@
 import React from "react";
 import { Language } from "@/hooks/useLanguageStore";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ChartContainer, ChartTooltip } from "@/components/ui/chart";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from "recharts";
 
 interface SalesChartProps {
@@ -29,25 +28,32 @@ const sampleData = [
 
 const SalesChart: React.FC<SalesChartProps> = ({ language }) => {
   return (
-    <Card className="col-span-3 h-auto">
+    <Card className="col-span-3 h-auto w-full overflow-hidden">
       <CardHeader>
         <CardTitle>{translations.monthlySales[language]}</CardTitle>
       </CardHeader>
-      <CardContent className="h-[300px] w-full overflow-hidden">
+      <CardContent className="h-[300px] w-full p-2">
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={sampleData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
+          <LineChart 
+            data={sampleData} 
+            margin={{ top: 10, right: 10, left: 10, bottom: 20 }}
+          >
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="month" />
-            <YAxis 
-              tickFormatter={(value) => 
-                `₩${(value / 1000000).toFixed(1)}M`
-              }
+            <XAxis 
+              dataKey="month" 
+              tick={{ fontSize: 12 }}
+              tickMargin={10}
             />
-            <ChartTooltip />
+            <YAxis 
+              tickFormatter={(value) => `₩${(value / 1000000).toFixed(1)}M`}
+              tick={{ fontSize: 12 }}
+              width={60}
+            />
             <Line
               type="monotone"
               dataKey="sales"
               name="sales"
+              stroke="#2563eb"
               strokeWidth={2}
               dot={{ strokeWidth: 2 }}
             />

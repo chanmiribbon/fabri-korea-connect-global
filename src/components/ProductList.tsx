@@ -1,11 +1,11 @@
 
 import React from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { FileText, ShoppingCart, Download, CreditCard } from "lucide-react";
-import { useLocation } from "react-router-dom";
 import { useProducts } from "@/hooks/useProducts";
 import { Product } from "@/types/product";
 
@@ -17,6 +17,7 @@ interface ProductListProps {
 
 const ProductList: React.FC<ProductListProps> = ({ category }) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const isBuyerView = location.pathname.includes("/buyer");
   const { products, getDistributionProducts } = useProducts(category, null);
   
@@ -28,6 +29,13 @@ const ProductList: React.FC<ProductListProps> = ({ category }) => {
   const handleDownloadCatalog = (format: 'pdf' | 'csv') => {
     console.log(`Downloading catalog in ${format} format`);
     // Here you would implement the actual download logic
+  };
+
+  const handleProductClick = (productId: number) => {
+    const path = isBuyerView
+      ? `/buyer-products/${productId}`
+      : `/consumer-products/${productId}`;
+    navigate(path);
   };
 
   const getLocalizedName = (product: Product, lang: Language): string => {
@@ -64,6 +72,22 @@ const ProductList: React.FC<ProductListProps> = ({ category }) => {
         default: return "Buy Now";
       }
     }
+  };
+
+  // Get the appropriate price based on the view
+  const getProductPrice = (product: Product, isWholesale: boolean, lang: Language = "KR"): string => {
+    if (isWholesale) {
+      return lang === "EN" ? product.priceUsd : product.wholesalePrice || product.price;
+    } else {
+      return lang === "EN" ? product.priceUsd : product.retailPrice || product.price;
+    }
+  };
+
+  // Get the appropriate MOQ based on the view
+  const getProductMOQ = (product: Product, isWholesale: boolean): number => {
+    return isWholesale ? 
+      (product.wholesaleMOQ || product.moq || 10) : 
+      (product.retailMOQ || product.moq || 1);
   };
 
   return (
@@ -117,27 +141,63 @@ const ProductList: React.FC<ProductListProps> = ({ category }) => {
                   </TabsList>
                   
                   <TabsContent value="kr" className="mt-4">
-                    <h3 className="text-lg font-semibold mb-2 text-[#333333]">{getLocalizedName(product, "KR")}</h3>
-                    <p className="text-sm text-[#4A4A4A] mb-2">최소 주문수량(MOQ): {product.moq || 1}개</p>
-                    <p className="text-lg font-medium text-fabri-blue mb-2">{product.price}</p>
+                    <h3 
+                      className="text-lg font-semibold mb-2 text-[#333333] cursor-pointer hover:text-fabri-blue hover:underline"
+                      onClick={() => handleProductClick(product.id)}
+                    >
+                      {getLocalizedName(product, "KR")}
+                    </h3>
+                    <p className="text-sm text-[#4A4A4A] mb-2">
+                      최소 주문수량(MOQ): {getProductMOQ(product, isBuyerView)}개
+                    </p>
+                    <p className="text-lg font-medium text-fabri-blue mb-2">
+                      {getProductPrice(product, isBuyerView, "KR")}
+                    </p>
                     <p className="text-sm text-[#4A4A4A] mb-4">{getLocalizedDescription(product, "KR")}</p>
                   </TabsContent>
                   <TabsContent value="en" className="mt-4">
-                    <h3 className="text-lg font-semibold mb-2 text-[#333333]">{getLocalizedName(product, "EN")}</h3>
-                    <p className="text-sm text-[#4A4A4A] mb-2">MOQ: {product.moq || 1} units</p>
-                    <p className="text-lg font-medium text-fabri-blue mb-2">{product.priceUsd}</p>
+                    <h3 
+                      className="text-lg font-semibold mb-2 text-[#333333] cursor-pointer hover:text-fabri-blue hover:underline"
+                      onClick={() => handleProductClick(product.id)}
+                    >
+                      {getLocalizedName(product, "EN")}
+                    </h3>
+                    <p className="text-sm text-[#4A4A4A] mb-2">
+                      MOQ: {getProductMOQ(product, isBuyerView)} units
+                    </p>
+                    <p className="text-lg font-medium text-fabri-blue mb-2">
+                      {getProductPrice(product, isBuyerView, "EN")}
+                    </p>
                     <p className="text-sm text-[#4A4A4A] mb-4">{getLocalizedDescription(product, "EN")}</p>
                   </TabsContent>
                   <TabsContent value="cn" className="mt-4">
-                    <h3 className="text-lg font-semibold mb-2 text-[#333333]">{getLocalizedName(product, "CN")}</h3>
-                    <p className="text-sm text-[#4A4A4A] mb-2">最小订购量: {product.moq || 1}件</p>
-                    <p className="text-lg font-medium text-fabri-blue mb-2">{product.priceUsd}</p>
+                    <h3 
+                      className="text-lg font-semibold mb-2 text-[#333333] cursor-pointer hover:text-fabri-blue hover:underline"
+                      onClick={() => handleProductClick(product.id)}
+                    >
+                      {getLocalizedName(product, "CN")}
+                    </h3>
+                    <p className="text-sm text-[#4A4A4A] mb-2">
+                      最小订购量: {getProductMOQ(product, isBuyerView)}件
+                    </p>
+                    <p className="text-lg font-medium text-fabri-blue mb-2">
+                      {getProductPrice(product, isBuyerView, "CN")}
+                    </p>
                     <p className="text-sm text-[#4A4A4A] mb-4">{getLocalizedDescription(product, "CN")}</p>
                   </TabsContent>
                   <TabsContent value="jp" className="mt-4">
-                    <h3 className="text-lg font-semibold mb-2 text-[#333333]">{getLocalizedName(product, "JP")}</h3>
-                    <p className="text-sm text-[#4A4A4A] mb-2">最小注文数量: {product.moq || 1}個</p>
-                    <p className="text-lg font-medium text-fabri-blue mb-2">{product.priceUsd}</p>
+                    <h3 
+                      className="text-lg font-semibold mb-2 text-[#333333] cursor-pointer hover:text-fabri-blue hover:underline"
+                      onClick={() => handleProductClick(product.id)}
+                    >
+                      {getLocalizedName(product, "JP")}
+                    </h3>
+                    <p className="text-sm text-[#4A4A4A] mb-2">
+                      最小注文数量: {getProductMOQ(product, isBuyerView)}個
+                    </p>
+                    <p className="text-lg font-medium text-fabri-blue mb-2">
+                      {getProductPrice(product, isBuyerView, "JP")}
+                    </p>
                     <p className="text-sm text-[#4A4A4A] mb-4">{getLocalizedDescription(product, "JP")}</p>
                   </TabsContent>
                 </Tabs>
