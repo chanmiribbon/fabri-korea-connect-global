@@ -12,9 +12,10 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { toast } from "sonner";
 import { useLanguageStore } from "@/hooks/useLanguageStore";
+import { useNavigate } from "react-router-dom";
 
 const LoginSchema = z.object({
-  email: z.string().email({ message: "유효한 이메일을 입력해주세요" }),
+  email: z.string().min(1, { message: "이메일을 입력해주세요" }),
   password: z.string().min(1, { message: "비밀번호를 입력해주세요" }),
 });
 
@@ -22,6 +23,7 @@ type LoginFormData = z.infer<typeof LoginSchema>;
 
 const Login = () => {
   const { language } = useLanguageStore();
+  const navigate = useNavigate();
   
   const form = useForm<LoginFormData>({
     resolver: zodResolver(LoginSchema),
@@ -34,8 +36,22 @@ const Login = () => {
   const onSubmit = async (data: LoginFormData) => {
     console.log("Login Form Data:", data);
     
-    // Here you would typically make an API call to authenticate the user
-    // For now, we'll just simulate a successful login
+    // Check for admin credentials
+    if (data.email === "admin" && data.password === "1234!") {
+      // Set admin status in localStorage
+      localStorage.setItem("userType", "business");
+      localStorage.setItem("verificationStatus", "verified");
+      
+      toast.success("관리자로 로그인이 완료되었습니다.", {
+        duration: 3000,
+      });
+      
+      // Redirect to seller dashboard after successful admin login
+      navigate("/seller/dashboard");
+      return;
+    }
+    
+    // Regular login logic (unchanged)
     toast.success("로그인이 완료되었습니다.", {
       duration: 3000,
     });
@@ -98,13 +114,13 @@ const Login = () => {
                           name="email"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>이메일</FormLabel>
+                              <FormLabel>아이디 또는 이메일</FormLabel>
                               <FormControl>
                                 <div className="flex">
                                   <div className="bg-muted p-2 flex items-center rounded-l-md border border-r-0">
                                     <Mail className="h-5 w-5 text-gray-500" />
                                   </div>
-                                  <Input className="rounded-l-none" placeholder="이메일을 입력하세요" {...field} />
+                                  <Input className="rounded-l-none" placeholder="아이디 또는 이메일을 입력하세요" {...field} />
                                 </div>
                               </FormControl>
                               <FormMessage />
@@ -139,6 +155,10 @@ const Login = () => {
                         <Button type="submit" className="w-full">로그인</Button>
                       </form>
                     </Form>
+                    
+                    <div className="text-xs text-gray-500 mt-2">
+                      <p>관리자 테스트 계정: ID - admin, PW - 1234!</p>
+                    </div>
                   </div>
                 </TabsContent>
                 <TabsContent value="register">
