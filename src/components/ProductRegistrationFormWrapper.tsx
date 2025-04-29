@@ -510,7 +510,7 @@ export const ProductRegistrationFormWrapper: React.FC<ProductRegistrationFormWra
                         {field.value ? (
                           <div className="relative w-full h-48">
                             <img 
-                              src={URL.createObjectURL(field.value)} 
+                              src={URL.createObjectURL(field.value as Blob)} 
                               alt="Thumbnail preview" 
                               className="w-full h-full object-contain"
                             />
@@ -563,7 +563,7 @@ export const ProductRegistrationFormWrapper: React.FC<ProductRegistrationFormWra
                             {Array.from(field.value).map((file, index) => (
                               <div key={index} className="relative">
                                 <img 
-                                  src={URL.createObjectURL(file)} 
+                                  src={URL.createObjectURL(file as Blob)} 
                                   alt={`Detail image ${index+1}`} 
                                   className="w-full h-32 object-cover rounded"
                                 />
