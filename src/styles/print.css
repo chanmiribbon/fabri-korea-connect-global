@@ -39,7 +39,7 @@
   /* A4 paper format */
   @page {
     size: A4;
-    margin: 0;
+    margin: 10mm; /* Add margins for better printing */
   }
   
   /* Remove backgrounds, shadows, etc. for cleaner printing */
@@ -50,13 +50,15 @@
     width: 210mm;
     min-height: 297mm;
     margin: 0 auto;
-    padding: 10mm;
+    padding: 0;
+    overflow: visible !important;
   }
   
   /* Content size limits for A4 */
   [role="dialog"] .DialogContent {
     max-width: 190mm !important;
     margin: 0 auto;
+    overflow: visible !important;
   }
   
   /* Add page breaks between orders */
@@ -75,16 +77,46 @@
   [role="dialog"] table {
     width: 100%;
     border-collapse: collapse;
+    font-size: 10pt;
   }
   
   [role="dialog"] th,
   [role="dialog"] td {
     border: 1px solid #ddd;
-    padding: 8px;
+    padding: 4px;
+    font-size: 10pt;
   }
   
   /* Orders specific print layout */
   [role="dialog"] .mb-8 {
-    margin-bottom: 20mm !important;
+    margin-bottom: 10mm !important;
+  }
+  
+  /* Ensure content fits on page */
+  [role="dialog"] .overflow-auto {
+    overflow: visible !important;
+  }
+  
+  /* Scale content to fit the page if needed */
+  [role="dialog"] .DialogContent > div {
+    width: 100% !important;
+    max-width: 190mm;
+  }
+  
+  /* Ensure all order data is printed */
+  [role="dialog"] .order-details {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  
+  /* Smaller font sizes for print */
+  [role="dialog"] {
+    font-size: 10pt;
+  }
+  
+  /* Ensure table columns have appropriate widths */
+  [role="dialog"] th:first-child,
+  [role="dialog"] td:first-child {
+    width: 20%;
   }
 }
