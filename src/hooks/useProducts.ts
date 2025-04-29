@@ -39,6 +39,15 @@ const productStore = {
       isNewArrival: true
     };
 
+    // Handle additional images if they exist
+    if (newProduct.additionalImages && newProduct.additionalImages.length > 0) {
+      const validAdditionalImages = newProduct.additionalImages.filter(Boolean);
+      if (validAdditionalImages.length > 0) {
+        const additionalImageUrls = validAdditionalImages.map(file => URL.createObjectURL(file as File));
+        product.detailImages = [...(product.detailImages || []), ...additionalImageUrls];
+      }
+    }
+
     this.registeredProducts.push(product);
     return product;
   },
@@ -47,6 +56,7 @@ const productStore = {
   }
 };
 
+// Sample products data
 const sampleProducts = {
   dongdaemun: [
     {
@@ -87,7 +97,7 @@ const sampleProducts = {
       description: "Vintage-inspired pendant necklace with antique finish",
       descriptionKr: "앤틱 마감 처리된 빈티지 스타일의 펜던트 목걸이",
       descriptionCn: "复古风格吊坠项链，古董式处理",
-      descriptionJp: "アンティーク仕上げのヴィンテージ風ペンダントネッ��レス",
+      descriptionJp: "アンティーク仕上げのヴィンテージ風ペンダントネックレス",
       stock: 100,
       specifications: {
         size: "Chain length: 45cm",
@@ -287,7 +297,7 @@ const sampleProducts = {
       priceUsd: "$19.50",
       subcategory: "necklaces",
       description: "Trendy layered chain necklace with various pendants",
-      descriptionKr: "다양한 펜던트가 있는 트렌��한 레이어드 체인 목걸이",
+      descriptionKr: "다양한 펜던트가 있는 트렌디한 레이어드 체인 목걸이",
       descriptionCn: "时尚多层链条项链，配有各种吊坠",
       descriptionJp: "様々なペンダント付きトレンディなレイヤードチェーンネックレス",
       stock: 70,
@@ -438,14 +448,135 @@ const sampleProducts = {
   ]
 };
 
-export const useProductsWrapper = (category: string | undefined, subcategory: string | null) => {
-  const originalHook = useProducts(category, subcategory);
+// Main hook implementation
+export const useProducts = (category: string | undefined, subcategory: string | null) => {
+  const [products, setProducts] = useState<Product[]>([]);
   
-  // Here we would extend the useProducts hook to handle additional images
-  // But since we can't modify the original hook, we'll just return it as is
+  useEffect(() => {
+    // Initialize with sample products
+    let initialProducts: Product[] = [];
+    
+    // Add products from the appropriate category
+    if (category === "accessories") {
+      initialProducts = [...sampleProducts.accessories];
+    } else if (category === "dongdaemun") {
+      initialProducts = [...sampleProducts.dongdaemun];
+    } else if (category === "namdaemun") {
+      initialProducts = [...sampleProducts.namdaemun];
+    } else if (category === "diy-parts") {
+      initialProducts = [...sampleProducts['diy-parts']];
+    } else {
+      // If no specific category, include all samples
+      initialProducts = [
+        ...sampleProducts.accessories,
+        ...sampleProducts.dongdaemun,
+        ...sampleProducts.namdaemun,
+        ...sampleProducts['diy-parts']
+      ];
+    }
+    
+    // Add any registered products
+    const registeredProducts = productStore.getRegisteredProducts();
+    initialProducts = [...initialProducts, ...registeredProducts];
+    
+    // Filter by subcategory if provided
+    if (subcategory) {
+      initialProducts = initialProducts.filter(
+        (p) => p.subcategory === subcategory
+      );
+    }
+    
+    setProducts(initialProducts);
+  }, [category, subcategory]);
   
-  return originalHook;
+  const getDistributionProducts = (isWholesale: boolean) => {
+    // Get all products including registered ones
+    const allProducts = [
+      ...sampleProducts.accessories,
+      ...sampleProducts.dongdaemun,
+      ...sampleProducts.namdaemun,
+      ...sampleProducts['diy-parts'],
+      ...productStore.getRegisteredProducts()
+    ];
+    
+    // Filter based on distribution channel
+    if (isWholesale) {
+      return allProducts.filter(p => p.isWholesale);
+    } else {
+      return allProducts.filter(p => p.isRetail);
+    }
+  };
+  
+  const addProduct = (newProduct: NewProduct) => {
+    const product = productStore.addProduct(newProduct);
+    setProducts(prev => [...prev, product]);
+    return product;
+  };
+  
+  return { products, addProduct, getDistributionProducts };
 };
 
-// Re-export the original hook and functions for compatibility
-export { useProducts, convertFormDataToProduct } from "@/hooks/useProducts";
+// Helper function to convert form data to product format
+export const convertFormDataToProduct = (formData: any): NewProduct => {
+  return {
+    name: {
+      kr: formData.nameKr || "",
+      en: formData.name || "",
+      cn: formData.nameCn || "",
+      jp: formData.nameJp || "",
+    },
+    price: {
+      kr: formData.price || "0",
+      en: formData.priceUsd || "$0",
+      cn: formData.priceCny || "¥0",
+      jp: formData.priceJpy || "¥0",
+    },
+    retailPrice: {
+      kr: formData.retailPrice || formData.price || "0",
+      en: formData.retailPriceUsd || formData.priceUsd || "$0",
+      cn: formData.retailPriceCny || formData.priceCny || "¥0",
+      jp: formData.retailPriceJpy || formData.priceJpy || "¥0",
+    },
+    wholesalePrice: {
+      kr: formData.wholesalePrice || formData.price || "0",
+      en: formData.wholesalePriceUsd || formData.priceUsd || "$0",
+      cn: formData.wholesalePriceCny || formData.priceCny || "¥0",
+      jp: formData.wholesalePriceJpy || formData.priceJpy || "¥0",
+    },
+    description: {
+      kr: formData.descriptionKr || "",
+      en: formData.description || "",
+      cn: formData.descriptionCn || "",
+      jp: formData.descriptionJp || "",
+    },
+    category: formData.category || "accessories",
+    specifications: {
+      size: formData.size || "",
+      material: formData.material || "",
+      colors: formData.colors || [],
+      weight: formData.weight || "",
+      width: formData.width || "",
+    },
+    isRetail: formData.isRetail || false,
+    isWholesale: formData.isWholesale || false,
+    moq: Number(formData.moq) || 1,
+    retailMOQ: Number(formData.retailMOQ) || Number(formData.moq) || 1,
+    wholesaleMOQ: Number(formData.wholesaleMOQ) || Number(formData.moq) || 10,
+    retailShippingMethod: formData.retailShippingMethod || "domestic",
+    wholesaleShippingMethod: formData.wholesaleShippingMethod || "both",
+    thumbnailImage: formData.thumbnailImage || null,
+    detailImages: formData.detailImages || null,
+    additionalImages: formData.additionalImages || [],
+  };
+};
+
+// Export the useProductsWrapper function - remove the circular references
+export const useProductsWrapper = (category: string | undefined, subcategory: string | null) => {
+  // Use the useProducts hook directly instead of importing it again
+  const productsHook = useProducts(category, subcategory);
+  
+  // Here we would extend the useProducts hook to handle additional images
+  // But since we're using the original hook, we'll just return it as is
+  
+  return productsHook;
+};
