@@ -7,8 +7,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form";
-import { Package, Image, Truck, ImagePlus } from "lucide-react";
+import { Package, Image, Truck, ImagePlus, AlertCircle } from "lucide-react";
 import { useLanguageStore } from "@/hooks/useLanguageStore";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface ProductFormData {
   name: {
@@ -27,7 +28,21 @@ interface ProductFormData {
     cn: string;
     jp: string;
   };
+  retailPrice: {
+    kr: string;
+    en: string;
+    cn: string;
+    jp: string;
+  };
+  wholesalePrice: {
+    kr: string;
+    en: string;
+    cn: string;
+    jp: string;
+  };
   moq: number;
+  retailMOQ: number;
+  wholesaleMOQ: number;
   description: {
     kr: string;
     en: string;
@@ -35,6 +50,8 @@ interface ProductFormData {
     jp: string;
   };
   shippingMethod: string;
+  retailShippingMethod: string;
+  wholesaleShippingMethod: string;
   quantityLimit: number;
   isRetail: boolean;
   isWholesale: boolean;
@@ -48,7 +65,7 @@ interface ProductFormData {
 }
 
 interface ProductRegistrationFormProps {
-  onSubmitSuccess?: (formData: any) => void; // Update this type to match the handler
+  onSubmitSuccess?: (formData: any) => void;
 }
 
 const ProductRegistrationForm: React.FC<ProductRegistrationFormProps> = ({ onSubmitSuccess }) => {
@@ -64,8 +81,14 @@ const ProductRegistrationForm: React.FC<ProductRegistrationFormProps> = ({ onSub
       isRetail: true,
       isWholesale: true,
       shippingMethod: "domestic",
+      retailShippingMethod: "domestic",
+      wholesaleShippingMethod: "domestic",
     }
   });
+
+  // Watch retail and wholesale checkbox values
+  const isRetail = form.watch("isRetail");
+  const isWholesale = form.watch("isWholesale");
 
   const onSubmit = (data: ProductFormData) => {
     // Combine the form data with the selected files
@@ -133,9 +156,15 @@ const ProductRegistrationForm: React.FC<ProductRegistrationFormProps> = ({ onSub
           detailImages: "상세 이미지",
           price: "가격 (KRW)",
           moq: "최소 주문 수량 (MOQ)",
+          retailPrice: "소매 가격 (KRW)",
+          wholesalePrice: "도매 가격 (KRW)",
+          retailMOQ: "소매 최소 주문 수량",
+          wholesaleMOQ: "도매 최소 주문 수량",
           description: "상품 설명",
           shippingMethod: "배송 방식",
           selectShipping: "배송 방식 선택",
+          retailShipping: "소매 배송 방식",
+          wholesaleShipping: "도매 배송 방식",
           domestic: "국내 배송",
           international: "해외 배송",
           both: "국내/해외 배송",
@@ -149,7 +178,9 @@ const ProductRegistrationForm: React.FC<ProductRegistrationFormProps> = ({ onSub
           weight: "무게",
           width: "너비",
           retailInfo: "소매 판매 시 소비자 쇼핑몰에 노출됩니다.",
-          wholesaleInfo: "도매 판매 시 바이어 쇼핑몰에 노출됩니다."
+          wholesaleInfo: "도매 판매 시 바이어 쇼핑몰에 노출됩니다.",
+          channelSettings: "채널별 설정",
+          warningDistribution: "최소 하나의 판매 채널을 선택해야 합니다."
         };
       case "CN":
         return {
@@ -166,9 +197,15 @@ const ProductRegistrationForm: React.FC<ProductRegistrationFormProps> = ({ onSub
           detailImages: "详细图片",
           price: "价格 (KRW)",
           moq: "最小订购量 (MOQ)",
+          retailPrice: "零售价格 (KRW)",
+          wholesalePrice: "批发价格 (KRW)",
+          retailMOQ: "零售最小订购量",
+          wholesaleMOQ: "批发最小订购量",
           description: "产品描述",
           shippingMethod: "配送方式",
           selectShipping: "选择配送方式",
+          retailShipping: "零售配送方式",
+          wholesaleShipping: "批发配送方式",
           domestic: "国内配送",
           international: "国际配送",
           both: "国内/国际配送",
@@ -182,7 +219,9 @@ const ProductRegistrationForm: React.FC<ProductRegistrationFormProps> = ({ onSub
           weight: "重量",
           width: "宽度",
           retailInfo: "零售销售时将在消费者商城展示。",
-          wholesaleInfo: "批发销售时将在买家商城展示。"
+          wholesaleInfo: "批发销售时将在买家商城展示。",
+          channelSettings: "渠道设置",
+          warningDistribution: "您必须选择至少一个销售渠道。"
         };
       case "JP":
         return {
@@ -199,9 +238,15 @@ const ProductRegistrationForm: React.FC<ProductRegistrationFormProps> = ({ onSub
           detailImages: "詳細画像",
           price: "価格 (KRW)",
           moq: "最小注文数量 (MOQ)",
+          retailPrice: "小売価格 (KRW)",
+          wholesalePrice: "卸売価格 (KRW)",
+          retailMOQ: "小売最小注文数量",
+          wholesaleMOQ: "卸売最小注文数量",
           description: "商品説明",
           shippingMethod: "配送方法",
           selectShipping: "配送方法を選択",
+          retailShipping: "小売配送方法",
+          wholesaleShipping: "卸売配送方法",
           domestic: "国内配送",
           international: "海外配送",
           both: "国内/海外配送",
@@ -215,7 +260,9 @@ const ProductRegistrationForm: React.FC<ProductRegistrationFormProps> = ({ onSub
           weight: "重量",
           width: "幅",
           retailInfo: "小売販売時は消費者ショッピングモールに表示されます。",
-          wholesaleInfo: "卸売販売時はバイヤーショッピングモールに表示されます。"
+          wholesaleInfo: "卸売販売時はバイヤーショッピングモールに表示されます。",
+          channelSettings: "チャネル設定",
+          warningDistribution: "少なくとも1つの販売チャネルを選択する必要があります。"
         };
       default:
         return {
@@ -232,9 +279,15 @@ const ProductRegistrationForm: React.FC<ProductRegistrationFormProps> = ({ onSub
           detailImages: "Detail Images",
           price: "Price (KRW)",
           moq: "Minimum Order Quantity (MOQ)",
+          retailPrice: "Retail Price (KRW)",
+          wholesalePrice: "Wholesale Price (KRW)",
+          retailMOQ: "Retail Minimum Order Quantity",
+          wholesaleMOQ: "Wholesale Minimum Order Quantity",
           description: "Product Description",
           shippingMethod: "Shipping Method",
           selectShipping: "Select Shipping Method",
+          retailShipping: "Retail Shipping Method",
+          wholesaleShipping: "Wholesale Shipping Method",
           domestic: "Domestic Shipping",
           international: "International Shipping",
           both: "Domestic/International Shipping",
@@ -248,7 +301,9 @@ const ProductRegistrationForm: React.FC<ProductRegistrationFormProps> = ({ onSub
           weight: "Weight",
           width: "Width",
           retailInfo: "When sold retail, the product will be shown in the consumer shopping mall.",
-          wholesaleInfo: "When sold wholesale, the product will be shown in the buyer shopping mall."
+          wholesaleInfo: "When sold wholesale, the product will be shown in the buyer shopping mall.",
+          channelSettings: "Channel Settings",
+          warningDistribution: "You must select at least one distribution channel."
         };
     }
   };
@@ -566,55 +621,26 @@ const ProductRegistrationForm: React.FC<ProductRegistrationFormProps> = ({ onSub
             </div>
           </div>
 
-          {/* Section 4: Shipping & Distribution */}
+          {/* Section 4: Distribution Channels & Channel-specific settings */}
           <div className="p-6 bg-white rounded-lg border border-gray-200 shadow-sm">
             <div className="flex items-center gap-3 mb-6">
               <div className="bg-fabri-purple text-white w-10 h-10 rounded-full flex items-center justify-center">
                 <Package className="w-5 h-5" />
               </div>
-              <h2 className="text-xl font-semibold">{t.shipping}</h2>
+              <h2 className="text-xl font-semibold">{t.distribution}</h2>
             </div>
             
             <div className="space-y-6">
-              <FormField
-                control={form.control}
-                name="shippingMethod"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t.shippingMethod}</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder={t.selectShipping} />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="domestic">{t.domestic}</SelectItem>
-                        <SelectItem value="international">{t.international}</SelectItem>
-                        <SelectItem value="both">{t.both}</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
+              {/* Distribution channels */}
+              <div className="space-y-4">
+                {(!isRetail && !isWholesale) && (
+                  <Alert variant="destructive" className="mb-4">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertDescription>
+                      {t.warningDistribution}
+                    </AlertDescription>
+                  </Alert>
                 )}
-              />
-
-              <FormField
-                control={form.control}
-                name="quantityLimit"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t.quantityLimit}</FormLabel>
-                    <FormControl>
-                      <Input type="number" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
-              <div className="space-y-4 pt-4">
-                <h3 className="text-lg font-medium">{t.distribution}</h3>
                 
                 <FormField
                   control={form.control}
@@ -657,6 +683,129 @@ const ProductRegistrationForm: React.FC<ProductRegistrationFormProps> = ({ onSub
                     </FormItem>
                   )}
                 />
+              </div>
+              
+              {/* Channel-specific settings */}
+              <div className="mt-8">
+                <h3 className="text-lg font-medium mb-4">{t.channelSettings}</h3>
+                
+                {/* Retail channel settings */}
+                {isRetail && (
+                  <div className="rounded-lg border p-4 mb-4">
+                    <h4 className="text-md font-medium mb-3">{t.retailSale}</h4>
+                    <div className="space-y-4">
+                      <FormField
+                        control={form.control}
+                        name="retailPrice.kr"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>{t.retailPrice}</FormLabel>
+                            <FormControl>
+                              <Input type="number" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={form.control}
+                        name="retailMOQ"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>{t.retailMOQ}</FormLabel>
+                            <FormControl>
+                              <Input type="number" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={form.control}
+                        name="retailShippingMethod"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>{t.retailShipping}</FormLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder={t.selectShipping} />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                <SelectItem value="domestic">{t.domestic}</SelectItem>
+                                <SelectItem value="international">{t.international}</SelectItem>
+                                <SelectItem value="both">{t.both}</SelectItem>
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  </div>
+                )}
+                
+                {/* Wholesale channel settings */}
+                {isWholesale && (
+                  <div className="rounded-lg border p-4">
+                    <h4 className="text-md font-medium mb-3">{t.wholesaleSale}</h4>
+                    <div className="space-y-4">
+                      <FormField
+                        control={form.control}
+                        name="wholesalePrice.kr"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>{t.wholesalePrice}</FormLabel>
+                            <FormControl>
+                              <Input type="number" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={form.control}
+                        name="wholesaleMOQ"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>{t.wholesaleMOQ}</FormLabel>
+                            <FormControl>
+                              <Input type="number" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      
+                      <FormField
+                        control={form.control}
+                        name="wholesaleShippingMethod"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>{t.wholesaleShipping}</FormLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder={t.selectShipping} />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                <SelectItem value="domestic">{t.domestic}</SelectItem>
+                                <SelectItem value="international">{t.international}</SelectItem>
+                                <SelectItem value="both">{t.both}</SelectItem>
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>

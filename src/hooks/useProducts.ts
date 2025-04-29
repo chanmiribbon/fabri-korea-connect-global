@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Product, NewProduct } from "@/types/product";
 
@@ -20,6 +19,8 @@ const productStore = {
         [],
       price: newProduct.price.kr || "0",
       priceUsd: newProduct.price.en || "$0",
+      retailPrice: newProduct.retailPrice?.kr || newProduct.price.kr || "0",
+      wholesalePrice: newProduct.wholesalePrice?.kr || newProduct.price.kr || "0",
       subcategory: newProduct.category || "accessories",
       description: newProduct.description.en || "",
       descriptionKr: newProduct.description.kr || "",
@@ -29,6 +30,10 @@ const productStore = {
       specifications: newProduct.specifications || {},
       isRetail: newProduct.isRetail,
       isWholesale: newProduct.isWholesale,
+      retailMOQ: newProduct.retailMOQ || Number(newProduct.moq) || 1,
+      wholesaleMOQ: newProduct.wholesaleMOQ || Number(newProduct.moq) || 10,
+      retailShippingMethod: newProduct.retailShippingMethod || "domestic",
+      wholesaleShippingMethod: newProduct.wholesaleShippingMethod || "both",
       moq: Number(newProduct.moq) || 1,
       createdAt: new Date().toISOString(),
       isNewArrival: true
@@ -516,6 +521,18 @@ export const convertFormDataToProduct = (formData: any): NewProduct => {
       cn: formData.price?.cn || "¥0",
       jp: formData.price?.jp || "¥0"
     },
+    retailPrice: formData.retailPrice ? {
+      kr: formData.retailPrice?.kr ? `${formData.retailPrice.kr}원` : "0원",
+      en: formData.retailPrice?.en || "$0",
+      cn: formData.retailPrice?.cn || "¥0",
+      jp: formData.retailPrice?.jp || "¥0"
+    } : undefined,
+    wholesalePrice: formData.wholesalePrice ? {
+      kr: formData.wholesalePrice?.kr ? `${formData.wholesalePrice.kr}원` : "0원",
+      en: formData.wholesalePrice?.en || "$0",
+      cn: formData.wholesalePrice?.cn || "¥0",
+      jp: formData.wholesalePrice?.jp || "¥0"
+    } : undefined,
     description: {
       kr: formData.description?.kr || "",
       en: formData.description?.en || "",
@@ -527,6 +544,10 @@ export const convertFormDataToProduct = (formData: any): NewProduct => {
     isRetail: formData.isRetail !== false,
     isWholesale: formData.isWholesale !== false,
     moq: formData.moq || 1,
+    retailMOQ: formData.retailMOQ || formData.moq || 1,
+    wholesaleMOQ: formData.wholesaleMOQ || formData.moq || 10,
+    retailShippingMethod: formData.retailShippingMethod || "domestic",
+    wholesaleShippingMethod: formData.wholesaleShippingMethod || "both",
     thumbnailImage: formData.thumbnailImage || null,
     detailImages: formData.detailImages || null
   };

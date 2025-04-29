@@ -29,12 +29,12 @@ const sampleData = [
 
 const SalesChart: React.FC<SalesChartProps> = ({ language }) => {
   return (
-    <Card className="col-span-3">
+    <Card className="col-span-3 h-auto">
       <CardHeader>
         <CardTitle>{translations.monthlySales[language]}</CardTitle>
       </CardHeader>
-      <CardContent className="h-[300px]">
-        <ChartContainer config={{ sales: { theme: { light: "#6EC1E4", dark: "#6EC1E4" } } }}>
+      <CardContent className="h-[300px] w-full overflow-hidden">
+        <ResponsiveContainer width="100%" height="100%">
           <LineChart data={sampleData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="month" />
@@ -52,7 +52,7 @@ const SalesChart: React.FC<SalesChartProps> = ({ language }) => {
               dot={{ strokeWidth: 2 }}
             />
           </LineChart>
-        </ChartContainer>
+        </ResponsiveContainer>
       </CardContent>
     </Card>
   );

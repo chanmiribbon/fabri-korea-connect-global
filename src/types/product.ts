@@ -9,6 +9,8 @@ export interface Product {
   detailImages?: string[];
   price: string;
   priceUsd: string;
+  retailPrice?: string;
+  wholesalePrice?: string;
   subcategory: string;
   description: string;
   descriptionKr: string;
@@ -29,6 +31,10 @@ export interface Product {
   isBestSeller?: boolean;
   isRetail?: boolean;
   isWholesale?: boolean;
+  retailMOQ?: number;
+  wholesaleMOQ?: number;
+  retailShippingMethod?: string;
+  wholesaleShippingMethod?: string;
   moq?: number;
   createdAt?: string;  // Add timestamp for sorting
 }
@@ -41,6 +47,18 @@ export interface NewProduct {
     jp: string;
   };
   price: {
+    kr: string;
+    en: string;
+    cn: string;
+    jp: string;
+  };
+  retailPrice?: {
+    kr: string;
+    en: string;
+    cn: string;
+    jp: string;
+  };
+  wholesalePrice?: {
     kr: string;
     en: string;
     cn: string;
@@ -63,6 +81,10 @@ export interface NewProduct {
   isRetail: boolean;
   isWholesale: boolean;
   moq: number;
+  retailMOQ?: number;
+  wholesaleMOQ?: number;
+  retailShippingMethod?: string;
+  wholesaleShippingMethod?: string;
   thumbnailImage: File | null;
   detailImages: FileList | null;
 }
