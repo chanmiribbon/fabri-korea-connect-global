@@ -1,4 +1,46 @@
-import { Product } from "@/types/product";
+
+import { useState, useEffect } from 'react';
+import { Product, NewProduct } from "@/types/product";
+
+// Create a singleton to store products across component instances
+const productStore = {
+  registeredProducts: [] as Product[],
+  nextId: 1000,
+  addProduct: function(newProduct: NewProduct): Product {
+    // Convert NewProduct to Product
+    const product: Product = {
+      id: this.nextId++,
+      name: newProduct.name.en || "",
+      nameKr: newProduct.name.kr || "",
+      nameCn: newProduct.name.cn || "",
+      nameJp: newProduct.name.jp || "",
+      image: newProduct.thumbnailImage ? URL.createObjectURL(newProduct.thumbnailImage) : "/placeholder.svg",
+      detailImages: newProduct.detailImages ? 
+        Array.from(newProduct.detailImages).map(file => URL.createObjectURL(file)) : 
+        [],
+      price: newProduct.price.kr || "0",
+      priceUsd: newProduct.price.en || "$0",
+      subcategory: newProduct.category || "accessories",
+      description: newProduct.description.en || "",
+      descriptionKr: newProduct.description.kr || "",
+      descriptionCn: newProduct.description.cn || "",
+      descriptionJp: newProduct.description.jp || "",
+      stock: 100, // Default stock
+      specifications: newProduct.specifications || {},
+      isRetail: newProduct.isRetail,
+      isWholesale: newProduct.isWholesale,
+      moq: Number(newProduct.moq) || 1,
+      createdAt: new Date().toISOString(),
+      isNewArrival: true
+    };
+
+    this.registeredProducts.push(product);
+    return product;
+  },
+  getRegisteredProducts: function(): Product[] {
+    return this.registeredProducts;
+  }
+};
 
 const sampleProducts = {
   dongdaemun: [
@@ -392,32 +434,46 @@ const sampleProducts = {
 };
 
 export const useProducts = (category: string | undefined, subcategory: string | null) => {
-  const getCategoryProducts = (category: string | undefined, subcategory: string | null): Product[] => {
-    // Get all products for the category
-    let products: Product[] = [];
+  const [products, setProducts] = useState<Product[]>([]);
+  
+  useEffect(() => {
+    const allProducts = getAllProducts(category, subcategory);
+    setProducts(allProducts);
+  }, [category, subcategory]);
+
+  const getAllProducts = (category: string | undefined, subcategory: string | null) => {
+    // Get registered products
+    const registeredProducts = productStore.getRegisteredProducts();
+    
+    // Get sample products for the category
+    let categoryProducts: Product[] = [];
     
     if (category?.includes('dongdaemun') && category?.includes('accessories')) {
-      products = sampleProducts.dongdaemun;
+      categoryProducts = sampleProducts.dongdaemun;
     } else if (category?.includes('namdaemun') && category?.includes('accessories')) {
-      products = sampleProducts.namdaemun;
+      categoryProducts = sampleProducts.namdaemun;
     } else if (category === 'accessories') {
-      products = sampleProducts.accessories;
+      categoryProducts = sampleProducts.accessories;
     } else if (category === 'diy-parts') {
-      products = sampleProducts['diy-parts'];
+      categoryProducts = sampleProducts['diy-parts'];
     }
+    
+    // Combine registered and sample products
+    const combinedProducts = [...registeredProducts, ...categoryProducts];
     
     // Filter by subcategory if specified
     if (subcategory) {
-      return products.filter(product => product.subcategory === subcategory);
+      return combinedProducts.filter(product => product.subcategory === subcategory);
     }
     
-    return products;
+    return combinedProducts;
   };
   
-  // New function to get products based on distribution channel
+  // Function to get products based on distribution channel
   const getDistributionProducts = (isRetail: boolean = true): Product[] => {
-    // Combine all products
+    // Combine all products including registered ones
     let allProducts: Product[] = [
+      ...productStore.getRegisteredProducts(),
       ...sampleProducts.dongdaemun,
       ...sampleProducts.namdaemun,
       ...sampleProducts.accessories,
@@ -431,9 +487,47 @@ export const useProducts = (category: string | undefined, subcategory: string | 
       return allProducts.filter(product => product.isWholesale !== false);
     }
   };
+  
+  // New function to add a product
+  const addProduct = (newProduct: NewProduct): Product => {
+    const product = productStore.addProduct(newProduct);
+    return product;
+  };
 
   return {
-    products: getCategoryProducts(category, subcategory),
-    getDistributionProducts
+    products,
+    getDistributionProducts,
+    addProduct
+  };
+};
+
+// Function to convert ProductFormData to NewProduct
+export const convertFormDataToProduct = (formData: any): NewProduct => {
+  return {
+    name: {
+      kr: formData.name?.kr || "",
+      en: formData.name?.en || "",
+      cn: formData.name?.cn || "",
+      jp: formData.name?.jp || ""
+    },
+    price: {
+      kr: formData.price?.kr ? `${formData.price.kr}원` : "0원",
+      en: formData.price?.en || "$0",
+      cn: formData.price?.cn || "¥0",
+      jp: formData.price?.jp || "¥0"
+    },
+    description: {
+      kr: formData.description?.kr || "",
+      en: formData.description?.en || "",
+      cn: formData.description?.cn || "",
+      jp: formData.description?.jp || ""
+    },
+    category: formData.category || "accessories",
+    specifications: formData.specifications || {},
+    isRetail: formData.isRetail !== false,
+    isWholesale: formData.isWholesale !== false,
+    moq: formData.moq || 1,
+    thumbnailImage: formData.thumbnailImage || null,
+    detailImages: formData.detailImages || null
   };
 };

@@ -6,30 +6,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { FileText, ShoppingCart, Download, CreditCard } from "lucide-react";
 import { useLocation } from "react-router-dom";
-
-interface Product {
-  id: number;
-  name: {
-    kr: string;
-    en: string;
-    cn: string;
-    jp: string;
-  };
-  image: string;
-  moq: number;
-  price: {
-    kr: string;
-    en: string;
-    cn: string;
-    jp: string;
-  };
-  description: {
-    kr: string;
-    en: string;
-    cn: string;
-    jp: string;
-  };
-}
+import { useProducts } from "@/hooks/useProducts";
+import { Product } from "@/types/product";
 
 type Language = "KR" | "EN" | "CN" | "JP";
 
@@ -40,38 +18,35 @@ interface ProductListProps {
 const ProductList: React.FC<ProductListProps> = ({ category }) => {
   const location = useLocation();
   const isBuyerView = location.pathname.includes("/buyer");
+  const { products, getDistributionProducts } = useProducts(category, null);
+  
+  // Get products for the appropriate distribution channel
+  const displayProducts = isBuyerView 
+    ? getDistributionProducts(false).filter(p => p.isWholesale)
+    : getDistributionProducts(true).filter(p => p.isRetail);
   
   const handleDownloadCatalog = (format: 'pdf' | 'csv') => {
     console.log(`Downloading catalog in ${format} format`);
     // Here you would implement the actual download logic
   };
 
-  const products: Product[] = [
-    {
-      id: 1,
-      name: {
-        kr: "샘플 제품",
-        en: "Sample Product",
-        cn: "样品产品",
-        jp: "サンプル製品"
-      },
-      image: "/lovable-uploads/beb7f058-46f6-4d16-9441-38837503b0b5.png",
-      moq: 100,
-      price: {
-        kr: "10,000원",
-        en: "$8.50",
-        cn: "¥58.50",
-        jp: "¥950"
-      },
-      description: {
-        kr: "제품 상세 설명입니다.",
-        en: "This is the product description.",
-        cn: "这是产品描述。",
-        jp: "製品の詳細説明です。"
-      }
-    },
-    // More products can be added here
-  ];
+  const getLocalizedName = (product: Product, lang: Language): string => {
+    switch (lang) {
+      case "KR": return product.nameKr || product.name;
+      case "CN": return product.nameCn || product.name;
+      case "JP": return product.nameJp || product.name;
+      default: return product.name;
+    }
+  };
+
+  const getLocalizedDescription = (product: Product, lang: Language): string => {
+    switch (lang) {
+      case "KR": return product.descriptionKr || product.description;
+      case "CN": return product.descriptionCn || product.description;
+      case "JP": return product.descriptionJp || product.description;
+      default: return product.description;
+    }
+  };
 
   const getButtonText = (lang: Language) => {
     if (isBuyerView) {
@@ -115,74 +90,85 @@ const ProductList: React.FC<ProductListProps> = ({ category }) => {
       )}
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-4 pb-20">
-        {products.map((product) => (
-          <Card key={product.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-            <div className="relative">
-              <AspectRatio ratio={4/3}>
-                <img
-                  src={product.image}
-                  alt={product.name.en}
-                  className="object-cover w-full h-full"
-                />
-              </AspectRatio>
-            </div>
-            <CardContent className="p-4">
-              <Tabs defaultValue="kr" className="w-full">
-                <TabsList className="grid w-full grid-cols-4 mb-4">
-                  <TabsTrigger value="kr" className="text-sm py-3">한국어</TabsTrigger>
-                  <TabsTrigger value="en" className="text-sm py-3">ENG</TabsTrigger>
-                  <TabsTrigger value="cn" className="text-sm py-3">中文</TabsTrigger>
-                  <TabsTrigger value="jp" className="text-sm py-3">日本語</TabsTrigger>
-                </TabsList>
-                
-                <TabsContent value="kr" className="mt-4">
-                  <h3 className="text-lg font-semibold mb-2 text-[#333333]">{product.name.kr}</h3>
-                  <p className="text-sm text-[#4A4A4A] mb-2">최소 주문수량(MOQ): {product.moq}개</p>
-                  <p className="text-lg font-medium text-fabri-blue mb-2">{product.price.kr}</p>
-                  <p className="text-sm text-[#4A4A4A] mb-4">{product.description.kr}</p>
-                </TabsContent>
-                <TabsContent value="en" className="mt-4">
-                  <h3 className="text-lg font-semibold mb-2 text-[#333333]">{product.name.en}</h3>
-                  <p className="text-sm text-[#4A4A4A] mb-2">MOQ: {product.moq} units</p>
-                  <p className="text-lg font-medium text-fabri-blue mb-2">{product.price.en}</p>
-                  <p className="text-sm text-[#4A4A4A] mb-4">{product.description.en}</p>
-                </TabsContent>
-                <TabsContent value="cn" className="mt-4">
-                  <h3 className="text-lg font-semibold mb-2 text-[#333333]">{product.name.cn}</h3>
-                  <p className="text-sm text-[#4A4A4A] mb-2">最小订购量: {product.moq}件</p>
-                  <p className="text-lg font-medium text-fabri-blue mb-2">{product.price.cn}</p>
-                  <p className="text-sm text-[#4A4A4A] mb-4">{product.description.cn}</p>
-                </TabsContent>
-                <TabsContent value="jp" className="mt-4">
-                  <h3 className="text-lg font-semibold mb-2 text-[#333333]">{product.name.jp}</h3>
-                  <p className="text-sm text-[#4A4A4A] mb-2">最小注文数量: {product.moq}個</p>
-                  <p className="text-lg font-medium text-fabri-blue mb-2">{product.price.jp}</p>
-                  <p className="text-sm text-[#4A4A4A] mb-4">{product.description.jp}</p>
-                </TabsContent>
-              </Tabs>
-              
-              <div className="flex flex-col gap-3 mt-6">
-                {isBuyerView ? (
-                  <Button className="w-full flex items-center justify-center gap-2 bg-fabri-blue hover:bg-fabri-blue/90 py-6 text-lg text-white">
-                    <FileText className="w-5 h-5" />
-                    {getButtonText("KR")}
-                  </Button>
-                ) : (
-                  <div className="space-y-3">
-                    <Button className="w-full flex items-center justify-center gap-2 py-6 text-lg bg-fabri-pink hover:bg-fabri-pink/90 text-white">
-                      <ShoppingCart className="w-5 h-5" />
-                      {getButtonText("KR")}
-                    </Button>
-                    <div className="flex items-center justify-center gap-2 text-sm text-[#4A4A4A]">
-                      <CreditCard className="w-4 h-4" />
-                      PayPal / Credit Card Available
-                    </div>
-                  </div>
+        {displayProducts.length > 0 ? (
+          displayProducts.map((product) => (
+            <Card key={product.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+              <div className="relative">
+                <AspectRatio ratio={4/3}>
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="object-cover w-full h-full"
+                  />
+                </AspectRatio>
+                {product.isNewArrival && (
+                  <span className="absolute top-2 right-2 bg-fabri-pink text-white px-2 py-1 text-xs rounded-md">
+                    New
+                  </span>
                 )}
               </div>
-            </CardContent>
-          </Card>
-        ))}
+              <CardContent className="p-4">
+                <Tabs defaultValue="kr" className="w-full">
+                  <TabsList className="grid w-full grid-cols-4 mb-4">
+                    <TabsTrigger value="kr" className="text-sm py-3">한국어</TabsTrigger>
+                    <TabsTrigger value="en" className="text-sm py-3">ENG</TabsTrigger>
+                    <TabsTrigger value="cn" className="text-sm py-3">中文</TabsTrigger>
+                    <TabsTrigger value="jp" className="text-sm py-3">日本語</TabsTrigger>
+                  </TabsList>
+                  
+                  <TabsContent value="kr" className="mt-4">
+                    <h3 className="text-lg font-semibold mb-2 text-[#333333]">{getLocalizedName(product, "KR")}</h3>
+                    <p className="text-sm text-[#4A4A4A] mb-2">최소 주문수량(MOQ): {product.moq || 1}개</p>
+                    <p className="text-lg font-medium text-fabri-blue mb-2">{product.price}</p>
+                    <p className="text-sm text-[#4A4A4A] mb-4">{getLocalizedDescription(product, "KR")}</p>
+                  </TabsContent>
+                  <TabsContent value="en" className="mt-4">
+                    <h3 className="text-lg font-semibold mb-2 text-[#333333]">{getLocalizedName(product, "EN")}</h3>
+                    <p className="text-sm text-[#4A4A4A] mb-2">MOQ: {product.moq || 1} units</p>
+                    <p className="text-lg font-medium text-fabri-blue mb-2">{product.priceUsd}</p>
+                    <p className="text-sm text-[#4A4A4A] mb-4">{getLocalizedDescription(product, "EN")}</p>
+                  </TabsContent>
+                  <TabsContent value="cn" className="mt-4">
+                    <h3 className="text-lg font-semibold mb-2 text-[#333333]">{getLocalizedName(product, "CN")}</h3>
+                    <p className="text-sm text-[#4A4A4A] mb-2">最小订购量: {product.moq || 1}件</p>
+                    <p className="text-lg font-medium text-fabri-blue mb-2">{product.priceUsd}</p>
+                    <p className="text-sm text-[#4A4A4A] mb-4">{getLocalizedDescription(product, "CN")}</p>
+                  </TabsContent>
+                  <TabsContent value="jp" className="mt-4">
+                    <h3 className="text-lg font-semibold mb-2 text-[#333333]">{getLocalizedName(product, "JP")}</h3>
+                    <p className="text-sm text-[#4A4A4A] mb-2">最小注文数量: {product.moq || 1}個</p>
+                    <p className="text-lg font-medium text-fabri-blue mb-2">{product.priceUsd}</p>
+                    <p className="text-sm text-[#4A4A4A] mb-4">{getLocalizedDescription(product, "JP")}</p>
+                  </TabsContent>
+                </Tabs>
+                
+                <div className="flex flex-col gap-3 mt-6">
+                  {isBuyerView ? (
+                    <Button className="w-full flex items-center justify-center gap-2 bg-fabri-blue hover:bg-fabri-blue/90 py-6 text-lg text-white">
+                      <FileText className="w-5 h-5" />
+                      {getButtonText("KR")}
+                    </Button>
+                  ) : (
+                    <div className="space-y-3">
+                      <Button className="w-full flex items-center justify-center gap-2 py-6 text-lg bg-fabri-pink hover:bg-fabri-pink/90 text-white">
+                        <ShoppingCart className="w-5 h-5" />
+                        {getButtonText("KR")}
+                      </Button>
+                      <div className="flex items-center justify-center gap-2 text-sm text-[#4A4A4A]">
+                        <CreditCard className="w-4 h-4" />
+                        PayPal / Credit Card Available
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          ))
+        ) : (
+          <div className="col-span-full py-10 text-center text-gray-500">
+            {isBuyerView ? "No wholesale products available yet." : "No retail products available yet."}
+          </div>
+        )}
       </div>
     </>
   );

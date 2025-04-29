@@ -5,12 +5,21 @@ import SellerLayout from "@/components/seller/SellerLayout";
 import ProductRegistrationForm from "@/components/ProductRegistrationForm";
 import { useLanguageStore } from "@/hooks/useLanguageStore";
 import { toast } from "sonner";
+import { useProducts, convertFormDataToProduct } from "@/hooks/useProducts";
 
 const SellerProductRegistration = () => {
   const { language } = useLanguageStore();
   const navigate = useNavigate();
+  const { addProduct } = useProducts(undefined, null);
   
-  const handleProductSubmit = () => {
+  const handleProductSubmit = (formData: any) => {
+    // Convert form data to product
+    const newProduct = convertFormDataToProduct(formData);
+    
+    // Add product to the store
+    const product = addProduct(newProduct);
+    
+    // Show success message
     toast.success(
       language === "KR" ? "상품이 등록되었습니다." :
       language === "CN" ? "产品已注册。" :

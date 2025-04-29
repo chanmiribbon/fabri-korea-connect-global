@@ -19,7 +19,6 @@ interface ProductFormData {
     jp: string;
   };
   category: string;
-  // Change this type from FileList to any so we can handle the file input separately
   images: any;
   thumbnailImage: any;
   detailImages: any;
@@ -38,7 +37,6 @@ interface ProductFormData {
   };
   shippingMethod: string;
   quantityLimit: number;
-  // New fields for product distribution
   isRetail: boolean;
   isWholesale: boolean;
   specifications: {
@@ -56,7 +54,6 @@ interface ProductRegistrationFormProps {
 
 const ProductRegistrationForm: React.FC<ProductRegistrationFormProps> = ({ onSubmitSuccess }) => {
   const { language } = useLanguageStore();
-  const [step, setStep] = useState(1);
   // Create separate states for storing the selected files
   const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
   const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
@@ -67,16 +64,9 @@ const ProductRegistrationForm: React.FC<ProductRegistrationFormProps> = ({ onSub
     defaultValues: {
       isRetail: true,
       isWholesale: true,
+      shippingMethod: "domestic",
     }
   });
-
-  const handleNextStep = () => {
-    setStep(prev => Math.min(prev + 1, 4));
-  };
-
-  const handlePrevStep = () => {
-    setStep(prev => Math.max(prev - 1, 1));
-  };
 
   const onSubmit = (data: ProductFormData) => {
     // Combine the form data with the selected files
@@ -131,14 +121,11 @@ const ProductRegistrationForm: React.FC<ProductRegistrationFormProps> = ({ onSub
     switch (language) {
       case "KR":
         return {
-          step: "단계",
           productInfo: "상품 정보",
           images: "이미지",
           pricing: "가격 정책",
           shipping: "배송 정책",
           distribution: "판매 채널",
-          next: "다음",
-          previous: "이전",
           complete: "등록 완료",
           productName: "상품명",
           category: "카테고리",
@@ -167,14 +154,11 @@ const ProductRegistrationForm: React.FC<ProductRegistrationFormProps> = ({ onSub
         };
       case "CN":
         return {
-          step: "步骤",
           productInfo: "产品信息",
           images: "图片",
           pricing: "价格政策",
           shipping: "物流政策",
           distribution: "销售渠道",
-          next: "下一步",
-          previous: "上一步",
           complete: "完成注册",
           productName: "产品名称",
           category: "类别",
@@ -203,14 +187,11 @@ const ProductRegistrationForm: React.FC<ProductRegistrationFormProps> = ({ onSub
         };
       case "JP":
         return {
-          step: "ステップ",
           productInfo: "商品情報",
           images: "イメージ",
           pricing: "価格設定",
           shipping: "配送ポリシー",
           distribution: "販売チャネル",
-          next: "次へ",
-          previous: "前へ",
           complete: "登録完了",
           productName: "商品名",
           category: "カテゴリー",
@@ -239,14 +220,11 @@ const ProductRegistrationForm: React.FC<ProductRegistrationFormProps> = ({ onSub
         };
       default:
         return {
-          step: "Step",
           productInfo: "Product Information",
           images: "Images",
           pricing: "Pricing Policy",
           shipping: "Shipping Policy",
           distribution: "Distribution Channels",
-          next: "Next",
-          previous: "Previous",
           complete: "Complete Registration",
           productName: "Product Name",
           category: "Category",
@@ -281,410 +259,414 @@ const ProductRegistrationForm: React.FC<ProductRegistrationFormProps> = ({ onSub
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center">
-            <div className={`w-10 h-10 rounded-full flex items-center justify-center ${step >= 1 ? 'bg-fabri-purple text-white' : 'bg-gray-200'}`}>
-              <Package className="w-5 h-5" />
+        <div className="space-y-10">
+          {/* Section 1: Product Information */}
+          <div className="p-6 bg-white rounded-lg border border-gray-200 shadow-sm">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="bg-fabri-purple text-white w-10 h-10 rounded-full flex items-center justify-center">
+                <Package className="w-5 h-5" />
+              </div>
+              <h2 className="text-xl font-semibold">{t.productInfo}</h2>
             </div>
-            <div className="h-1 w-16 bg-gray-200 mx-2" />
-            <div className={`w-10 h-10 rounded-full flex items-center justify-center ${step >= 2 ? 'bg-fabri-purple text-white' : 'bg-gray-200'}`}>
-              <Image className="w-5 h-5" />
-            </div>
-            <div className="h-1 w-16 bg-gray-200 mx-2" />
-            <div className={`w-10 h-10 rounded-full flex items-center justify-center ${step >= 3 ? 'bg-fabri-purple text-white' : 'bg-gray-200'}`}>
-              <Truck className="w-5 h-5" />
-            </div>
-            <div className="h-1 w-16 bg-gray-200 mx-2" />
-            <div className={`w-10 h-10 rounded-full flex items-center justify-center ${step >= 4 ? 'bg-fabri-purple text-white' : 'bg-gray-200'}`}>
-              <Package className="w-5 h-5" />
-            </div>
-          </div>
-          <span className="text-sm text-gray-500">{t.step} {step}/4</span>
-        </div>
-
-        {step === 1 && (
-          <div className="space-y-6">
-            <Tabs defaultValue="kr">
-              <TabsList className="grid w-full grid-cols-4">
-                <TabsTrigger value="kr">한국어</TabsTrigger>
-                <TabsTrigger value="en">English</TabsTrigger>
-                <TabsTrigger value="cn">中文</TabsTrigger>
-                <TabsTrigger value="jp">日本語</TabsTrigger>
-              </TabsList>
-              <TabsContent value="kr">
-                <FormField
-                  control={form.control}
-                  name="name.kr"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t.productName}</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </TabsContent>
-              <TabsContent value="en">
-                <FormField
-                  control={form.control}
-                  name="name.en"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Product Name</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </TabsContent>
-              <TabsContent value="cn">
-                <FormField
-                  control={form.control}
-                  name="name.cn"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>产品名称</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </TabsContent>
-              <TabsContent value="jp">
-                <FormField
-                  control={form.control}
-                  name="name.jp"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>製品名</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </TabsContent>
-            </Tabs>
-
-            <FormField
-              control={form.control}
-              name="category"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t.category}</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder={t.selectCategory} />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="clothing">의류</SelectItem>
-                      <SelectItem value="materials">원단</SelectItem>
-                      <SelectItem value="accessories">부자재</SelectItem>
-                      <SelectItem value="hanbok">한복</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             
-            {/* Product specifications */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-medium">{t.specifications}</h3>
+            <div className="space-y-6">
+              <Tabs defaultValue="kr">
+                <TabsList className="grid w-full grid-cols-4">
+                  <TabsTrigger value="kr">한국어</TabsTrigger>
+                  <TabsTrigger value="en">English</TabsTrigger>
+                  <TabsTrigger value="cn">中文</TabsTrigger>
+                  <TabsTrigger value="jp">日本語</TabsTrigger>
+                </TabsList>
+                <TabsContent value="kr">
+                  <FormField
+                    control={form.control}
+                    name="name.kr"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{t.productName}</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </TabsContent>
+                <TabsContent value="en">
+                  <FormField
+                    control={form.control}
+                    name="name.en"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Product Name</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </TabsContent>
+                <TabsContent value="cn">
+                  <FormField
+                    control={form.control}
+                    name="name.cn"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>产品名称</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </TabsContent>
+                <TabsContent value="jp">
+                  <FormField
+                    control={form.control}
+                    name="name.jp"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>製品名</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </TabsContent>
+              </Tabs>
+
+              <FormField
+                control={form.control}
+                name="category"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t.category}</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder={t.selectCategory} />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="clothing">의류</SelectItem>
+                        <SelectItem value="materials">원단</SelectItem>
+                        <SelectItem value="accessories">부자재</SelectItem>
+                        <SelectItem value="hanbok">한복</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="specifications.size"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t.size}</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+              {/* Product specifications */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-medium">{t.specifications}</h3>
                 
-                <FormField
-                  control={form.control}
-                  name="specifications.material"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t.material}</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <FormField
-                  control={form.control}
-                  name="specifications.weight"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t.weight}</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <FormField
-                  control={form.control}
-                  name="specifications.width"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t.width}</FormLabel>
-                      <FormControl>
-                        <Input {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="specifications.size"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{t.size}</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <FormField
+                    control={form.control}
+                    name="specifications.material"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{t.material}</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <FormField
+                    control={form.control}
+                    name="specifications.weight"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{t.weight}</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  
+                  <FormField
+                    control={form.control}
+                    name="specifications.width"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{t.width}</FormLabel>
+                        <FormControl>
+                          <Input {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
               </div>
             </div>
           </div>
-        )}
 
-        {step === 2 && (
-          <div className="space-y-6">
-            {/* Thumbnail Image */}
-            <FormItem>
-              <FormLabel>{t.thumbnailImage}</FormLabel>
-              <FormDescription>상품의 대표 이미지를 업로드해주세요</FormDescription>
-              <div className="mt-2">
-                <div className="flex items-center justify-center w-full">
-                  <label 
-                    className="flex flex-col items-center justify-center w-64 h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
-                  >
-                    {thumbnailPreview ? (
-                      <div className="w-full h-full flex items-center justify-center overflow-hidden">
+          {/* Section 2: Images */}
+          <div className="p-6 bg-white rounded-lg border border-gray-200 shadow-sm">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="bg-fabri-purple text-white w-10 h-10 rounded-full flex items-center justify-center">
+                <Image className="w-5 h-5" />
+              </div>
+              <h2 className="text-xl font-semibold">{t.images}</h2>
+            </div>
+            
+            <div className="space-y-6">
+              {/* Thumbnail Image */}
+              <FormItem>
+                <FormLabel>{t.thumbnailImage}</FormLabel>
+                <FormDescription>상품의 대표 이미지를 업로드해주세요</FormDescription>
+                <div className="mt-2">
+                  <div className="flex items-center justify-center w-full">
+                    <label 
+                      className="flex flex-col items-center justify-center w-64 h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
+                    >
+                      {thumbnailPreview ? (
+                        <div className="w-full h-full flex items-center justify-center overflow-hidden">
+                          <img 
+                            src={thumbnailPreview} 
+                            alt="Thumbnail preview" 
+                            className="object-cover h-full w-full"
+                          />
+                        </div>
+                      ) : (
+                        <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                          <ImagePlus className="w-10 h-10 mb-3 text-gray-400" />
+                          <p className="mb-2 text-sm text-gray-500">
+                            <span className="font-semibold">클릭하여 이미지 업로드</span>
+                          </p>
+                          <p className="text-xs text-gray-500">PNG, JPG 파일</p>
+                        </div>
+                      )}
+                      <input 
+                        type="file"
+                        accept="image/*" 
+                        className="hidden"
+                        onChange={handleThumbnailChange}
+                      />
+                    </label>
+                  </div>
+                </div>
+              </FormItem>
+              
+              {/* Detail Images */}
+              <FormItem>
+                <FormLabel>{t.detailImages}</FormLabel>
+                <FormDescription>상품 상세 페이지에 표시될 이미지를 업로드해주세요 (최대 5장)</FormDescription>
+                <FormControl>
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={handleDetailImagesChange}
+                  />
+                </FormControl>
+                <FormMessage />
+                
+                {/* Preview for detail images */}
+                {detailPreviews.length > 0 && (
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+                    {detailPreviews.map((preview, index) => (
+                      <div key={index} className="aspect-square overflow-hidden rounded-md border">
                         <img 
-                          src={thumbnailPreview} 
-                          alt="Thumbnail preview" 
-                          className="object-cover h-full w-full"
+                          src={preview} 
+                          alt={`Detail preview ${index + 1}`} 
+                          className="object-cover w-full h-full" 
                         />
                       </div>
-                    ) : (
-                      <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                        <ImagePlus className="w-10 h-10 mb-3 text-gray-400" />
-                        <p className="mb-2 text-sm text-gray-500">
-                          <span className="font-semibold">클릭하여 이미지 업로드</span>
-                        </p>
-                        <p className="text-xs text-gray-500">PNG, JPG 파일</p>
-                      </div>
-                    )}
-                    <input 
-                      type="file"
-                      accept="image/*" 
-                      className="hidden"
-                      onChange={handleThumbnailChange}
-                    />
-                  </label>
-                </div>
+                    ))}
+                  </div>
+                )}
+              </FormItem>
+            </div>
+          </div>
+
+          {/* Section 3: Pricing */}
+          <div className="p-6 bg-white rounded-lg border border-gray-200 shadow-sm">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="bg-fabri-purple text-white w-10 h-10 rounded-full flex items-center justify-center">
+                <Truck className="w-5 h-5" />
               </div>
-            </FormItem>
+              <h2 className="text-xl font-semibold">{t.pricing}</h2>
+            </div>
             
-            {/* Detail Images */}
-            <FormItem>
-              <FormLabel>{t.detailImages}</FormLabel>
-              <FormDescription>상품 상세 페이지에 표시될 이미지를 업로드해주세요 (최대 5장)</FormDescription>
-              <FormControl>
-                <Input
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  onChange={handleDetailImagesChange}
+            <div className="space-y-6">
+              <div className="bg-blue-50 p-4 rounded-md mb-4">
+                <p className="text-sm text-blue-600">
+                  {t.translateNotice}
+                </p>
+              </div>
+              
+              <FormField
+                control={form.control}
+                name="price.kr"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t.price}</FormLabel>
+                    <FormControl>
+                      <Input type="number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="moq"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t.moq}</FormLabel>
+                    <FormControl>
+                      <Input type="number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="description.kr"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t.description}</FormLabel>
+                    <FormControl>
+                      <Textarea rows={6} {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
+
+          {/* Section 4: Shipping & Distribution */}
+          <div className="p-6 bg-white rounded-lg border border-gray-200 shadow-sm">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="bg-fabri-purple text-white w-10 h-10 rounded-full flex items-center justify-center">
+                <Package className="w-5 h-5" />
+              </div>
+              <h2 className="text-xl font-semibold">{t.shipping}</h2>
+            </div>
+            
+            <div className="space-y-6">
+              <FormField
+                control={form.control}
+                name="shippingMethod"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t.shippingMethod}</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder={t.selectShipping} />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="domestic">{t.domestic}</SelectItem>
+                        <SelectItem value="international">{t.international}</SelectItem>
+                        <SelectItem value="both">{t.both}</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="quantityLimit"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t.quantityLimit}</FormLabel>
+                    <FormControl>
+                      <Input type="number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <div className="space-y-4 pt-4">
+                <h3 className="text-lg font-medium">{t.distribution}</h3>
+                
+                <FormField
+                  control={form.control}
+                  name="isRetail"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <div className="space-y-1 leading-none">
+                        <FormLabel className="text-base">{t.retailSale}</FormLabel>
+                        <FormDescription>
+                          {t.retailInfo}
+                        </FormDescription>
+                      </div>
+                    </FormItem>
+                  )}
                 />
-              </FormControl>
-              <FormMessage />
-              
-              {/* Preview for detail images */}
-              {detailPreviews.length > 0 && (
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4">
-                  {detailPreviews.map((preview, index) => (
-                    <div key={index} className="aspect-square overflow-hidden rounded-md border">
-                      <img 
-                        src={preview} 
-                        alt={`Detail preview ${index + 1}`} 
-                        className="object-cover w-full h-full" 
-                      />
-                    </div>
-                  ))}
-                </div>
-              )}
-            </FormItem>
-          </div>
-        )}
-
-        {step === 3 && (
-          <div className="space-y-6">
-            <div className="bg-blue-50 p-4 rounded-md mb-4">
-              <p className="text-sm text-blue-600">
-                {t.translateNotice}
-              </p>
-            </div>
-            
-            <FormField
-              control={form.control}
-              name="price.kr"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t.price}</FormLabel>
-                  <FormControl>
-                    <Input type="number" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="moq"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t.moq}</FormLabel>
-                  <FormControl>
-                    <Input type="number" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="description.kr"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t.description}</FormLabel>
-                  <FormControl>
-                    <Textarea rows={6} {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-        )}
-
-        {step === 4 && (
-          <div className="space-y-6">
-            <FormField
-              control={form.control}
-              name="shippingMethod"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t.shippingMethod}</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder={t.selectShipping} />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="domestic">{t.domestic}</SelectItem>
-                      <SelectItem value="international">{t.international}</SelectItem>
-                      <SelectItem value="both">{t.both}</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="quantityLimit"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t.quantityLimit}</FormLabel>
-                  <FormControl>
-                    <Input type="number" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            <div className="space-y-4 pt-4">
-              <h3 className="text-lg font-medium">{t.distribution}</h3>
-              
-              <FormField
-                control={form.control}
-                name="isRetail"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                    <div className="space-y-1 leading-none">
-                      <FormLabel className="text-base">{t.retailSale}</FormLabel>
-                      <FormDescription>
-                        {t.retailInfo}
-                      </FormDescription>
-                    </div>
-                  </FormItem>
-                )}
-              />
-              
-              <FormField
-                control={form.control}
-                name="isWholesale"
-                render={({ field }) => (
-                  <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                    <div className="space-y-1 leading-none">
-                      <FormLabel className="text-base">{t.wholesaleSale}</FormLabel>
-                      <FormDescription>
-                        {t.wholesaleInfo}
-                      </FormDescription>
-                    </div>
-                  </FormItem>
-                )}
-              />
+                
+                <FormField
+                  control={form.control}
+                  name="isWholesale"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <div className="space-y-1 leading-none">
+                        <FormLabel className="text-base">{t.wholesaleSale}</FormLabel>
+                        <FormDescription>
+                          {t.wholesaleInfo}
+                        </FormDescription>
+                      </div>
+                    </FormItem>
+                  )}
+                />
+              </div>
             </div>
           </div>
-        )}
+        </div>
 
-        <div className="flex justify-between pt-6">
-          {step > 1 && (
-            <Button type="button" variant="outline" onClick={handlePrevStep}>
-              {t.previous}
-            </Button>
-          )}
-          {step < 4 ? (
-            <Button type="button" onClick={handleNextStep}>
-              {t.next}
-            </Button>
-          ) : (
-            <Button type="submit">{t.complete}</Button>
-          )}
+        <div className="pt-6 pb-10">
+          <Button type="submit" className="w-full py-6 text-lg">
+            {t.complete}
+          </Button>
         </div>
       </form>
     </Form>
