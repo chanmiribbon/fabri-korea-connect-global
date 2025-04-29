@@ -56,8 +56,8 @@ const productStore = {
   }
 };
 
-// Sample products data
-const sampleProducts = {
+// Update sample products data with missing required properties
+const sampleProducts: Record<string, Product[]> = {
   dongdaemun: [
     {
       id: 1,
@@ -66,8 +66,11 @@ const sampleProducts = {
       nameCn: "水晶花朵发夹",
       nameJp: "クリスタルフラワーヘアピン",
       image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9",
+      detailImages: [], // Add empty array for detailImages
       price: "15,000원",
       priceUsd: "$12.99",
+      retailPrice: "15,000원", // Add retailPrice
+      wholesalePrice: "12,000원", // Add wholesalePrice
       subcategory: "hair",
       description: "Elegant crystal flower hair pin with pearl accents",
       descriptionKr: "진주 장식이 있는 우아한 크리스탈 플라워 머리핀",
@@ -82,7 +85,12 @@ const sampleProducts = {
       isNewArrival: true,
       isRetail: true,
       isWholesale: true,
-      moq: 20
+      moq: 20,
+      retailMOQ: 1,
+      wholesaleMOQ: 20,
+      retailShippingMethod: "domestic",
+      wholesaleShippingMethod: "both",
+      createdAt: new Date().toISOString()
     },
     {
       id: 2,
@@ -91,8 +99,11 @@ const sampleProducts = {
       nameCn: "复古风格项链",
       nameJp: "ヴィンテージスタイルネックレス",
       image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9",
+      detailImages: [], // Add empty array
       price: "25,000원",
       priceUsd: "$21.99",
+      retailPrice: "25,000원",
+      wholesalePrice: "20,000원",
       subcategory: "jewelry",
       description: "Vintage-inspired pendant necklace with antique finish",
       descriptionKr: "앤틱 마감 처리된 빈티지 스타일의 펜던트 목걸이",
@@ -104,7 +115,16 @@ const sampleProducts = {
         material: "Brass with antique finish",
         colors: ["Antique Gold", "Antique Silver"]
       },
-      isBestSeller: true
+      isBestSeller: true,
+      isNewArrival: false,
+      isRetail: true,
+      isWholesale: false,
+      moq: 1,
+      retailMOQ: 1,
+      wholesaleMOQ: 10,
+      retailShippingMethod: "domestic",
+      wholesaleShippingMethod: "international",
+      createdAt: new Date().toISOString()
     },
     {
       id: 3,
@@ -113,8 +133,11 @@ const sampleProducts = {
       nameCn: "珍珠水滴耳环",
       nameJp: "パールドロップピアス",
       image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9",
+      detailImages: [],
       price: "18,000원",
       priceUsd: "$15.99",
+      retailPrice: "18,000원",
+      wholesalePrice: "15,000원",
       subcategory: "jewelry",
       description: "Elegant pearl drop earrings with crystal accents",
       descriptionKr: "크리스탈 장식이 있는 우아한 진주 드롭 귀걸이",
@@ -125,7 +148,16 @@ const sampleProducts = {
         size: "3.5cm length",
         material: "Fresh water pearl, Crystal, 925 Sterling Silver",
         colors: ["White Pearl", "Pink Pearl"]
-      }
+      },
+      isNewArrival: false,
+      isRetail: true,
+      isWholesale: true,
+      moq: 10,
+      retailMOQ: 1,
+      wholesaleMOQ: 10,
+      retailShippingMethod: "domestic",
+      wholesaleShippingMethod: "both",
+      createdAt: new Date().toISOString()
     },
     {
       id: 4,
@@ -134,8 +166,11 @@ const sampleProducts = {
       nameCn: "缎面发圈套装",
       nameJp: "サテンヘアシュシュセット",
       image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9",
+      detailImages: [],
       price: "10,000원",
       priceUsd: "$8.99",
+      retailPrice: "10,000원",
+      wholesalePrice: "8,000원",
       subcategory: "hair",
       description: "Set of 3 luxurious satin hair scrunchies",
       descriptionKr: "3개 세트 고급 새틴 헤어 스크런치",
@@ -146,7 +181,16 @@ const sampleProducts = {
         size: "Diameter: 10cm",
         material: "Premium Satin",
         colors: ["Black", "Ivory", "Burgundy"]
-      }
+      },
+      isNewArrival: false,
+      isRetail: true,
+      isWholesale: true,
+      moq: 50,
+      retailMOQ: 1,
+      wholesaleMOQ: 50,
+      retailShippingMethod: "domestic",
+      wholesaleShippingMethod: "both",
+      createdAt: new Date().toISOString()
     },
     {
       id: 5,
@@ -155,8 +199,11 @@ const sampleProducts = {
       nameCn: "迷你斜挎包",
       nameJp: "ミニクロスボディバッグ",
       image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9",
+      detailImages: [],
       price: "35,000원",
       priceUsd: "$29.99",
+      retailPrice: "35,000원",
+      wholesalePrice: "30,000원",
       subcategory: "bags",
       description: "Compact crossbody bag with adjustable strap",
       descriptionKr: "조절 가능한 스트랩이 있는 콤팩트한 크로스백",
@@ -167,7 +214,16 @@ const sampleProducts = {
         size: "18cm x 12cm x 6cm",
         material: "Premium PU Leather",
         colors: ["Black", "Brown", "Beige"]
-      }
+      },
+      isNewArrival: false,
+      isRetail: true,
+      isWholesale: false,
+      moq: 1,
+      retailMOQ: 1,
+      wholesaleMOQ: 10,
+      retailShippingMethod: "domestic",
+      wholesaleShippingMethod: "international",
+      createdAt: new Date().toISOString()
     }
   ],
   namdaemun: [
@@ -178,8 +234,11 @@ const sampleProducts = {
       nameCn: "时尚宣言戒指",
       nameJp: "ファッションステートメントリング",
       image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9",
+      detailImages: [],
       price: "12,000원",
       priceUsd: "$9.99",
+      retailPrice: "12,000원",
+      wholesalePrice: "10,000원",
       subcategory: "jewelry",
       description: "Bold statement ring with geometric design",
       descriptionKr: "기하학적 디자인의 볼드한 스테이트먼트 반지",
@@ -191,7 +250,16 @@ const sampleProducts = {
         material: "Brass with 18K Gold plating",
         colors: ["Gold", "Silver", "Rose Gold"]
       },
-      isBestSeller: true
+      isBestSeller: true,
+      isNewArrival: false,
+      isRetail: true,
+      isWholesale: true,
+      moq: 20,
+      retailMOQ: 1,
+      wholesaleMOQ: 20,
+      retailShippingMethod: "domestic",
+      wholesaleShippingMethod: "both",
+      createdAt: new Date().toISOString()
     },
     {
       id: 2,
@@ -200,8 +268,11 @@ const sampleProducts = {
       nameCn: "迷你斜挎包",
       nameJp: "ミニクロスボディバッグ",
       image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9",
+      detailImages: [],
       price: "35,000원",
       priceUsd: "$29.99",
+      retailPrice: "35,000원",
+      wholesalePrice: "30,000원",
       subcategory: "bags",
       description: "Compact crossbody bag with adjustable strap",
       descriptionKr: "조절 가능한 스트랩이 있는 콤팩트한 크로스백",
@@ -212,7 +283,16 @@ const sampleProducts = {
         size: "18cm x 12cm x 6cm",
         material: "Premium PU Leather",
         colors: ["Black", "Brown", "Beige"]
-      }
+      },
+      isNewArrival: false,
+      isRetail: true,
+      isWholesale: false,
+      moq: 1,
+      retailMOQ: 1,
+      wholesaleMOQ: 10,
+      retailShippingMethod: "domestic",
+      wholesaleShippingMethod: "international",
+      createdAt: new Date().toISOString()
     },
     {
       id: 3,
@@ -221,8 +301,11 @@ const sampleProducts = {
       nameCn: "宝石发夹套装",
       nameJp: "ジェムストーンヘアクリップセット",
       image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9",
+      detailImages: [],
       price: "16,000원",
       priceUsd: "$13.99",
+      retailPrice: "16,000원",
+      wholesalePrice: "14,000원",
       subcategory: "hair",
       description: "Set of 3 elegant hair clips with colorful gemstones",
       descriptionKr: "다양한 색상의 보석이 장식된 3개 세트 우아한 헤어 클립",
@@ -234,7 +317,15 @@ const sampleProducts = {
         material: "Acrylic gemstones, Metal alloy",
         colors: ["Multi-color"]
       },
-      isNewArrival: true
+      isNewArrival: true,
+      isRetail: true,
+      isWholesale: true,
+      moq: 30,
+      retailMOQ: 1,
+      wholesaleMOQ: 30,
+      retailShippingMethod: "domestic",
+      wholesaleShippingMethod: "both",
+      createdAt: new Date().toISOString()
     }
   ],
   accessories: [
@@ -245,8 +336,11 @@ const sampleProducts = {
       nameCn: "珍珠装饰发夹",
       nameJp: "パール付きヘアクリップ",
       image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9",
+      detailImages: [],
       price: "12,000원",
       priceUsd: "$10.50",
+      retailPrice: "12,000원",
+      wholesalePrice: "10,000원",
       subcategory: "hair",
       description: "Elegant hair clip with pearl and crystal embellishments",
       descriptionKr: "진주와 크리스탈 장식이 있는 우아한 헤어 클",
@@ -261,7 +355,12 @@ const sampleProducts = {
       isBestSeller: true,
       isRetail: true,
       isWholesale: true,
-      moq: 50
+      moq: 50,
+      retailMOQ: 1,
+      wholesaleMOQ: 50,
+      retailShippingMethod: "domestic",
+      wholesaleShippingMethod: "both",
+      createdAt: new Date().toISOString()
     },
     {
       id: 102,
@@ -270,8 +369,11 @@ const sampleProducts = {
       nameCn: "天鹅绒发带系列",
       nameJp: "ベルベットヘアバンドコレクション",
       image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9",
+      detailImages: [],
       price: "18,000원",
       priceUsd: "$15.99",
+      retailPrice: "18,000원",
+      wholesalePrice: "15,000원",
       subcategory: "hair",
       description: "Set of 3 luxurious velvet headbands in different colors",
       descriptionKr: "다양한 색상의 3개 세트 고급 벨벳 헤어밴드",
@@ -282,7 +384,16 @@ const sampleProducts = {
         size: "One size fits most",
         material: "Premium velvet fabric",
         colors: ["Black", "Burgundy", "Emerald Green"]
-      }
+      },
+      isNewArrival: false,
+      isRetail: true,
+      isWholesale: true,
+      moq: 100,
+      retailMOQ: 1,
+      wholesaleMOQ: 100,
+      retailShippingMethod: "domestic",
+      wholesaleShippingMethod: "both",
+      createdAt: new Date().toISOString()
     },
     
     // Necklaces
@@ -293,8 +404,11 @@ const sampleProducts = {
       nameCn: "多层链条项链",
       nameJp: "レイヤードチェーンネックレス",
       image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9",
+      detailImages: [],
       price: "22,000원",
       priceUsd: "$19.50",
+      retailPrice: "22,000원",
+      wholesalePrice: "20,000원",
       subcategory: "necklaces",
       description: "Trendy layered chain necklace with various pendants",
       descriptionKr: "다양한 펜던트가 있는 트렌디한 레이어드 체인 목걸이",
@@ -306,7 +420,15 @@ const sampleProducts = {
         material: "Stainless steel with gold plating",
         colors: ["Gold", "Silver"]
       },
-      isNewArrival: true
+      isNewArrival: true,
+      isRetail: true,
+      isWholesale: true,
+      moq: 80,
+      retailMOQ: 1,
+      wholesaleMOQ: 80,
+      retailShippingMethod: "domestic",
+      wholesaleShippingMethod: "both",
+      createdAt: new Date().toISOString()
     },
     {
       id: 202,
@@ -315,8 +437,11 @@ const sampleProducts = {
       nameCn: "淡水珍珠项链",
       nameJp: "淡水パールネックレス",
       image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9",
+      detailImages: [],
       price: "35,000원",
       priceUsd: "$30.99",
+      retailPrice: "35,000원",
+      wholesalePrice: "30,000원",
       subcategory: "necklaces",
       description: "Elegant necklace with genuine freshwater pearls",
       descriptionKr: "진짜 민물 진주로 만든 우아한 목걸이",
@@ -327,7 +452,16 @@ const sampleProducts = {
         size: "Length: 45cm with 5cm extender",
         material: "Freshwater pearls, Sterling silver clasp",
         colors: ["White Pearl", "Pink Pearl"]
-      }
+      },
+      isNewArrival: false,
+      isRetail: true,
+      isWholesale: true,
+      moq: 100,
+      retailMOQ: 1,
+      wholesaleMOQ: 100,
+      retailShippingMethod: "domestic",
+      wholesaleShippingMethod: "both",
+      createdAt: new Date().toISOString()
     },
     
     // Rings
@@ -338,8 +472,11 @@ const sampleProducts = {
       nameCn: "简约可叠戴戒指",
       nameJp: "ミニマリストスタッキングリング",
       image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9",
+      detailImages: [],
       price: "15,000원",
       priceUsd: "$12.99",
+      retailPrice: "15,000원",
+      wholesalePrice: "13,000원",
       subcategory: "rings",
       description: "Set of 3 minimalist rings that can be stacked together",
       descriptionKr: "함께 스택할 수 있는 3개 세트 미니멀한 반지",
@@ -350,7 +487,16 @@ const sampleProducts = {
         size: "US sizes 5-9 available",
         material: "925 Sterling Silver",
         colors: ["Silver", "Gold", "Rose Gold"]
-      }
+      },
+      isNewArrival: false,
+      isRetail: true,
+      isWholesale: true,
+      moq: 120,
+      retailMOQ: 1,
+      wholesaleMOQ: 120,
+      retailShippingMethod: "domestic",
+      wholesaleShippingMethod: "both",
+      createdAt: new Date().toISOString()
     },
     
     // Brooches
@@ -361,8 +507,11 @@ const sampleProducts = {
       nameCn: "复古花朵胸针",
       nameJp: "ヴィンテージフラワーブローチ",
       image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9",
+      detailImages: [],
       price: "28,000원",
       priceUsd: "$24.99",
+      retailPrice: "28,000원",
+      wholesalePrice: "25,000원",
       subcategory: "brooches",
       description: "Elegant vintage-style flower brooch with crystal details",
       descriptionKr: "크리스탈 디테일이 있는 우아한 빈티지 스타일 플라워 브로치",
@@ -373,7 +522,16 @@ const sampleProducts = {
         size: "4.5cm diameter",
         material: "Brass with antique finish, Crystal stones",
         colors: ["Antique Gold", "Antique Silver"]
-      }
+      },
+      isNewArrival: false,
+      isRetail: true,
+      isWholesale: true,
+      moq: 150,
+      retailMOQ: 1,
+      wholesaleMOQ: 150,
+      retailShippingMethod: "domestic",
+      wholesaleShippingMethod: "both",
+      createdAt: new Date().toISOString()
     },
     
     // Earrings
@@ -384,8 +542,11 @@ const sampleProducts = {
       nameCn: "韩式圈形耳环",
       nameJp: "韓国スタイルフープピアス",
       image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9",
+      detailImages: [],
       price: "16,000원",
       priceUsd: "$13.99",
+      retailPrice: "16,000원",
+      wholesalePrice: "14,000원",
       subcategory: "earrings",
       description: "Trendy Korean-style gold hoop earrings",
       descriptionKr: "트렌디한 한국식 골드 후프 귀걸이",
@@ -397,7 +558,16 @@ const sampleProducts = {
         material: "Brass with 14K gold plating",
         colors: ["Gold"]
       },
-      isBestSeller: true
+      isBestSeller: true,
+      isNewArrival: false,
+      isRetail: true,
+      isWholesale: true,
+      moq: 100,
+      retailMOQ: 1,
+      wholesaleMOQ: 100,
+      retailShippingMethod: "domestic",
+      wholesaleShippingMethod: "both",
+      createdAt: new Date().toISOString()
     }
   ],
   'diy-parts': [
@@ -408,8 +578,11 @@ const sampleProducts = {
       nameCn: "木制纽扣系列",
       nameJp: "ウッドボタンコレクション",
       image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9",
+      detailImages: [],
       price: "8,000원",
       priceUsd: "$6.99",
+      retailPrice: "8,000원",
+      wholesalePrice: "7,000원",
       subcategory: "buttons",
       description: "Assorted wooden buttons in different sizes and designs",
       descriptionKr: "다양한 크기와 디자인의 우드 버튼 모음",
@@ -420,7 +593,16 @@ const sampleProducts = {
         size: "10mm-25mm diameter",
         material: "Natural wood",
         colors: ["Natural", "Dark Brown", "Light Brown"]
-      }
+      },
+      isNewArrival: false,
+      isRetail: true,
+      isWholesale: true,
+      moq: 150,
+      retailMOQ: 1,
+      wholesaleMOQ: 150,
+      retailShippingMethod: "domestic",
+      wholesaleShippingMethod: "both",
+      createdAt: new Date().toISOString()
     },
     
     // Zippers
@@ -431,8 +613,11 @@ const sampleProducts = {
       nameCn: "金属拉链包",
       nameJp: "メタルジッパーパック",
       image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9",
+      detailImages: [],
       price: "12,000원",
       priceUsd: "$10.50",
+      retailPrice: "12,000원",
+      wholesalePrice: "10,000원",
       subcategory: "zippers",
       description: "Pack of 5 high-quality metal zippers for clothing and bags",
       descriptionKr: "의류 및 가방용 고품질 메탈 지퍼 5개 세트",
@@ -443,13 +628,41 @@ const sampleProducts = {
         size: "20cm length",
         material: "Metal teeth with fabric tape",
         colors: ["Black", "Silver", "Brass", "Gunmetal", "Gold"]
-      }
+      },
+      isNewArrival: false,
+      isRetail: true,
+      isWholesale: true,
+      moq: 200,
+      retailMOQ: 1,
+      wholesaleMOQ: 200,
+      retailShippingMethod: "domestic",
+      wholesaleShippingMethod: "both",
+      createdAt: new Date().toISOString()
     }
   ]
 };
 
+// Update all products in the sample collections to ensure they have all required properties
+Object.keys(sampleProducts).forEach(category => {
+  sampleProducts[category] = sampleProducts[category].map(product => ({
+    ...product,
+    detailImages: product.detailImages || [],
+    retailPrice: product.retailPrice || product.price,
+    wholesalePrice: product.wholesalePrice || product.price,
+    isRetail: product.isRetail !== undefined ? product.isRetail : true,
+    isWholesale: product.isWholesale !== undefined ? product.isWholesale : false,
+    moq: product.moq || 1,
+    retailMOQ: product.retailMOQ || product.moq || 1,
+    wholesaleMOQ: product.wholesaleMOQ || product.moq || 10,
+    retailShippingMethod: product.retailShippingMethod || "domestic",
+    wholesaleShippingMethod: product.wholesaleShippingMethod || "international",
+    createdAt: product.createdAt || new Date().toISOString(),
+    isNewArrival: product.isNewArrival !== undefined ? product.isNewArrival : false
+  }));
+});
+
 // Main hook implementation
-export const useProducts = (category: string | undefined, subcategory: string | null) => {
+const useProducts = (category: string | undefined, subcategory: string | null) => {
   const [products, setProducts] = useState<Product[]>([]);
   
   useEffect(() => {
@@ -517,7 +730,7 @@ export const useProducts = (category: string | undefined, subcategory: string | 
 };
 
 // Helper function to convert form data to product format
-export const convertFormDataToProduct = (formData: any): NewProduct => {
+const convertFormDataToProduct = (formData: any): NewProduct => {
   return {
     name: {
       kr: formData.nameKr || "",
@@ -526,57 +739,4 @@ export const convertFormDataToProduct = (formData: any): NewProduct => {
       jp: formData.nameJp || "",
     },
     price: {
-      kr: formData.price || "0",
-      en: formData.priceUsd || "$0",
-      cn: formData.priceCny || "¥0",
-      jp: formData.priceJpy || "¥0",
-    },
-    retailPrice: {
-      kr: formData.retailPrice || formData.price || "0",
-      en: formData.retailPriceUsd || formData.priceUsd || "$0",
-      cn: formData.retailPriceCny || formData.priceCny || "¥0",
-      jp: formData.retailPriceJpy || formData.priceJpy || "¥0",
-    },
-    wholesalePrice: {
-      kr: formData.wholesalePrice || formData.price || "0",
-      en: formData.wholesalePriceUsd || formData.priceUsd || "$0",
-      cn: formData.wholesalePriceCny || formData.priceCny || "¥0",
-      jp: formData.wholesalePriceJpy || formData.priceJpy || "¥0",
-    },
-    description: {
-      kr: formData.descriptionKr || "",
-      en: formData.description || "",
-      cn: formData.descriptionCn || "",
-      jp: formData.descriptionJp || "",
-    },
-    category: formData.category || "accessories",
-    specifications: {
-      size: formData.size || "",
-      material: formData.material || "",
-      colors: formData.colors || [],
-      weight: formData.weight || "",
-      width: formData.width || "",
-    },
-    isRetail: formData.isRetail || false,
-    isWholesale: formData.isWholesale || false,
-    moq: Number(formData.moq) || 1,
-    retailMOQ: Number(formData.retailMOQ) || Number(formData.moq) || 1,
-    wholesaleMOQ: Number(formData.wholesaleMOQ) || Number(formData.moq) || 10,
-    retailShippingMethod: formData.retailShippingMethod || "domestic",
-    wholesaleShippingMethod: formData.wholesaleShippingMethod || "both",
-    thumbnailImage: formData.thumbnailImage || null,
-    detailImages: formData.detailImages || null,
-    additionalImages: formData.additionalImages || [],
-  };
-};
-
-// Export the useProductsWrapper function - remove the circular references
-export const useProductsWrapper = (category: string | undefined, subcategory: string | null) => {
-  // Use the useProducts hook directly instead of importing it again
-  const productsHook = useProducts(category, subcategory);
-  
-  // Here we would extend the useProducts hook to handle additional images
-  // But since we're using the original hook, we'll just return it as is
-  
-  return productsHook;
-};
+      kr: formData.price || "
