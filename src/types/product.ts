@@ -36,7 +36,7 @@ export interface Product {
   retailShippingMethod?: string;
   wholesaleShippingMethod?: string;
   moq?: number;
-  createdAt?: string;  // Add timestamp for sorting
+  createdAt?: string;
 }
 
 export interface NewProduct {
@@ -87,6 +87,7 @@ export interface NewProduct {
   wholesaleShippingMethod?: string;
   thumbnailImage: File | null;
   detailImages: FileList | null;
+  additionalImages?: (File | null)[]; // New field for 4-9 additional images
 }
 
 export interface Subcategory {

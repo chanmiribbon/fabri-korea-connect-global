@@ -16,6 +16,13 @@ const SellerProductRegistration = () => {
     // Convert form data to product
     const newProduct = convertFormDataToProduct(formData);
     
+    // Process additional images if they exist
+    if (formData.additionalImages && formData.additionalImages.length > 0) {
+      // In a real app, we would upload these images to a server
+      // For now, we'll just simulate adding them to the product
+      console.log("Additional images to process:", formData.additionalImages.filter(Boolean).length);
+    }
+    
     // Add product to the store
     const product = addProduct(newProduct);
     

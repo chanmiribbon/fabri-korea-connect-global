@@ -28,7 +28,7 @@ const sampleData = [
 
 const SalesChart: React.FC<SalesChartProps> = ({ language }) => {
   return (
-    <Card className="col-span-3 h-auto w-full overflow-hidden">
+    <Card className="col-span-3 h-auto w-full">
       <CardHeader>
         <CardTitle>{translations.monthlySales[language]}</CardTitle>
       </CardHeader>
@@ -36,7 +36,7 @@ const SalesChart: React.FC<SalesChartProps> = ({ language }) => {
         <ResponsiveContainer width="100%" height="100%">
           <LineChart 
             data={sampleData} 
-            margin={{ top: 10, right: 10, left: 10, bottom: 20 }}
+            margin={{ top: 10, right: 30, left: 20, bottom: 30 }}
           >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis 
@@ -46,8 +46,8 @@ const SalesChart: React.FC<SalesChartProps> = ({ language }) => {
             />
             <YAxis 
               tickFormatter={(value) => `₩${(value / 1000000).toFixed(1)}M`}
-              tick={{ fontSize: 12 }}
-              width={60}
+              tick={{ fontSize: 11 }}
+              width={70}
             />
             <Line
               type="monotone"

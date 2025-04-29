@@ -1,14 +1,16 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ShoppingCart, FileText, CreditCard } from "lucide-react";
+import { ShoppingCart, FileText, CreditCard, ChevronLeft, ChevronRight } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useLanguageStore } from "@/hooks/useLanguageStore";
 import { useProducts } from "@/hooks/useProducts";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
 type Language = "KR" | "EN" | "CN" | "JP";
 
@@ -17,6 +19,7 @@ const ProductDetail = () => {
   const location = useLocation();
   const { language } = useLanguageStore();
   const isBuyerView = location.pathname.includes("/buyer");
+  const [mainImage, setMainImage] = useState<string | null>(null);
   
   // Get all products to find the one with the matching ID
   const { getDistributionProducts } = useProducts(undefined, null);
@@ -44,6 +47,11 @@ const ProductDetail = () => {
         <Footer language={language} />
       </div>
     );
+  }
+
+  // Set main image to product image if not set
+  if (!mainImage) {
+    setMainImage(product.image);
   }
 
   const getLocalizedName = (lang: Language): string => {
@@ -98,6 +106,9 @@ const ProductDetail = () => {
       (product.retailMOQ || product.moq || 1);
   };
 
+  // Combine main image and detail images into one array for the gallery
+  const allImages = [product.image, ...(product.detailImages || [])];
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -107,21 +118,38 @@ const ProductDetail = () => {
           <div className="space-y-4">
             <div className="aspect-square w-full overflow-hidden rounded-lg border">
               <img 
-                src={product.image} 
+                src={mainImage || product.image} 
                 alt={product.name}
                 className="h-full w-full object-cover object-center" 
               />
             </div>
-            <div className="grid grid-cols-4 gap-4">
-              {product.detailImages && product.detailImages.map((img, i) => (
-                <div key={i} className="aspect-square overflow-hidden rounded-lg border">
-                  <img 
-                    src={img} 
-                    alt={`${product.name} detail ${i+1}`}
-                    className="h-full w-full object-cover object-center" 
-                  />
-                </div>
-              ))}
+            
+            {/* Scrollable thumbnail gallery */}
+            <div className="relative">
+              <Carousel className="w-full">
+                <CarouselContent className="-ml-1">
+                  {allImages.map((img, i) => (
+                    <CarouselItem key={i} className="pl-1 basis-1/5 md:basis-1/5">
+                      <div 
+                        className={`aspect-square overflow-hidden rounded-lg border cursor-pointer ${mainImage === img ? 'ring-2 ring-primary' : ''}`}
+                        onClick={() => setMainImage(img)}
+                      >
+                        <img 
+                          src={img} 
+                          alt={`${product.name} image ${i+1}`}
+                          className="h-full w-full object-cover object-center" 
+                        />
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                {allImages.length > 5 && (
+                  <>
+                    <CarouselPrevious className="left-0" />
+                    <CarouselNext className="right-0" />
+                  </>
+                )}
+              </Carousel>
             </div>
           </div>
 
