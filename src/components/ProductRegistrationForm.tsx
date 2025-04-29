@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -49,7 +48,7 @@ interface ProductFormData {
 }
 
 interface ProductRegistrationFormProps {
-  onSubmitSuccess?: () => void;
+  onSubmitSuccess?: (formData: any) => void; // Update this type to match the handler
 }
 
 const ProductRegistrationForm: React.FC<ProductRegistrationFormProps> = ({ onSubmitSuccess }) => {
@@ -79,7 +78,7 @@ const ProductRegistrationForm: React.FC<ProductRegistrationFormProps> = ({ onSub
     
     // Call the success callback if provided
     if (onSubmitSuccess) {
-      onSubmitSuccess();
+      onSubmitSuccess(formData);
     }
   };
 
