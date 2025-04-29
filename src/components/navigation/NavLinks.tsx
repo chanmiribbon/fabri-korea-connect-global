@@ -3,6 +3,7 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Language } from "@/hooks/useLanguageStore";
 import { getNavLinks } from "./navLinksData";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface NavLinksProps {
   language: Language;

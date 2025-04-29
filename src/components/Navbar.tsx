@@ -21,33 +21,38 @@ const Navbar = () => {
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <div className="flex-1 flex items-center justify-between">
+          <div className="flex items-center">
             <Link to="/" className="flex-shrink-0 flex items-center">
               <span className="text-2xl font-bold text-[#6EC1E4]">
                 Fabri<span className="text-[#333333]">Korea</span>
               </span>
             </Link>
-
-            <NavLinks language={language} />
-            <NavActions language={language} />
           </div>
 
-          <div className="flex items-center sm:hidden">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="text-[#6EC1E4]"
-              aria-label="Toggle menu"
-            >
-              <Menu className="h-6 w-6" />
-            </Button>
+          <NavLinks language={language} />
+          
+          <div className="flex items-center">
+            <NavActions language={language} />
+            
+            <div className="sm:hidden ml-2">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="text-[#6EC1E4]"
+                aria-label="Toggle menu"
+              >
+                <Menu className="h-6 w-6" />
+              </Button>
+            </div>
           </div>
         </div>
       </div>
 
       <div className={`${mobileMenuOpen ? "block" : "hidden"} sm:hidden bg-white border-t border-gray-200`}>
-        <SearchBar />
+        <div className="p-4">
+          <SearchBar />
+        </div>
         <NavLinks 
           language={language} 
           isMobile={true} 
