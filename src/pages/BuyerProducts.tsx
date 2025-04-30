@@ -9,7 +9,7 @@ import { useLanguageStore } from "@/hooks/useLanguageStore";
 import { useAccessControl } from "@/hooks/useAccessControl";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Store, AlertCircle } from "lucide-react";
+import { Store, AlertCircle, LogIn } from "lucide-react";
 
 const BuyerProducts = () => {
   const { language } = useLanguageStore();
@@ -22,6 +22,7 @@ const BuyerProducts = () => {
         return {
           title: "도매 접근 제한",
           message: "도매 섹션은 인증된 비즈니스 회원만 이용할 수 있습니다.",
+          login: "로그인",
           register: "비즈니스 회원으로 가입하기",
           goToRetail: "소매 쇼핑몰로 이동"
         };
@@ -29,6 +30,7 @@ const BuyerProducts = () => {
         return {
           title: "批发访问受限",
           message: "批发部分仅适用于已验证的企业会员。",
+          login: "登录",
           register: "注册成为企业会员",
           goToRetail: "前往零售商城"
         };
@@ -36,6 +38,7 @@ const BuyerProducts = () => {
         return {
           title: "卸売アクセス制限",
           message: "卸売セクションは認証されたビジネスメンバーのみが利用できます。",
+          login: "ログイン",
           register: "ビジネスメンバーとして登録する",
           goToRetail: "小売モールに移動"
         };
@@ -43,6 +46,7 @@ const BuyerProducts = () => {
         return {
           title: "Wholesale Access Restricted",
           message: "The wholesale section is available only for verified business members.",
+          login: "Login",
           register: "Register as a Business Member",
           goToRetail: "Go to Retail Mall"
         };
@@ -78,7 +82,16 @@ const BuyerProducts = () => {
               
               <div className="space-y-3 w-full">
                 <Button 
-                  variant="fabri-blue" 
+                  variant="fabri-blue"
+                  className="w-full"
+                  onClick={() => window.location.href = "/login"}
+                >
+                  <LogIn className="mr-2 h-5 w-5" />
+                  {accessText.login}
+                </Button>
+                
+                <Button 
+                  variant="outline" 
                   className="w-full"
                   onClick={() => window.location.href = "/register/b2b"}
                 >
