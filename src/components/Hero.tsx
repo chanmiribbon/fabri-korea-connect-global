@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Globe, Users } from "lucide-react";
@@ -7,37 +8,37 @@ import RegisterDialog from "./auth/RegisterDialog";
 
 const translations = {
   KR: {
-    slogan: "Weaving K-Culture into the World",
-    mainTitle: "전통시장을 세계로!",
-    subTitle: "한국 B2B·B2C 연결 플랫폼",
-    description: "동대문과 남대문 시장의 우수한 제품을 전세계 바이어와 소비자에게 소개합니다",
+    slogan: "한국의 품질, 세계의 선택",
+    mainTitle: "K-부자재로 세계와 연결하세요!",
+    subTitle: "한국 패션 부자재 B2B·B2C 플랫폼",
+    description: "동대문과 남대문 시장의 우수한 부자재를 전세계 바이어와 소비자에게 소개합니다",
     buyerButton: "해외 바이어로 둘러보기",
     consumerButton: "일반 소비자로 둘러보기",
     registerButton: "지금 회원가입하고 혜택 받기"
   },
   EN: {
-    slogan: "Weaving K-Culture into the World",
-    mainTitle: "Traditional Markets to the World!",
-    subTitle: "Korea's B2B·B2C Connection Platform",
-    description: "Introducing excellent products from Dongdaemun and Namdaemun markets to global buyers and consumers",
+    slogan: "Korean Quality, Global Choice",
+    mainTitle: "Connect Globally with K-Materials!",
+    subTitle: "Korea's Fashion Materials B2B·B2C Platform",
+    description: "Introducing excellent materials from Dongdaemun and Namdaemun markets to global buyers and consumers",
     buyerButton: "Browse as a Global Buyer",
     consumerButton: "Browse as a Consumer",
     registerButton: "Register Now for Benefits"
   },
   CN: {
-    slogan: "将韩国文化编织进世界",
-    mainTitle: "传统市场走向世界!",
-    subTitle: "韩国 B2B·B2C 连接平台",
-    description: "向全球买家和消费者介绍东大门和南大门市场的优质产品",
+    slogan: "韩国品质，全球之选",
+    mainTitle: "用韩国辅料连接全球!",
+    subTitle: "韩国时尚辅料 B2B·B2C 平台",
+    description: "向全球买家和消费者介绍东大门和南大门市场的优质辅料",
     buyerButton: "以国际买家身份浏览",
     consumerButton: "以消费者身份浏览",
     registerButton: "立即注册并获取优惠"
   },
   JP: {
-    slogan: "K-カルチャーを世界へ紡ぐ",
-    mainTitle: "伝統市場を世界へ!",
-    subTitle: "韓国 B2B·B2C 接続プラットフォーム",
-    description: "東大門と南大門市場の優れた製品を世界中のバイヤーと消費者に紹介します",
+    slogan: "韓国の品質、世界の選択",
+    mainTitle: "K-副資材で世界とつながろう!",
+    subTitle: "韓国ファッション副資材 B2B·B2C プラットフォーム",
+    description: "東大門と南大門市場の優れた副資材を世界中のバイヤーと消費者に紹介します",
     buyerButton: "海外バイヤーとして閲覧",
     consumerButton: "一般消費者として閲覧",
     registerButton: "今すぐ登録して特典を受け取る"
