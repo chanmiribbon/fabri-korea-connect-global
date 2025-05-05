@@ -19,9 +19,9 @@ const TranslationDemo: React.FC<TranslationDemoProps> = ({ language }) => {
     },
     description: {
       original:
-        "찬미리본의 AI 번역 기술은 귀하의 비즈니스에 언어 장벽 없는 글로벌 커뮤니케이션을 제공합니다. 한국어, 영어, 일본어, 중국어 등 다양한 언어로 실시간 번역이 가능합니다.",
+        "패브리 코리아의 AI 번역 기술은 귀하의 비즈니스에 언어 장벽 없는 글로벌 커뮤니케이션을 제공합니다. 한국어, 영어, 일본어, 중국어 등 다양한 언어로 실시간 번역이 가능합니다.",
       translated:
-        "Chanmi Ribbon's AI translation technology provides barrier-free global communication for your business. Real-time translation is available in various languages including Korean, English, Japanese, and Chinese."
+        "Fabri Korea's AI translation technology provides barrier-free global communication for your business. Real-time translation is available in various languages including Korean, English, Japanese, and Chinese."
     },
     buttonText: {
       original: "번역 데모 보기",

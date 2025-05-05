@@ -21,6 +21,7 @@ type Message = {
   sender: 'user' | 'agent';
   timestamp: Date;
   originalText?: string;
+  language?: Language; // Add language property to track message language
 };
 
 type QuickReply = {
@@ -173,7 +174,8 @@ const ChatWidget = ({ onClose }: { onClose: () => void }) => {
       id: Date.now().toString(),
       text: translations[language].welcomeMessage,
       sender: 'agent' as const,
-      timestamp: new Date()
+      timestamp: new Date(),
+      language: language // Set the language of the welcome message
     };
     
     setMessages([welcomeMessage]);
@@ -194,25 +196,41 @@ const ChatWidget = ({ onClose }: { onClose: () => void }) => {
     }
   }, [messages, isTyping, isTranslating]);
 
+  // Function to detect language from text input
+  const detectMessageLanguage = (text: string): Language => {
+    // A very basic language detection logic
+    // In a real implementation, this would use a proper language detection API
+    const koreanChars = /[\uAC00-\uD7AF\u1100-\u11FF\u3130-\u318F\uA960-\uA97F\uD7B0-\uD7FF]/;
+    const chineseChars = /[\u4E00-\u9FFF\u3400-\u4DBF\uF900-\uFAFF]/;
+    const japaneseChars = /[\u3040-\u309F\u30A0-\u30FF\uFF00-\uFFEF\u4E00-\u9FAF]/;
+    
+    if (koreanChars.test(text)) return "KR";
+    if (chineseChars.test(text)) return "CN";
+    if (japaneseChars.test(text)) return "JP";
+    return "EN"; // Default to English if no specific characters detected
+  };
+
   const handleSendMessage = () => {
     if (!message.trim()) return;
+    
+    // Detect language from user's message
+    const userMessageLanguage = detectMessageLanguage(message);
     
     // Add user message
     const userMessage: Message = {
       id: Date.now().toString(),
       text: message,
       sender: 'user',
-      timestamp: new Date()
+      timestamp: new Date(),
+      language: userMessageLanguage
     };
     
     setMessages(prevMessages => [...prevMessages, userMessage]);
     setMessage('');
     
-    // Detect language on first message if not already detected
+    // Update detected language if it's the first message
     if (!detectedLanguage && messages.length <= 1) {
-      // In a real implementation, you would call a language detection API here
-      // For demo purposes, we'll just use the current UI language
-      setDetectedLanguage(language);
+      setDetectedLanguage(userMessageLanguage);
     }
     
     // Simulate translation loading
@@ -224,22 +242,22 @@ const ChatWidget = ({ onClose }: { onClose: () => void }) => {
       // Simulate agent typing after translation
       setIsTyping(true);
       
+      // Use the user's language for the response
+      const responseLanguage = userMessageLanguage;
+      
       // Simulate agent response (would be replaced with actual API call)
       setTimeout(() => {
         setIsTyping(false);
         
-        // Simulate translation (would be replaced with actual translation API)
-        const translatedResponse = mockTranslateToUserLanguage(
-          "감사합니다. 문의하신 내용에 대해 확인해보겠습니다. 잠시만 기다려주세요.", 
-          language
-        );
+        // Generate response in the same language as the user's message
+        const responseText = getResponseInLanguage(responseLanguage);
         
         const agentMessage: Message = {
           id: (Date.now() + 1).toString(),
-          text: translatedResponse,
+          text: responseText,
           sender: 'agent',
           timestamp: new Date(),
-          originalText: "감사합니다. 문의하신 내용에 대해 확인해보겠습니다. 잠시만 기다려주세요."
+          language: responseLanguage
         };
         
         setMessages(prevMessages => [...prevMessages, agentMessage]);
@@ -247,12 +265,28 @@ const ChatWidget = ({ onClose }: { onClose: () => void }) => {
     }, 1000);
   };
 
+  // Get appropriate response based on detected language
+  const getResponseInLanguage = (lang: Language): string => {
+    const responses = {
+      KR: "감사합니다. 문의하신 내용에 대해 확인해보겠습니다. 잠시만 기다려주세요.",
+      EN: "Thank you. I'll check the details of your inquiry. Please wait a moment.",
+      CN: "谢谢。我将检查您询问的详细信息。请稍等。",
+      JP: "ありがとうございます。お問い合わせの詳細を確認いたします。少々お待ちください。"
+    };
+    
+    return responses[lang];
+  };
+
   const handleQuickReply = (replyText: string) => {
+    // Detect language from the quick reply text
+    const replyLanguage = detectMessageLanguage(replyText);
+    
     const userMessage: Message = {
       id: Date.now().toString(),
       text: replyText,
       sender: 'user',
-      timestamp: new Date()
+      timestamp: new Date(),
+      language: replyLanguage
     };
     
     setMessages(prevMessages => [...prevMessages, userMessage]);
@@ -270,18 +304,20 @@ const ChatWidget = ({ onClose }: { onClose: () => void }) => {
       setTimeout(() => {
         setIsTyping(false);
         
-        // Simulate translation (would be replaced with actual translation API)
-        const translatedResponse = mockTranslateToUserLanguage(
-          "해당 문의에 대해 도와드리겠습니다. 더 자세한 내용을 알려주시겠어요?", 
-          language
-        );
+        // Generate response in the same language as the quick reply
+        const responseText = {
+          KR: "해당 문의에 대해 도와드리겠습니다. 더 자세한 내용을 알려주시겠어요?",
+          EN: "I'll help you with this inquiry. Could you provide more details?",
+          CN: "我将帮助您解决这个问题。您能提供更多详细信息吗？",
+          JP: "このお問い合わせについてお手伝いいたします。もう少し詳しく教えていただけますか？"
+        }[replyLanguage];
         
         const agentMessage: Message = {
           id: (Date.now() + 1).toString(),
-          text: translatedResponse,
+          text: responseText,
           sender: 'agent',
           timestamp: new Date(),
-          originalText: "해당 문의에 대해 도와드리겠습니다. 더 자세한 내용을 알려주시겠어요?"
+          language: replyLanguage
         };
         
         setMessages(prevMessages => [...prevMessages, agentMessage]);
@@ -321,46 +357,26 @@ const ChatWidget = ({ onClose }: { onClose: () => void }) => {
   };
 
   const handleHumanAgent = () => {
+    // Use the last user message's language or fall back to UI language
+    const lastUserMessage = [...messages].reverse().find(msg => msg.sender === 'user');
+    const responseLanguage = lastUserMessage?.language || language;
+    
+    const responseText = {
+      KR: "상담원 연결 요청이 접수되었습니다. 잠시만 기다려주세요.",
+      EN: "Your request to connect with a human agent has been received. Please wait a moment.",
+      CN: "您与人工客服连接的请求已收到。请稍等。",
+      JP: "人間のエージェントとの接続リクエストを受け付けました。少々お待ちください。"
+    }[responseLanguage];
+    
     const systemMessage: Message = {
       id: Date.now().toString(),
-      text: mockTranslateToUserLanguage(
-        "상담원 연결 요청이 접수되었습니다. 잠시만 기다려주세요.", 
-        language
-      ),
+      text: responseText,
       sender: 'agent',
-      timestamp: new Date()
+      timestamp: new Date(),
+      language: responseLanguage
     };
     
     setMessages(prevMessages => [...prevMessages, systemMessage]);
-  };
-
-  // Mock translation function (would be replaced with actual API)
-  const mockTranslateToUserLanguage = (text: string, targetLang: Language): string => {
-    // This would be replaced with actual translation API
-    if (targetLang === "KR") return text;
-    
-    const mockTranslations: Record<string, Record<Language, string>> = {
-      "감사합니다. 문의하신 내용에 대해 확인해보겠습니다. 잠시만 기다려주세요.": {
-        KR: "감사합니다. 문의하신 내용에 대해 확인해보겠습니다. 잠시만 기다려주세요.",
-        EN: "Thank you. I'll check the details of your inquiry. Please wait a moment.",
-        CN: "谢谢。我将检查您询问的详细信息。请稍等。",
-        JP: "ありがとうございます。お問い合わせの詳細を確認いたします。少々お待ちください。"
-      },
-      "해당 문의에 대해 도와드리겠습니다. 더 자세한 내용을 알려주시겠어요?": {
-        KR: "해당 문의에 대해 도와드리겠습니다. 더 자세한 내용을 알려주시겠어요?",
-        EN: "I'll help you with this inquiry. Could you provide more details?",
-        CN: "我将帮助您解决这个问题。您能提供更多详细信息吗？",
-        JP: "このお問い合わせについてお手伝いいたします。もう少し詳しく教えていただけますか？"
-      },
-      "상담원 연결 요청이 접수되었습니다. 잠시만 기다려주세요.": {
-        KR: "상담원 연결 요청이 접수되었습니다. 잠시만 기다려주세요.",
-        EN: "Your request to connect with a human agent has been received. Please wait a moment.",
-        CN: "您与人工客服连接的请求已收到。请稍等。",
-        JP: "人間のエージェントとの接続リクエストを受け付けました。少々お待ちください。"
-      }
-    };
-    
-    return mockTranslations[text]?.[targetLang] || text;
   };
   
   const formatTime = (date: Date) => {
