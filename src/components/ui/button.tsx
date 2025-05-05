@@ -22,6 +22,9 @@ const buttonVariants = cva(
         // Add new variants for our custom colors
         "fabri-blue": "bg-fabri-blue text-white hover:bg-fabri-blue/90",
         "fabri-pink": "bg-fabri-pink text-white hover:bg-fabri-pink/90",
+        "cherry": "bg-[#FFDEE2] text-gray-700 hover:bg-[#FFDEE2]/90",
+        "beige": "bg-[#FDE1D3] text-gray-700 hover:bg-[#FDE1D3]/90",
+        "warm": "bg-gradient-to-r from-[#FFDEE2] to-[#FF7F7F] text-white hover:opacity-90",
       },
       size: {
         default: "h-10 px-4 py-2",

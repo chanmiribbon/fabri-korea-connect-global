@@ -73,7 +73,13 @@ export default {
 					lightPink: '#FFF0F3',
 					lightMint: '#F0FCFC',
 					cream: '#FFF9F3',
-					darkPurple: '#4A2B5F'
+					darkPurple: '#4A2B5F',
+					// New warm colors
+					cherry: '#FFDEE2',
+					beige: '#FDE1D3',
+					warmGray: '#EEE',
+					softPink: '#FFDEE2',
+					softPeach: '#FDE1D3'
 				}
 			},
 			borderRadius: {

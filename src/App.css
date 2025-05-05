@@ -34,7 +34,7 @@
 }
 
 .badge-new {
-  background-color: #6EC1E4;
+  background-color: #FF7F7F;
   color: white;
 }
 
@@ -44,7 +44,7 @@
 }
 
 .gradient-text {
-  background: linear-gradient(90deg, #6EC1E4, #FF7F7F);
+  background: linear-gradient(90deg, #FFDEE2, #FF7F7F);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -80,6 +80,9 @@
   --fabri-blue: #6EC1E4;
   --fabri-pink: #FF7F7F;
   --fabri-mint: #A6E3E9;
+  --fabri-cherry: #FFDEE2;
+  --fabri-beige: #FDE1D3;
+  --fabri-warm-gray: #EEE;
 }
 
 .bg-fabri-blue {
@@ -94,6 +97,14 @@
   background-color: var(--fabri-mint);
 }
 
+.bg-fabri-cherry {
+  background-color: var(--fabri-cherry);
+}
+
+.bg-fabri-beige {
+  background-color: var(--fabri-beige);
+}
+
 .text-fabri-blue {
   color: var(--fabri-blue);
 }
@@ -104,6 +115,14 @@
 
 .text-fabri-mint {
   color: var(--fabri-mint);
+}
+
+.text-fabri-cherry {
+  color: var(--fabri-cherry);
+}
+
+.text-fabri-beige {
+  color: var(--fabri-beige);
 }
 
 /* Form animations */
@@ -120,4 +139,8 @@
 
 .form-field-animate {
   animation: fadeIn 0.3s ease-out forwards;
+}
+
+.warm-bg-gradient {
+  background: linear-gradient(to right, #FFDEE2, #FDE1D3);
 }

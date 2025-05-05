@@ -14,16 +14,16 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 195 71% 66%;
+    --primary: 350 100% 88%;
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 0 73% 75%;
+    --secondary: 30 73% 91%;
     --secondary-foreground: 222.2 47.4% 11.2%;
 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 186 66% 77%;
+    --accent: 30 73% 91%;
     --accent-foreground: 222.2 47.4% 11.2%;
 
     --destructive: 0 84.2% 60.2%;
@@ -31,7 +31,7 @@
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 195 71% 66%;
+    --ring: 350 100% 88%;
 
     --radius: 0.75rem;
 
@@ -42,7 +42,7 @@
     --sidebar-accent: 240 4.8% 95.9%;
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 195 71% 66%;
+    --sidebar-ring: 350 100% 88%;
   }
 
   .dark {
@@ -128,15 +128,15 @@
   }
   
   .gradient-bg-light {
-    background: linear-gradient(to bottom, #FFFFFF, #F0F9FC);
-  }
-  
-  .gradient-bg-pink {
     background: linear-gradient(to bottom, #FFFFFF, #FFF0F3);
   }
   
+  .gradient-bg-pink {
+    background: linear-gradient(to bottom, #FFFFFF, #FFDEE2);
+  }
+  
   .gradient-bg-mint {
-    background: linear-gradient(to bottom, #FFFFFF, #F0FCFC);
+    background: linear-gradient(to bottom, #FFFFFF, #FDE1D3);
   }
 
   /* Add page transition animations */
@@ -146,6 +146,14 @@
 
   .animate-slide-in {
     animation: slideIn 0.5s ease-out forwards;
+  }
+  
+  .warm-gradient {
+    background: linear-gradient(to right, #FFDEE2, #FDE1D3);
+  }
+  
+  .warm-gradient-light {
+    background: linear-gradient(to right, #FFDEE2/30, #FDE1D3/30);
   }
 }
 
@@ -164,11 +172,10 @@
 }
 
 .btn-dark {
-  @apply bg-fabri-blue text-white;
+  @apply bg-[#FF7F7F] text-white;
 }
 
 /* Focus states for better accessibility */
 .focus-visible:focus {
-  @apply outline-none ring-2 ring-fabri-blue;
+  @apply outline-none ring-2 ring-[#FF7F7F];
 }
-

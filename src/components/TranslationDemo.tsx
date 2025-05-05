@@ -38,11 +38,11 @@ const TranslationDemo: React.FC<TranslationDemoProps> = ({ language }) => {
   };
 
   return (
-    <section className="py-16 bg-gradient-to-r from-fabri-purple/10 to-fabri-lightPurple/10">
+    <section className="py-16 bg-gradient-to-r from-[#FFDEE2]/20 to-[#FDE1D3]/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <Languages className="h-12 w-12 text-fabri-purple mx-auto mb-4" />
-          <h2 className="text-3xl font-extrabold text-fabri-darkPurple sm:text-4xl">
+          <Languages className="h-12 w-12 text-[#FF7F7F] mx-auto mb-4" />
+          <h2 className="text-3xl font-extrabold text-[#4A2B5F] sm:text-4xl">
             {language === "KR" ? "AI 자동 번역" : "AI Translation"}
           </h2>
           <p className="mt-4 max-w-2xl text-xl text-gray-500 mx-auto">
@@ -56,7 +56,7 @@ const TranslationDemo: React.FC<TranslationDemoProps> = ({ language }) => {
           <CardContent className="p-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-4">
-                <h3 className="text-2xl font-bold text-fabri-purple">
+                <h3 className="text-2xl font-bold text-[#FF7F7F]">
                   {translated
                     ? translations.title.translated
                     : translations.title.original}
@@ -69,7 +69,7 @@ const TranslationDemo: React.FC<TranslationDemoProps> = ({ language }) => {
                 <Button
                   onClick={handleTranslation}
                   disabled={isLoading}
-                  className="mt-4 bg-fabri-purple hover:bg-fabri-purple/90 text-white"
+                  className="mt-4 bg-[#FF7F7F] hover:bg-[#FF7F7F]/90 text-white"
                 >
                   <Languages className="mr-2 h-4 w-4" />
                   {isLoading ? (
@@ -82,31 +82,31 @@ const TranslationDemo: React.FC<TranslationDemoProps> = ({ language }) => {
                 </Button>
               </div>
 
-              <div className="bg-gray-100 rounded-lg p-6">
-                <h4 className="text-lg font-medium text-fabri-darkPurple mb-4">
+              <div className="bg-[#FDE1D3]/30 rounded-lg p-6">
+                <h4 className="text-lg font-medium text-[#4A2B5F] mb-4">
                   {language === "KR" ? "지원 언어" : "Supported Languages"}:
                 </h4>
                 <ul className="grid grid-cols-2 gap-4">
                   <li className="flex items-center">
-                    <span className="w-8 h-8 flex items-center justify-center rounded-full bg-fabri-purple text-white font-bold mr-2">
+                    <span className="w-8 h-8 flex items-center justify-center rounded-full bg-[#FF7F7F] text-white font-bold mr-2">
                       KR
                     </span>
                     {language === "KR" ? "한국어" : "Korean"}
                   </li>
                   <li className="flex items-center">
-                    <span className="w-8 h-8 flex items-center justify-center rounded-full bg-fabri-purple text-white font-bold mr-2">
+                    <span className="w-8 h-8 flex items-center justify-center rounded-full bg-[#FF7F7F] text-white font-bold mr-2">
                       EN
                     </span>
                     {language === "KR" ? "영어" : "English"}
                   </li>
                   <li className="flex items-center">
-                    <span className="w-8 h-8 flex items-center justify-center rounded-full bg-fabri-purple text-white font-bold mr-2">
+                    <span className="w-8 h-8 flex items-center justify-center rounded-full bg-[#FF7F7F] text-white font-bold mr-2">
                       JP
                     </span>
                     {language === "KR" ? "일본어" : "Japanese"}
                   </li>
                   <li className="flex items-center">
-                    <span className="w-8 h-8 flex items-center justify-center rounded-full bg-fabri-purple text-white font-bold mr-2">
+                    <span className="w-8 h-8 flex items-center justify-center rounded-full bg-[#FF7F7F] text-white font-bold mr-2">
                       CN
                     </span>
                     {language === "KR" ? "중국어" : "Chinese"}
