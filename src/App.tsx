@@ -1,4 +1,3 @@
-
 import React, { Suspense, lazy } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -24,6 +23,8 @@ import ProductDetail from "./pages/ProductDetail";
 const CategoryProducts = lazy(() => import('./pages/Products/[category]'));
 const ProductRegistration = lazy(() => import('./pages/ProductRegistration'));
 const SupplierDashboard = lazy(() => import('./pages/SupplierDashboard'));
+const ProductPurchase = lazy(() => import('./pages/ProductPurchase'));
+const ProductQuote = lazy(() => import('./pages/ProductQuote'));
 
 // Seller Center pages
 const SellerDashboard = lazy(() => import('./pages/seller/Dashboard'));
@@ -69,9 +70,35 @@ const App = () => (
             } 
           />
           
-          {/* Add product detail routes */}
+          {/* Product detail routes */}
           <Route path="/consumer-products/:productId" element={<ProductDetail />} />
           <Route path="/buyer-products/:productId" element={<ProductDetail />} />
+          
+          {/* New purchase and quote routes */}
+          <Route 
+            path="/consumer-products/:productId/purchase" 
+            element={
+              <Suspense fallback={<div className="p-20 text-center">Loading...</div>}>
+                <ProductPurchase />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/buyer-products/:productId/purchase" 
+            element={
+              <Suspense fallback={<div className="p-20 text-center">Loading...</div>}>
+                <ProductPurchase isWholesale={true} />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/buyer-products/:productId/quote" 
+            element={
+              <Suspense fallback={<div className="p-20 text-center">Loading...</div>}>
+                <ProductQuote />
+              </Suspense>
+            } 
+          />
           
           <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<Login />} />

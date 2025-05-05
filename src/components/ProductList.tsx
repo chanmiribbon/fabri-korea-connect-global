@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
@@ -36,6 +35,18 @@ const ProductList: React.FC<ProductListProps> = ({ category }) => {
       ? `/buyer-products/${productId}`
       : `/consumer-products/${productId}`;
     navigate(path);
+  };
+
+  const handlePurchaseClick = (productId: number) => {
+    const purchasePath = isBuyerView
+      ? `/buyer-products/${productId}/purchase`
+      : `/consumer-products/${productId}/purchase`;
+    navigate(purchasePath);
+  };
+
+  const handleQuoteRequest = (productId: number) => {
+    // For wholesale, navigate to the quote request page
+    navigate(`/buyer-products/${productId}/quote`);
   };
 
   const getLocalizedName = (product: Product, lang: Language): string => {
@@ -155,6 +166,7 @@ const ProductList: React.FC<ProductListProps> = ({ category }) => {
                     </p>
                     <p className="text-sm text-[#4A4A4A] mb-4">{getLocalizedDescription(product, "KR")}</p>
                   </TabsContent>
+                  
                   <TabsContent value="en" className="mt-4">
                     <h3 
                       className="text-lg font-semibold mb-2 text-[#333333] cursor-pointer hover:text-fabri-blue hover:underline"
@@ -170,6 +182,7 @@ const ProductList: React.FC<ProductListProps> = ({ category }) => {
                     </p>
                     <p className="text-sm text-[#4A4A4A] mb-4">{getLocalizedDescription(product, "EN")}</p>
                   </TabsContent>
+                  
                   <TabsContent value="cn" className="mt-4">
                     <h3 
                       className="text-lg font-semibold mb-2 text-[#333333] cursor-pointer hover:text-fabri-blue hover:underline"
@@ -185,6 +198,7 @@ const ProductList: React.FC<ProductListProps> = ({ category }) => {
                     </p>
                     <p className="text-sm text-[#4A4A4A] mb-4">{getLocalizedDescription(product, "CN")}</p>
                   </TabsContent>
+                  
                   <TabsContent value="jp" className="mt-4">
                     <h3 
                       className="text-lg font-semibold mb-2 text-[#333333] cursor-pointer hover:text-fabri-blue hover:underline"
@@ -204,13 +218,19 @@ const ProductList: React.FC<ProductListProps> = ({ category }) => {
                 
                 <div className="flex flex-col gap-3 mt-6">
                   {isBuyerView ? (
-                    <Button className="w-full flex items-center justify-center gap-2 bg-fabri-blue hover:bg-fabri-blue/90 py-6 text-lg text-white">
+                    <Button 
+                      className="w-full flex items-center justify-center gap-2 bg-fabri-blue hover:bg-fabri-blue/90 py-6 text-lg text-white"
+                      onClick={() => handleQuoteRequest(product.id)}
+                    >
                       <FileText className="w-5 h-5" />
                       {getButtonText("KR")}
                     </Button>
                   ) : (
                     <div className="space-y-3">
-                      <Button className="w-full flex items-center justify-center gap-2 py-6 text-lg bg-fabri-pink hover:bg-fabri-pink/90 text-white">
+                      <Button 
+                        className="w-full flex items-center justify-center gap-2 py-6 text-lg bg-fabri-pink hover:bg-fabri-pink/90 text-white"
+                        onClick={() => handlePurchaseClick(product.id)}
+                      >
                         <ShoppingCart className="w-5 h-5" />
                         {getButtonText("KR")}
                       </Button>

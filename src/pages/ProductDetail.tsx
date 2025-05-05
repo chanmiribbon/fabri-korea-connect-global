@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -17,6 +17,7 @@ type Language = "KR" | "EN" | "CN" | "JP";
 const ProductDetail = () => {
   const { productId } = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
   const { language } = useLanguageStore();
   const isBuyerView = location.pathname.includes("/buyer");
   const [mainImage, setMainImage] = useState<string | null>(null);
@@ -48,6 +49,19 @@ const ProductDetail = () => {
       </div>
     );
   }
+
+  // Handler for purchase button clicks
+  const handlePurchaseClick = () => {
+    const purchasePath = isBuyerView
+      ? `/buyer-products/${productId}/purchase`
+      : `/consumer-products/${productId}/purchase`;
+    navigate(purchasePath);
+  };
+
+  // Handler for wholesale quote requests
+  const handleQuoteRequest = () => {
+    navigate(`/buyer-products/${productId}/quote`);
+  };
 
   // Set main image to product image if not set
   if (!mainImage) {
@@ -187,13 +201,19 @@ const ProductDetail = () => {
                   )}
                   <div className="pt-4">
                     {isBuyerView ? (
-                      <Button className="w-full flex items-center justify-center gap-2 bg-fabri-blue hover:bg-fabri-blue/90 py-6 text-lg text-white">
+                      <Button 
+                        className="w-full flex items-center justify-center gap-2 bg-fabri-blue hover:bg-fabri-blue/90 py-6 text-lg text-white"
+                        onClick={handleQuoteRequest}
+                      >
                         <FileText className="w-5 h-5" />
                         {getButtonText("KR")}
                       </Button>
                     ) : (
                       <div className="space-y-3">
-                        <Button className="w-full flex items-center justify-center gap-2 py-6 text-lg bg-fabri-pink hover:bg-fabri-pink/90 text-white">
+                        <Button 
+                          className="w-full flex items-center justify-center gap-2 py-6 text-lg bg-fabri-pink hover:bg-fabri-pink/90 text-white"
+                          onClick={handlePurchaseClick}
+                        >
                           <ShoppingCart className="w-5 h-5" />
                           {getButtonText("KR")}
                         </Button>
