@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import ChatButton from './ChatButton';
 import ChatWidget from './ChatWidget';
 import { useLanguageStore } from '@/hooks/useLanguageStore';
-import { Sheet, SheetTrigger, SheetContent } from '@/components/ui/sheet';
 
 const ChatSupport = () => {
   const [isOpen, setIsOpen] = useState(false);

@@ -43,6 +43,42 @@ const ChatWidget = ({ onClose }: { onClose: () => void }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   
+  // Simple questions and answers for immediate response
+  const simpleQAs = {
+    KR: {
+      "안녕": "안녕하세요! 무엇을 도와드릴까요?",
+      "안녕하세요": "안녕하세요! 패브리 코리아입니다. 어떻게 도와드릴까요?",
+      "고객센터": "고객센터는 평일 오전 9시부터 오후 6시까지 운영됩니다. 전화번호: 02-123-4567",
+      "배송": "배송은 주문 확인 후 1-2일 내에 시작되며, 국내 배송은 2-3일, 해외 배송은 7-14일 정도 소요됩니다.",
+      "환불": "환불은 상품 수령 후 7일 이내에 가능합니다. 고객센터로 연락해 주세요.",
+      "영업시간": "영업시간은 평일 오전 9시부터 오후 6시까지입니다."
+    },
+    EN: {
+      "hi": "Hello! How can I help you?",
+      "hello": "Hello! This is Fabri Korea. How may I assist you?",
+      "customer service": "Our customer service is available on weekdays from 9 AM to 6 PM. Phone: 02-123-4567",
+      "shipping": "Shipping starts within 1-2 days after order confirmation. Domestic shipping takes 2-3 days, international shipping takes 7-14 days.",
+      "refund": "Refunds are available within 7 days of receiving the product. Please contact our customer service.",
+      "business hours": "Our business hours are from 9 AM to 6 PM on weekdays."
+    },
+    CN: {
+      "你好": "你好！我能帮您什么忙？",
+      "您好": "您好！这里是Fabri Korea。我能帮您什么忙？",
+      "客服": "我们的客服时间为工作日上午9点至下午6点。电话：02-123-4567",
+      "配送": "订单确认后1-2天内开始配送。国内配送需要2-3天，国际配送需要7-14天。",
+      "退款": "收到商品后7天内可以退款。请联系我们的客服。",
+      "营业时间": "我们的营业时间是工作日上午9点至下午6点。"
+    },
+    JP: {
+      "こんにちは": "こんにちは！どのようにお手伝いできますか？",
+      "はじめまして": "こんにちは！Fabri Koreaです。どうぞよろしくお願いいたします。",
+      "カスタマーサービス": "カスタマーサービスは平日の午前9時から午後6時まで営業しています。電話番号：02-123-4567",
+      "配送": "配送は注文確認後1〜2日以内に開始され、国内配送は2〜3日、海外配送は7〜14日ほどかかります。",
+      "返金": "返金は商品受領後7日以内に可能です。カスタマーサービスにご連絡ください。",
+      "営業時間": "営業時間は平日の午前9時から午後6時までです。"
+    }
+  };
+  
   const translations = {
     KR: {
       title: "Fabri Global Assistant",
@@ -210,6 +246,24 @@ const ChatWidget = ({ onClose }: { onClose: () => void }) => {
     return "EN"; // Default to English if no specific characters detected
   };
 
+  // Check if the message is a simple question that can be answered immediately
+  const checkForSimpleQuestion = (text: string, lang: Language): string | null => {
+    const qaDict = simpleQAs[lang] || simpleQAs.EN;
+    const lowerText = text.toLowerCase();
+    
+    // Check for exact matches first
+    if (qaDict[text]) return qaDict[text];
+    
+    // Check for partial matches (if the question contains the key)
+    for (const [key, answer] of Object.entries(qaDict)) {
+      if (lowerText.includes(key.toLowerCase())) {
+        return answer;
+      }
+    }
+    
+    return null; // No simple answer found
+  };
+
   const handleSendMessage = () => {
     if (!message.trim()) return;
     
@@ -233,36 +287,52 @@ const ChatWidget = ({ onClose }: { onClose: () => void }) => {
       setDetectedLanguage(userMessageLanguage);
     }
     
-    // Simulate translation loading
-    setIsTranslating(true);
+    // Check if this is a simple question that can be answered immediately
+    const simpleAnswer = checkForSimpleQuestion(message, userMessageLanguage);
     
-    setTimeout(() => {
-      setIsTranslating(false);
+    if (simpleAnswer) {
+      // Provide immediate response for simple questions
+      const agentMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        text: simpleAnswer,
+        sender: 'agent',
+        timestamp: new Date(),
+        language: userMessageLanguage
+      };
       
-      // Simulate agent typing after translation
-      setIsTyping(true);
+      setMessages(prevMessages => [...prevMessages, agentMessage]);
+    } else {
+      // Simulate translation loading
+      setIsTranslating(true);
       
-      // Use the user's language for the response
-      const responseLanguage = userMessageLanguage;
-      
-      // Simulate agent response (would be replaced with actual API call)
       setTimeout(() => {
-        setIsTyping(false);
+        setIsTranslating(false);
         
-        // Generate response in the same language as the user's message
-        const responseText = getResponseInLanguage(responseLanguage);
+        // Simulate agent typing after translation
+        setIsTyping(true);
         
-        const agentMessage: Message = {
-          id: (Date.now() + 1).toString(),
-          text: responseText,
-          sender: 'agent',
-          timestamp: new Date(),
-          language: responseLanguage
-        };
+        // Use the user's language for the response
+        const responseLanguage = userMessageLanguage;
         
-        setMessages(prevMessages => [...prevMessages, agentMessage]);
-      }, 1500);
-    }, 1000);
+        // Simulate agent response (would be replaced with actual API call)
+        setTimeout(() => {
+          setIsTyping(false);
+          
+          // Generate response in the same language as the user's message
+          const responseText = getResponseInLanguage(responseLanguage);
+          
+          const agentMessage: Message = {
+            id: (Date.now() + 1).toString(),
+            text: responseText,
+            sender: 'agent',
+            timestamp: new Date(),
+            language: responseLanguage
+          };
+          
+          setMessages(prevMessages => [...prevMessages, agentMessage]);
+        }, 1500);
+      }, 1000);
+    }
   };
 
   // Get appropriate response based on detected language
@@ -386,22 +456,27 @@ const ChatWidget = ({ onClose }: { onClose: () => void }) => {
   return (
     <div className="fixed bottom-24 right-6 w-80 sm:w-96 bg-white rounded-xl shadow-xl z-50 flex flex-col overflow-hidden border border-gray-200">
       {/* Chat Header */}
-      <div className="bg-fabri-blue text-white p-4 flex flex-col">
+      <div className="bg-fabri-cherry text-gray-700 p-4 flex flex-col">
         <div className="flex justify-between items-center">
           <div>
             <h3 className="font-semibold">{translations[language].title}</h3>
             <p className="text-xs opacity-80">{translations[language].subtitle}</p>
           </div>
-          <Button variant="ghost" size="icon" onClick={onClose} className="text-white hover:bg-fabri-blue/90">
+          <Button 
+            variant="cherry" 
+            size="icon" 
+            onClick={onClose} 
+            className="text-gray-700 hover:bg-fabri-cherry/90"
+          >
             <X className="h-5 w-5" />
           </Button>
         </div>
         
         {/* Language Selector */}
         <div className="mt-2 flex items-center">
-          <Globe className="h-4 w-4 mr-1 text-white/80" />
+          <Globe className="h-4 w-4 mr-1 text-gray-700/80" />
           <Select defaultValue={language} onValueChange={(value: Language) => handleLanguageChange(value)}>
-            <SelectTrigger className="h-7 w-40 bg-white/10 border-white/20 text-white text-xs">
+            <SelectTrigger className="h-7 w-40 bg-white/40 border-white/20 text-gray-700 text-xs">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
